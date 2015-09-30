@@ -30,7 +30,7 @@ namespace _01_8
                 {
                     for (int k = 0; k < sizeZ; k++)
                     {
-                        array[i, j, k] = random.Next(-5,5);
+                        array[i, j, k] = random.Next(-5, 5);
                     }
                 }
             }

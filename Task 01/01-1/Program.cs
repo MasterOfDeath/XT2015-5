@@ -64,12 +64,12 @@ namespace _1_1
                         stay = false;
                     }
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     Console.WriteLine("Input string is not a sequence of digits.");
                     stay = true;
                 }
-                catch (OverflowException e)
+                catch (OverflowException)
                 {
                     Console.WriteLine("The number cannot fit in an Int32.");
                     stay = true;
