@@ -58,39 +58,15 @@ namespace _01_6
                 switch (choice)
                 {
                     case 1:
-                        if ((textOpt & TextOpt.bold) != TextOpt.bold)
-                        {
-                            textOpt |= TextOpt.bold;
-                        }
-                        else
-                        {
-                            textOpt ^= TextOpt.bold;
-                        }
-
+                        textOpt ^= TextOpt.bold;
                         break;
 
                     case 2:
-                        if ((textOpt & TextOpt.italic) != TextOpt.italic)
-                        {
-                            textOpt |= TextOpt.italic;
-                        }
-                        else
-                        {
-                            textOpt ^= TextOpt.italic;
-                        }
-
+                        textOpt ^= TextOpt.italic;
                         break;
 
                     case 3:
-                        if ((textOpt & TextOpt.underline) != TextOpt.underline)
-                        {
-                            textOpt |= TextOpt.underline;
-                        }
-                        else
-                        {
-                            textOpt ^= TextOpt.underline;
-                        }
-
+                        textOpt ^= TextOpt.underline;
                         break;
 
                     default:
