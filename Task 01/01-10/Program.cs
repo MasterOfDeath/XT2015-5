@@ -28,7 +28,8 @@ namespace _01_10
             {
                 for (int j = 0; j < sizeY; j++)
                 {
-                    array[i, j] = random.Next(0, sizeX + sizeY);
+                    // array[i, j] = random.Next(0, sizeX + sizeY);
+                    array[i, j] = i + j;
                 }
             }
 
@@ -46,7 +47,8 @@ namespace _01_10
 
             // Sum
             int sumEven = 0;
-            for (int i = 0; i < sizeX; i++)
+
+            /*for (int i = 0; i < sizeX; i++)
             {
                 for (int j = 0; j < sizeY; j++)
                 {
@@ -55,6 +57,13 @@ namespace _01_10
                         sumEven += array[i, j];
                     }
                 }
+            }*/
+
+            for (int i = 0; i < array.Length; i += 2)
+            {
+                int y = i / sizeX;
+                int x = i - (y * sizeX);
+                sumEven += array[x, y];
             }
 
             Console.WriteLine("The Sum of numbers on even positions: {0}", sumEven);
