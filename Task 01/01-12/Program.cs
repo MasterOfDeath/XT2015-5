@@ -7,6 +7,7 @@
 namespace _01_12
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Task 01-12
@@ -19,25 +20,39 @@ namespace _01_12
         /// <param name="args">command line arguments</param>
         public static void Main(string[] args)
         {
-            Console.Write("Enter 1st line: ");
-            //string str1 = Console.ReadLine();
+            Console.WriteLine("Enter 1st line: ");
+            
+            // string str1 = Console.ReadLine();
             string str1 = "написать программу, которая";
 
-            Console.Write("Enter 2nd line: ");
-            //string str2 = Console.ReadLine();
+            Console.WriteLine("Enter 2nd line: ");
+            
+            // string str2 = Console.ReadLine();
             string str2 = "описание";
 
-
+            DisplayMixedLine(str1, str2);           
         }
 
-
-        private static string MakeMixLine(string str1, string str2)
+        /// <summary>
+        /// Display Mixed Line 
+        /// </summary>
+        /// <param name="str1">String for mixing</param>
+        /// <param name="str2">String for compare</param>
+        private static void DisplayMixedLine(string str1, string str2)
         {
-            for (int i = 0; i < str1.Length; i++)
-            {
+            HashSet<char> hashSet = new HashSet<char>(str2.ToCharArray());
 
+            foreach (var letter in str1)
+            {
+                Console.Write(letter);
+
+                if (hashSet.Contains(letter))
+                {
+                    Console.Write(letter);
+                }
             }
-            return "";
+
+            Console.WriteLine();
         }
     }
 }

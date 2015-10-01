@@ -38,23 +38,33 @@ namespace _01_4
 
             if (num >= 1 && num <= 100)
             {
-                for (int count = 0; count < num; count++)
+                for (int i = 0; i < num; i++)
                 {
-                    for (var i = 0; i <= count; i++)
-                    {
-                        for (var j = num - i; j > 0; j--)
-                        {
-                            Console.Write(" ");
-                        }
+                    MakeTriangle(i, num);
+                }     
+            }
+        }
 
-                        for (var k = -1; k <= i + (i - 1); k++)
-                        {
-                            Console.Write("*");
-                        }
-
-                        Console.WriteLine();
-                    }
+        /// <summary>
+        /// Make triangle
+        /// </summary>
+        /// <param name="size">Size of future triangle</param>
+        /// <param name="maxSize">Max size of all tree</param>
+        private static void MakeTriangle(int size, int maxSize)
+        {
+            for (var i = 0; i <= size; i++)
+            {
+                for (var j = maxSize - i; j > 0; j--)
+                {
+                    Console.Write(" ");
                 }
+
+                for (var k = -1; k <= i + (i - 1); k++)
+                {
+                    Console.Write("*");
+                }
+
+                Console.WriteLine();
             }
         }
     }

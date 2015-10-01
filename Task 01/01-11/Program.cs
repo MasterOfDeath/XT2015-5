@@ -7,6 +7,7 @@
 namespace _01_11
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Task 01-11
@@ -18,25 +19,42 @@ namespace _01_11
         /// </summary>
         /// <param name="args">command line arguments</param>
         public static void Main(string[] args)
-        {
-            char[] symbols = { ' ', '=', '"', '\t', '!', '?', ':', ';', ',', '.' };
-            Console.WriteLine("Enter your sentence: ");
+        {           
+            Console.Write("Enter your sentence: ");
             string sentence = "copyright file = \"Program\" company = \"MyCompany\" author = \"Rinat Gumirov\"";
+            Console.WriteLine(sentence);
+            char[] symbols = GetNonLitSymbols(sentence);
 
-            string[] res = sentence.Split(symbols);
+            string[] res = sentence.Split(symbols, StringSplitOptions.RemoveEmptyEntries);
 
-            int count = 0, sum = 0;
+            int sum = 0;
             foreach (var item in res)
             {
-                if (item != string.Empty)
-                {
-                    count++;
-                    sum += item.Length;
-                    Console.WriteLine("Word \"{0}\" has {1} litters", item, item.Length);
-                } 
+                sum += item.Length;
+                Console.WriteLine("Word \"{0}\" has {1} litters", item, item.Length);
             }
 
-            Console.WriteLine("Average: {0}", (float)sum / count);
+            Console.WriteLine("Average: {0}", (float)sum / res.Length);
+        }
+
+        /// <summary>
+        /// Get all non literal symbols in given sentence
+        /// </summary>
+        /// <param name="str">Given sentence</param>
+        /// <returns>All non literal symbols in given sentence</returns>
+        private static char[] GetNonLitSymbols(string str)
+        {
+            List<char> result = new List<char>();
+
+            foreach (char symbol in str)
+            {
+                if (!char.IsLetter(symbol))
+                {
+                    result.Add(symbol);
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }
