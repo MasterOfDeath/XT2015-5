@@ -19,29 +19,17 @@ namespace _01_5
         /// <param name="args">command line arguments</param>
         public static void Main(string[] args)
         {
-            int sum3 = 0,
-            sum5 = 0;
+            int sum = 0;
 
-            // Находим сумму чисел от 1 до 1000 кратных 3 
-            for (int i = 0; i <= 1000; i += 3)
+            for (int i = 0; i <= 1000; i++)
             {
-                sum3 = sum3 + i;
-            }
-
-            Console.WriteLine("Сумма чисел от 1 до 1000 кратных 3: {0}", sum3);
-
-            // Находим сумму чисел от 1 до 1000 кратных 5 
-            for (int i = 0; i <= 1000; i += 5)
-            {
-                // Проверяем чтоб, при этом не кратно 3-м
-                if ((i % 3) != 0)  
+                if ((i % 3 == 0) || (i % 5 == 0))
                 {
-                    sum5 = sum5 + i;
-                }
+                    sum += i;
+                }  
             }
-
-            Console.WriteLine("Сумма чисел от 1 до 1000 кратных 5: {0}", sum5);
-            Console.WriteLine("Итоговая сумма: {0}", sum3 + sum5);
+            
+            Console.WriteLine("Итоговая сумма: {0}", sum);
         }
     }
 }
