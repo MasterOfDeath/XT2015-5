@@ -46,26 +46,26 @@ namespace _01_6
         /// <param name="args">command line parameters</param>
         public static void Main(string[] args)
         {
-            int choice;
+            string choice;
             TextOpt textOpt = TextOpt.None;
 
             while (true)
             {
                 Console.WriteLine("Text options: {0}", textOpt);
                 Console.WriteLine("Enter:\n\t 1: bold\n\t 2: italic\n\t 3: underline");
-                choice = Convert.ToInt32(Console.ReadLine());
+                choice = Console.ReadLine();
 
                 switch (choice)
                 {
-                    case 1:
+                    case "1":
                         textOpt ^= TextOpt.bold;
                         break;
 
-                    case 2:
+                    case "2":
                         textOpt ^= TextOpt.italic;
                         break;
 
-                    case 3:
+                    case "3":
                         textOpt ^= TextOpt.underline;
                         break;
 
