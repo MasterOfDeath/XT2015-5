@@ -8,6 +8,7 @@ namespace _01_12
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Task 01-12
@@ -30,29 +31,32 @@ namespace _01_12
             // string str2 = Console.ReadLine();
             string str2 = "описание";
 
-            DisplayMixedLine(str1, str2);           
+            string str3 = MixLines(str1, str2);
+            Console.WriteLine(str3);           
         }
 
         /// <summary>
-        /// Display Mixed Line 
+        /// Mix lines 
         /// </summary>
         /// <param name="str1">String for mixing</param>
         /// <param name="str2">String for compare</param>
-        private static void DisplayMixedLine(string str1, string str2)
+        /// <returns>Mixed string</returns>
+        private static string MixLines(string str1, string str2)
         {
             HashSet<char> hashSet = new HashSet<char>(str2.ToCharArray());
+            StringBuilder result = new StringBuilder();
 
             foreach (var letter in str1)
             {
-                Console.Write(letter);
+                result.Append(letter);
 
                 if (hashSet.Contains(letter))
                 {
-                    Console.Write(letter);
+                    result.Append(letter);
                 }
             }
-
-            Console.WriteLine();
+            
+            return result.ToString();
         }
     }
 }

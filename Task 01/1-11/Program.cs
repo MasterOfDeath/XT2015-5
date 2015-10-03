@@ -7,7 +7,7 @@
 namespace _01_11
 {
     using System;
-    using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Task 01-11
@@ -44,17 +44,17 @@ namespace _01_11
         /// <returns>All non literal symbols in given sentence</returns>
         private static char[] GetNonLitSymbols(string str)
         {
-            List<char> result = new List<char>();
+            StringBuilder result = new StringBuilder();
 
             foreach (char symbol in str)
             {
                 if (!char.IsLetter(symbol))
                 {
-                    result.Add(symbol);
+                    result.Append(symbol);
                 }
             }
 
-            return result.ToArray();
+            return result.ToString().ToCharArray();
         }
     }
 }
