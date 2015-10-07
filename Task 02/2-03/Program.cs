@@ -4,27 +4,25 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace _2_01
+namespace _2_03
 {
     using System;
 
     /// <summary>
-    /// Task 2-01
+    /// Task 2-03
     /// </summary>
     public class Program
     {
         /// <summary>
         /// The main class
         /// </summary>
-        /// <param name="args">arguments of command line</param>
+        /// <param name="args">Arguments of command line</param>
         public static void Main(string[] args)
         {
-            var round = new Round(10);
+            User user1 = new User("Name1", "Surname1", "MidleName1", DateTime.Parse("01/05/1985"));
+            Console.WriteLine("Age of {0} is: {1}", user1?.FirstName, user1?.Age);
 
-            round.R = 10;
-
-            Console.WriteLine("Lenght of circle: {0}", round.Length);
-            Console.WriteLine("Area of round: {0}", round.Area);
+            // User user2 = new User("Name1", null, null, DateTime.Parse("26/09/1983"));
         }
     }
 }

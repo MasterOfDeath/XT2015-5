@@ -16,10 +16,10 @@ namespace _2_02
         /// <summary>
         /// The main class
         /// </summary>
-        /// <param name="args">arguments of command line</param>
+        /// <param name="args">Arguments of command line</param>
         public static void Main(string[] args)
         {
-            Triangle triangle = new Triangle(8, 15, 17);
+            var triangle = new Triangle(8, 15, 17);
 
             Console.WriteLine("Perimeter: {0}", triangle.Perimeter);
             Console.WriteLine("Area: {0}", triangle.Area);

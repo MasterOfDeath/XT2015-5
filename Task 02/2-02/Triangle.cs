@@ -16,27 +16,17 @@ namespace _2_02
         /// <summary>
         /// Length of a side
         /// </summary>
-        private int a = 0;
+        private int a;
 
         /// <summary>
         /// Length of b side
         /// </summary>
-        private int b = 0;
+        private int b;
 
         /// <summary>
         /// Length of c side
         /// </summary>
-        private int c = 0;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Triangle" /> class.
-        /// </summary>
-        public Triangle()
-        {
-            this.a = 0;
-            this.b = 0;
-            this.c = 0;
-        }
+        private int c;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Triangle" /> class.
@@ -46,9 +36,16 @@ namespace _2_02
         /// <param name="c">Side C</param>
         public Triangle(int a, int b, int c)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            if (this.IsTriangle(a, b, c))
+            {
+                this.a = a;
+                this.b = b;
+                this.c = c;
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect values of sides!");
+            }
         }
 
         /// <summary>
@@ -56,8 +53,22 @@ namespace _2_02
         /// </summary>
         public int A
         {
-            get { return this.a; }
-            set { this.a = (value > 0) ? value : 0; }
+            get
+            {
+                return this.a;
+            }
+
+            set
+            {
+                if (this.IsTriangle(value, this.B, this.C))
+                {
+                    this.a = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Incorrect values of A side!");
+                }
+            }
         }
 
         /// <summary>
@@ -65,8 +76,22 @@ namespace _2_02
         /// </summary>
         public int B
         {
-            get { return this.b; }
-            set { this.b = (value > 0) ? value : 0; }
+            get
+            {
+                return this.b;
+            }
+
+            set
+            {
+                if (this.IsTriangle(this.A, value, this.C))
+                {
+                    this.b = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Incorrect values of B side!");
+                }
+            }
         }
 
         /// <summary>
@@ -74,8 +99,22 @@ namespace _2_02
         /// </summary>
         public int C
         {
-            get { return this.c; }
-            set { this.c = (value > 0) ? value : 0; }
+            get
+            {
+                return this.c;
+            }
+
+            set
+            {
+                if (this.IsTriangle(this.A, this.B, value))
+                {
+                    this.c = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Incorrect values of C side!");
+                }
+            }
         }
         
         /// <summary>
@@ -83,7 +122,10 @@ namespace _2_02
         /// </summary>
         public double Perimeter
         {
-            get { return this.GetPerimeter(); }
+            get
+            {
+                return this.A + this.B + this.C;
+            }
         }
 
         /// <summary>
@@ -91,25 +133,28 @@ namespace _2_02
         /// </summary>
         public double Area
         {
-            get { return this.GetArea(); }
+            get
+            {
+                double halfPerimeter = this.Perimeter / 2;
+                return Math.Sqrt(halfPerimeter * (halfPerimeter - this.A) * (halfPerimeter - this.B) * (halfPerimeter - this.C));
+            }
         }
 
         /// <summary>
-        /// Count perimeter
+        /// Can we create triangle by these sides?
         /// </summary>
-        /// <returns>Value of perimeter</returns>
-        private double GetPerimeter()
-            => this.a + this.b + this.c;
-
-        /// <summary>
-        /// Count area
-        /// </summary>
-        /// <returns>Value of area</returns>
-        private double GetArea()
+        /// <param name="a">Side A</param>
+        /// <param name="b">Side B</param>
+        /// <param name="c">Side C</param>
+        /// <returns>Yes or no</returns>
+        private bool IsTriangle(int a, int b, int c)
         {
-            double poluPer = this.GetPerimeter() / 2;
+            if (a <= 0 || b <= 0 || c <= 0)
+            {
+                return false;
+            }
 
-            return Math.Sqrt(poluPer * (poluPer - this.a) * (poluPer - this.b) * (poluPer - this.c));
+            return (a + b) > c && (a + c) > b && (b + c) > a;
         }
     }
 }
