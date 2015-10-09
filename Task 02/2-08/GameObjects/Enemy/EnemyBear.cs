@@ -10,7 +10,7 @@
 
         public override void Damage()
         {
-            Game.Life -= this.damageLevel;
+            Game.MakeDamage(this.damageLevel);
             this.DamageAnim();
         }
 

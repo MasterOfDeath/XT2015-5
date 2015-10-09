@@ -35,23 +35,23 @@
             switch (choice)
             {
                 case "1":
-                    DrawLine();
+                    InputLine();
                     break;
 
                 case "2":
-                    DrawCircle();
+                    InpuCircle();
                     break;
 
                 case "3":
-                    DrawRing();
+                    InputRing();
                     break;
 
                 case "4":
-                    DrawRound();
+                    InputRound();
                     break;
 
                 case "5":
-                    DrawRectangle();
+                    InputRectangle();
                     break;
 
                 case "6":
@@ -80,7 +80,7 @@
             }
         }
 
-        private static void DrawLine()
+        private static void InputLine()
         {
             int x1 = InputIntegerNumber("Enter X1: ");
             int y1 = InputIntegerNumber("Enter Y1: ");
@@ -93,7 +93,7 @@
             figures.Add(new Line(p1, p2, color));
         }
 
-        private static void DrawRectangle()
+        private static void InputRectangle()
         {
             int x1 = InputIntegerNumber("Enter X1: ");
             int y1 = InputIntegerNumber("Enter Y1: ");
@@ -106,7 +106,7 @@
             figures.Add(new Rectangle(p1, p2, color));
         }
 
-        private static void DrawRound()
+        private static void InputRound()
         {
             int x1 = InputIntegerNumber("Enter X of center: ");
             int y1 = InputIntegerNumber("Enter Y of center: ");
@@ -117,7 +117,7 @@
             figures.Add(new Round(center, r, color));
         }
 
-        private static void DrawCircle()
+        private static void InpuCircle()
         {
             int x1 = InputIntegerNumber("Enter X of center: ");
             int y1 = InputIntegerNumber("Enter Y of center: ");
@@ -128,7 +128,7 @@
             figures.Add(new Circle(center, r, color));
         }
 
-        private static void DrawRing()
+        private static void InputRing()
         {
             int x1 = InputIntegerNumber("Enter X of center: ");
             int y1 = InputIntegerNumber("Enter Y of center: ");

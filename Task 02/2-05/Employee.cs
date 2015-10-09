@@ -18,7 +18,6 @@
         public Employee(string firstName, string lastName, string midleName, DateTime birthDate, int idPosition)
             : this(firstName, lastName, midleName, birthDate, idPosition, DateTime.Today)
         {
-            this.IdPosition = idPosition;
         }
 
         public int IdPosition

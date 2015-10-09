@@ -4,10 +4,6 @@
 
     public class Hero : GameObject
     {
-        private GameObject[,] map = Game.Map;
-        private string borderClassName = "Border";
-        private string bonusClassName = "Bonus";
-
         public Hero(Point position)
         {
             this.Position = position;
@@ -19,12 +15,11 @@
 
         public void MoveUp()
         {
-            int x = this.Position.X;
-            int newY = this.Position.Y + 1;
+            Point newPosition = new Point(this.Position.X, this.Position.Y + 1);
 
-            if (newY < Game.Height)
+            if (newPosition.Y < Game.Height)
             {
-                if (this.Move(x, newY))
+                if (this.Move(newPosition))
                 {
                     this.DrawUpAnim(this.Position);
                 }
@@ -33,12 +28,11 @@
 
         public void MoveDown()
         {
-            int x = this.Position.X;
-            int newY = this.Position.Y - 1;
+            Point newPosition = new Point(this.Position.X, this.Position.Y - 1);
 
-            if (newY > 0)
+            if (newPosition.Y > 0)
             {
-                if (this.Move(x, newY))
+                if (this.Move(newPosition))
                 {
                     this.DrawDownAnim(this.Position);
                 }
@@ -47,12 +41,11 @@
 
         public void MoveLeft()
         {
-            int newX = this.Position.X - 1;
-            int y = this.Position.Y;
+            Point newPosition = new Point(this.Position.X - 1, this.Position.Y);
 
-            if (newX > 0)
+            if (newPosition.X > 0)
             {
-                if (this.Move(newX, y))
+                if (this.Move(newPosition))
                 {
                     this.DrawLeftAnim(this.Position);
                 }
@@ -61,34 +54,33 @@
 
         public void MoveRight()
         {
-            int newX = this.Position.X + 1;
-            int y = this.Position.Y;
+            Point newPosition = new Point(this.Position.X + 1, this.Position.Y);
 
-            if (newX < Game.Width)
+            if (newPosition.X < Game.Width)
             {
-                if (this.Move(newX, y))
+                if (this.Move(newPosition))
                 {
                     this.DrawRightAnim(this.Position);
                 }
             }
         }
 
-        private bool Move(int x, int y)
+        private bool Move(Point newPosition)
         {
-            if (Game.BorderMap[x, y] != null)
+            if (!Game.BorderMap.ContainsKey(newPosition))
             {
-                if (Game.EnemyMap[x, y] != null)
+                if (Game.EnemyMap.ContainsKey(newPosition))
                 {
-                    this.TakeDamage(Game.EnemyMap[x, y]);
+                    this.TakeDamage(Game.EnemyMap[newPosition]);
                     return false;
                 }
 
-                if (Game.BonusMap[x, y] != null)
+                if (Game.BonusMap.ContainsKey(newPosition))
                 {
-                    this.TakeBonus(Game.BonusMap[x, y]);
+                    this.TakeBonus(Game.BonusMap[newPosition]);
                 }
 
-                this.Position.X = x;
+                this.Position = newPosition;
 
                 return true;
             }

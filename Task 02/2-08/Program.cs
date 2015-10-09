@@ -8,16 +8,16 @@
         {
             Game.LoadMapFromResource("level01.map");
 
-            if (Game.BonusMap[2, 5] == null)
-            {
-                Console.WriteLine("Null");
-            }
-            else
+            Point point = new Point(2, 5);
+
+            if (Game.BonusMap.ContainsKey(point))
             {
                 Console.WriteLine("Not null");
             }
-
-            Console.WriteLine(Game.Map[2, 5].GetType().Name.ToString());
+            else
+            {
+                Console.WriteLine("Null");
+            }
         }
     }
 }

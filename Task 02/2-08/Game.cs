@@ -1,16 +1,15 @@
 ﻿namespace _2_08
 {
     using System;
+    using System.Collections.Generic;
 
     public class Game
     {
-        private static GameObject[,] map;
+        private static Dictionary<Point, Bonus> bonusMap;
 
-        private static Bonus[,] bonusMap;
+        private static Dictionary<Point, Border> borderMap;
 
-        private static Border[,] borderMap;
-
-        private static Enemy[,] enemyMap; 
+        private static Dictionary<Point, Enemy> enemyMap;
 
         public static int Width { get; } = 600;
 
@@ -20,22 +19,17 @@
 
         public static int Score { get; set; } = 0;
 
-        public static GameObject[,] Map
-        {
-            get { return map; }
-        }
-
-        public static Bonus[,] BonusMap
+        public static Dictionary<Point, Bonus> BonusMap
         {
             get { return bonusMap; }
         }
 
-        public static Border[,] BorderMap
+        public static Dictionary<Point, Border> BorderMap
         {
             get { return borderMap; }
         }
 
-        public static Enemy[,] EnemyMap
+        public static Dictionary<Point, Enemy> EnemyMap
         {
             get { return enemyMap; }
         }
@@ -56,14 +50,10 @@
 
         public static bool LoadMapFromResource(string res)
         {
-            map = new GameObject[Width, Height];
+            bonusMap = new Dictionary<Point, Bonus>();
+            borderMap = new Dictionary<Point, Border>();
+            enemyMap = new Dictionary<Point, Enemy>();
 
-            bonusMap = new Bonus[Width, Height];
-            borderMap = new Border[Width, Height];
-            enemyMap = new Enemy[Width, Height];
-
-            map[2, 5] = new Border();
-            
             return true;
         }
     }
