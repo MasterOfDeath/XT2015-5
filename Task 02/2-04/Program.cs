@@ -11,13 +11,13 @@ namespace _2_04
     /// <summary>
     /// Task 2-04
     /// </summary>
-    public class Program
+    internal class Program
     {
         /// <summary>
         /// The main class
         /// </summary>
         /// <param name="args">Command line arguments</param>
-        public static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var myStr1 = new MyString("Privet!");
             Console.WriteLine(myStr1);

@@ -20,7 +20,7 @@ namespace _2_03
         public static void Main(string[] args)
         {
             User user1 = new User("Name1", "Surname1", "MidleName1", DateTime.Parse("01/05/1985"));
-            Console.WriteLine("Age of {0} is: {1}", user1?.FirstName, user1?.Age);
+            Console.WriteLine(user1.ToString());
 
             // User user2 = new User("Name1", null, null, DateTime.Parse("26/09/1983"));
         }

@@ -14,12 +14,12 @@ namespace _2_03
     public class User
     {
         /// <summary>
-        /// Name's field
+        /// First name's field
         /// </summary>
         private string firstName;
 
         /// <summary>
-        /// Surname's field
+        /// Last name's field
         /// </summary>
         private string lastName;
 
@@ -31,13 +31,13 @@ namespace _2_03
         /// <summary>
         /// Birth Day's field
         /// </summary>
-        private DateTime birthDate = default(DateTime);
+        private DateTime birthDate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="User" /> class.
         /// </summary>
-        /// <param name="firstName">Name value</param>
-        /// <param name="lastName">Surname value</param>
+        /// <param name="firstName">First name value</param>
+        /// <param name="lastName">Last name value</param>
         /// <param name="midleName">Father's name value</param>
         /// <param name="birthDate">Birth Day value</param>
         public User(string firstName, string lastName, string midleName, DateTime birthDate)
@@ -122,8 +122,22 @@ namespace _2_03
         /// </summary>
         public DateTime BirthDate
         {
-            get { return this.birthDate; }
-            set { this.birthDate = value; }
+            get
+            {
+                return this.birthDate;
+            }
+
+            set
+            {
+                if (value <= DateTime.Now)
+                {
+                    this.birthDate = value;
+                }
+                else
+                {
+                    throw new ArgumentException($"This date: {value} from future!");
+                }
+            }
         }
 
         /// <summary>
@@ -131,19 +145,23 @@ namespace _2_03
         /// </summary>
         public int Age
         {
-            get { return this.GetAge(); }
+            get { return this.GetDiffByYears(this.birthDate); }
         }
 
-        /// <summary>
-        /// Calculates an age of current user
-        /// </summary>
-        /// <returns>The age</returns>
-        private int GetAge()
+        public override string ToString()
+        {
+            return "First name: \t\"" + this.FirstName + "\"\n" +
+                "Last name: \t\"" + this.LastName + "\"\n" +
+                "Midle name: \t\"" + this.MidleName + "\"\n" +
+                "Birth day: \t\"" + this.BirthDate.ToShortDateString() + "\"\n";
+        }
+
+        protected int GetDiffByYears(DateTime date)
         {
             DateTime nowDate = DateTime.Today;
-            int age = nowDate.Year - this.birthDate.Year;
-            
-            return (this.birthDate > nowDate.AddYears(-age)) ? age - 1 : age;
+            int diff = nowDate.Year - date.Year;
+
+            return (date > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
     }
 }

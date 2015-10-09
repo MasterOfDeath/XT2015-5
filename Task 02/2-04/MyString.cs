@@ -23,12 +23,8 @@ namespace _2_04
         
         public MyString(char[] str)
         {
-            this.str = str;
-        }
-        
-        public char[] Value
-        {
-            get { return this.str; }
+            this.str = new char[str.Length];
+            str.CopyTo(this.str, 0);
         }
         
         public int Size
@@ -46,7 +42,7 @@ namespace _2_04
         {
             var tmp = new char[obj1.Size + obj2.Size];
             obj1.str.CopyTo(tmp, 0);
-            obj2.Value.CopyTo(tmp, obj1.Size);
+            obj2.str.CopyTo(tmp, obj1.Size);
 
             return new MyString(tmp);
         }
@@ -71,7 +67,7 @@ namespace _2_04
             return obj1.str;
         }
 
-        public static explicit operator MyString (char[] obj1)
+        public static explicit operator MyString(char[] obj1)
         {
             return new MyString(obj1);
         }

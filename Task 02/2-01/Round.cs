@@ -44,12 +44,12 @@ namespace _2_01
             }
         }
         
-        public double Area
+        public double Length
         {
             get { return 2 * Math.PI * this.R; }
         }
         
-        public double Length
+        public double Area
         {
             get { return Math.PI * this.R * this.R; }
         }

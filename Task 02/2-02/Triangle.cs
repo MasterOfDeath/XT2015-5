@@ -36,16 +36,7 @@ namespace _2_02
         /// <param name="c">Side C</param>
         public Triangle(int a, int b, int c)
         {
-            if (this.IsTriangle(a, b, c))
-            {
-                this.a = a;
-                this.b = b;
-                this.c = c;
-            }
-            else
-            {
-                throw new ArgumentException("Incorrect values of sides!");
-            }
+            this.SetAllSides(a, b, c);
         }
 
         /// <summary>
@@ -60,14 +51,7 @@ namespace _2_02
 
             set
             {
-                if (this.IsTriangle(value, this.B, this.C))
-                {
-                    this.a = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect values of A side!");
-                }
+                this.SetAllSides(value, this.B, this.C);
             }
         }
 
@@ -83,14 +67,7 @@ namespace _2_02
 
             set
             {
-                if (this.IsTriangle(this.A, value, this.C))
-                {
-                    this.b = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect values of B side!");
-                }
+                this.SetAllSides(this.A, value, this.C);
             }
         }
 
@@ -106,14 +83,7 @@ namespace _2_02
 
             set
             {
-                if (this.IsTriangle(this.A, this.B, value))
-                {
-                    this.c = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect values of C side!");
-                }
+                this.SetAllSides(this.A, this.B, value);
             }
         }
         
@@ -140,21 +110,23 @@ namespace _2_02
             }
         }
 
-        /// <summary>
-        /// Can we create triangle by these sides?
-        /// </summary>
-        /// <param name="a">Side A</param>
-        /// <param name="b">Side B</param>
-        /// <param name="c">Side C</param>
-        /// <returns>Yes or no</returns>
-        private bool IsTriangle(int a, int b, int c)
+        private void SetAllSides(int a, int b, int c)
         {
             if (a <= 0 || b <= 0 || c <= 0)
             {
-                return false;
+                throw new ArgumentException("Side mustn't be negative!");
             }
 
-            return (a + b) > c && (a + c) > b && (b + c) > a;
+            if ((a + b) > c && (a + c) > b && (b + c) > a)
+            {
+                this.a = a;
+                this.b = b;
+                this.c = c;
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect side values!");
+            }
         }
     }
 }
