@@ -14,12 +14,12 @@ namespace _2_01
     public class Round
     {
         private double radius = 0;
-        
+
         public Round(double radius)
         {
             this.Radius = radius;
         }
-        
+
         public int X { get; set; }
 
         public int Y { get; set; }
@@ -43,12 +43,12 @@ namespace _2_01
                 }
             }
         }
-        
+
         public double Perimeter
         {
             get { return 2 * Math.PI * this.Radius; }
         }
-        
+
         public double Area
         {
             get { return Math.PI * this.Radius * this.Radius; }

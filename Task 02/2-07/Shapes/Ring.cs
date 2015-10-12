@@ -64,7 +64,7 @@
                 return (Math.PI * this.OuterRadius * this.OuterRadius) - (Math.PI * this.InnerRadius * this.InnerRadius);
             }
         }
-        
+
         public override string ToString()
         {
             string toScreen =

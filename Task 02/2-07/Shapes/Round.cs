@@ -2,11 +2,11 @@
 {
     using System;
     using System.Drawing;
-    
+
     public class Round : Shape, IHasArea, IHasPerimeter
     {
         private int radius = 0;
-        
+
         public Round(Point center, int radius)
         {
             this.Center = center;
@@ -40,14 +40,14 @@
                 }
             }
         }
-        
+
         public double Perimeter
         {
             get { return 2 * Math.PI * this.Radius; }
         }
-        
+
         public double Area
-    {
+        {
             get { return Math.PI * this.Radius * this.Radius; }
         }
 

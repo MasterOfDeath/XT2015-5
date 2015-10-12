@@ -147,7 +147,7 @@ namespace _2_03
         {
             get { return GetDiffByYears(this.birthDate); }
         }
-        
+
         public static int GetDiffByYears(DateTime date)
         {
             DateTime nowDate = DateTime.Today;

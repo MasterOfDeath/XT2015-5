@@ -86,7 +86,7 @@ namespace _2_02
                 this.SetAllSides(this.SideA, this.SideB, value);
             }
         }
-        
+
         /// <summary>
         /// Gets perimeter of triangle
         /// </summary>
@@ -107,11 +107,11 @@ namespace _2_02
             {
                 double halfPerimeter = this.Perimeter / 2;
 
-                return 
+                return
                     Math.Sqrt(
-                        halfPerimeter * 
-                        (halfPerimeter - this.SideA) * 
-                        (halfPerimeter - this.SideB) * 
+                        halfPerimeter *
+                        (halfPerimeter - this.SideA) *
+                        (halfPerimeter - this.SideB) *
                         (halfPerimeter - this.SideC));
             }
         }
