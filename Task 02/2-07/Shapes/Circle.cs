@@ -3,36 +3,36 @@
     using System;
     using System.Drawing;
 
-    public class Circle : Figure
+    public class Circle : Shape, IHasPerimeter
     {
-        private int r = 0;
+        private int radius = 0;
 
-        public Circle(Point center, int r)
+        public Circle(Point center, int radius)
         {
             this.Center = center;
-            this.R = r;
+            this.Radius = radius;
         }
 
-        public Circle(Point center, int r, Color color)
-            : this(center, r)
+        public Circle(Point center, int radius, Color color)
+            : this(center, radius)
         {
             this.Color = color;
         }
 
         public Point Center { get; set; }
 
-        public int R
+        public int Radius
         {
             get
             {
-                return this.r;
+                return this.radius;
             }
 
             set
             {
                 if (value > 0)
                 {
-                    this.r = value;
+                    this.radius = value;
                 }
                 else
                 {
@@ -41,22 +41,22 @@
             }
         }
 
-        public double Length
+        public double Perimeter
         {
-            get { return 2 * Math.PI * this.R; }
+            get { return 2 * Math.PI * this.Radius; }
         }
 
-        public override void Draw()
+        public override string ToString()
         {
             string toScreen =
                 "Figure: \t\"Circle\"\n" +
                 "Center X: \t\"" + this.Center.X.ToString() + "\"\n" +
                 "Center Y: \t\"" + this.Center.Y.ToString() + "\"\n" +
-                "Radius: \t\"" + this.R.ToString() + "\"\n" +
+                "Radius: \t\"" + this.Radius.ToString() + "\"\n" +
                 "Color: \t\t\"" + this.Color.ToString() + "\"\n" +
-                "Length: \t\"" + this.Length.ToString() + "\"\n";
+                "Length: \t\"" + this.Perimeter.ToString() + "\"\n";
 
-            Console.WriteLine(toScreen);
+            return toScreen;
         }
     }
 }

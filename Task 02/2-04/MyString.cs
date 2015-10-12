@@ -13,68 +13,68 @@ namespace _2_04
     /// </summary>
     public class MyString
     {
-        private char[] str;
+        private char[] buffer;
         
-        public MyString(string str)
+        public MyString(string buffer)
         {
-            this.str = new char[str.Length];
-            str.ToCharArray().CopyTo(this.str, 0);
+            this.buffer = new char[buffer.Length];
+            buffer.ToCharArray().CopyTo(this.buffer, 0);
         }
         
-        public MyString(char[] str)
+        public MyString(char[] buffer)
         {
-            this.str = new char[str.Length];
-            str.CopyTo(this.str, 0);
+            this.buffer = new char[buffer.Length];
+            buffer.CopyTo(this.buffer, 0);
         }
         
         public int Size
         {
-            get { return this.str.Length; }
+            get { return this.buffer.Length; }
         }
         
         public char this[int id]
         {
-            get { return this.str[id]; }
-            set { this.str[id] = value; }
+            get { return this.buffer[id]; }
+            set { this.buffer[id] = value; }
         }
         
-        public static MyString operator +(MyString obj1, MyString obj2)
+        public static MyString operator +(MyString object1, MyString object2)
         {
-            var tmp = new char[obj1.Size + obj2.Size];
-            obj1.str.CopyTo(tmp, 0);
-            obj2.str.CopyTo(tmp, obj1.Size);
+            var tmp = new char[object1.Size + object2.Size];
+            object1.buffer.CopyTo(tmp, 0);
+            object2.buffer.CopyTo(tmp, object1.Size);
 
             return new MyString(tmp);
         }
         
-        public static bool operator <(MyString obj1, MyString obj2)
+        public static bool operator <(MyString object1, MyString object2)
         {
-            return obj1.Size < obj2.Size;
+            return object1.Size < object2.Size;
         }
         
-        public static bool operator >(MyString obj1, MyString obj2)
+        public static bool operator >(MyString object1, MyString object2)
         {
-            return obj1.Size > obj2.Size;
+            return object1.Size > object2.Size;
         }
 
-        public static implicit operator string(MyString obj1)
+        public static implicit operator string(MyString object1)
         {
-            return new string(obj1.str);
+            return new string(object1.buffer);
         }
         
-        public static explicit operator char[](MyString obj1)
+        public static explicit operator char[](MyString object1)
         {
-            return obj1.str;
+            return object1.buffer;
         }
 
-        public static explicit operator MyString(char[] obj1)
+        public static explicit operator MyString(char[] object1)
         {
-            return new MyString(obj1);
+            return new MyString(object1);
         }
 
-        public static explicit operator MyString(string obj1)
+        public static explicit operator MyString(string object1)
         {
-            return new MyString(obj1);
+            return new MyString(object1);
         }
     }
 }

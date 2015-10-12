@@ -4,16 +4,17 @@
 
     public class EnemyTiger : Enemy
     {
-        private int damageLevel = 200;
+        private const int DamageLevel = -200;
+        private const int SpeedLevel = 3;
 
-        public override void Damage()
+        public EnemyTiger()
+            : base(DamageLevel, SpeedLevel)
         {
-            Game.Life -= this.damageLevel;
-            this.DamageAnim();
         }
 
         protected override void DamageAnim()
         {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,18 +4,17 @@
 
     public class EnemyWolf : Enemy
     {
-        private int damageLevel = 100;
+        private const int DamageLevel = -100;
+        private const int SpeedLevel = 4;
 
-        protected override int Speed { get; } = 10;
-
-        public override void Damage()
+        public EnemyWolf()
+            : base(DamageLevel, SpeedLevel)
         {
-            Game.Life -= this.damageLevel;
-            this.DamageAnim();
         }
 
         protected override void DamageAnim()
         {
+            throw new NotImplementedException();
         }
     }
 }

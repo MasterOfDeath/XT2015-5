@@ -2,6 +2,11 @@
 {
     using System;
 
+    public interface IStr
+    {
+        int GetDamage { get; }
+    }
+
     internal class Program
     {
         private static void Main(string[] args)
@@ -17,6 +22,16 @@
             else
             {
                 Console.WriteLine("Null");
+            }
+
+            GameObject[] rt = new GameObject[2];
+            try
+            {
+                rt[0] = new EnemyBear();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.TargetSite);
             }
         }
     }

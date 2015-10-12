@@ -62,7 +62,7 @@
 
         public int Experience
         {
-            get { return this.GetDiffByYears(this.startWork); }
+            get { return User.GetDiffByYears(this.startWork); }
         }
 
         public override string ToString()

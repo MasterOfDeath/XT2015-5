@@ -1,116 +1,158 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="_2_08.Game" Collapsed="true">
-    <Position X="21" Y="0.5" Width="1.5" />
+    <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAABAAAAEgAARBAAEEQQAAAAAAAAAAAAAABAAE=</HashCode>
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.Bonus" Collapsed="true">
-    <Position X="9.5" Y="1.75" Width="1.5" />
+    <Position X="5.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>GameObjects\Bonus\Bonus.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.BonusApple" Collapsed="true">
-    <Position X="9.5" Y="3.25" Width="1.5" />
+    <Position X="5.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAA=</HashCode>
       <FileName>GameObjects\Bonus\BonusApple.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.BonusCoin" Collapsed="true">
-    <Position X="11.75" Y="3.25" Width="1.5" />
+    <Position X="5.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAA=</HashCode>
       <FileName>GameObjects\Bonus\BonusCoin.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.BonusDiamond" Collapsed="true">
-    <Position X="7.25" Y="3.25" Width="1.5" />
+    <Position X="5.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAA=</HashCode>
       <FileName>GameObjects\Bonus\BonusDiamond.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="_2_08.BonusHeart" Collapsed="true">
+    <Position X="6.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAA=</HashCode>
+      <FileName>GameObjects\Bonus\BonusHeart.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Class Name="_2_08.Border" Collapsed="true">
-    <Position X="15.25" Y="1.75" Width="1.5" />
+    <Position X="8.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Border\Border.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="_2_08.BorderFire" Collapsed="true">
+    <Position X="10.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Border\BorderFire.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Class Name="_2_08.BorderStone" Collapsed="true">
-    <Position X="14" Y="3.25" Width="1.5" />
+    <Position X="9" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Border\BorderStone.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.BorderTree" Collapsed="true">
-    <Position X="16.25" Y="3.25" Width="1.5" />
+    <Position X="9" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Border\BorderTree.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.Enemy" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Position X="2.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAIAAAABAAAAAAAABAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAAIgAAABAAAAAAAABAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Enemy\Enemy.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="_2_08.EnemyBear" Collapsed="true">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="0.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACCAAAAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Enemy\EnemyBear.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="_2_08.EnemyTiger" Collapsed="true">
-    <Position X="2.75" Y="3.25" Width="1.5" />
+    <Position X="0.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACCAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Enemy\EnemyTiger.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="_2_08.EnemyWolf" Collapsed="true">
-    <Position X="5" Y="3.25" Width="1.5" />
+    <Position X="2.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACCAAAAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\Enemy\EnemyWolf.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="_2_08.GameObject" Collapsed="true">
-    <Position X="9.5" Y="0.5" Width="1.5" />
+    <Position X="6.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameObjects\GameObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.Hero" Collapsed="true">
-    <Position X="18.5" Y="1.75" Width="1.5" />
+    <Position X="4.25" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEQAAAAAIIAAAAgAAAAEAAAAAAAAAAIQAQAgAAgEAA=</HashCode>
       <FileName>GameObjects\Hero.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="_2_08.Point" Collapsed="true">
-    <Position X="22.75" Y="0.5" Width="1.5" />
+    <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
       <FileName>Point.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="_2_08.Program" Collapsed="true">
-    <Position X="21" Y="1.5" Width="1.5" />
+    <Position X="11.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="_2_08.IDamageble" Collapsed="true">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\IDamageble.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="_2_08.IHealthy" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\IHealthy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="_2_08.IMovable" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\IMovable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

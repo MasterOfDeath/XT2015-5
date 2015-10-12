@@ -2,18 +2,21 @@
 {
     using System;
 
-    public class BonusCoin : Bonus
+    public class BonusCoin : Bonus, IScorable
     {
         private int scoreLevel = 100;
 
-        public override void IncScore()
+        public int Score
         {
-            Game.Score += this.scoreLevel;
-            this.AnimateBonus();
+            get
+            {
+                return this.scoreLevel;
+            }
         }
 
         public override void AnimateBonus()
         {
+            throw new NotImplementedException();
         }
     }
 }

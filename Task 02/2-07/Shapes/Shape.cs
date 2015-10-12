@@ -2,20 +2,20 @@
 {
     using System.Drawing;
 
-    public abstract class Figure
+    public abstract class Shape
     {
-        public Figure()
+        public Shape()
             : this(Color.Black)
         {
         }
 
-        public Figure(Color color)
+        public Shape(Color color)
         {
             this.Color = color;
         }
 
         public Color Color { get; set; }
 
-        public abstract void Draw();
+        // public abstract void Draw();
     }
 }

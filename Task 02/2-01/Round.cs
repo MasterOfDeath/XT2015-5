@@ -13,29 +13,29 @@ namespace _2_01
     /// </summary>
     public class Round
     {
-        private double r = 0;
+        private double radius = 0;
         
-        public Round(double r)
+        public Round(double radius)
         {
-            this.R = r;
+            this.Radius = radius;
         }
         
         public int X { get; set; }
 
         public int Y { get; set; }
 
-        public double R
+        public double Radius
         {
             get
             {
-                return this.r;
+                return this.radius;
             }
 
             set
             {
                 if (value > 0)
                 {
-                    this.r = value;
+                    this.radius = value;
                 }
                 else
                 {
@@ -44,14 +44,14 @@ namespace _2_01
             }
         }
         
-        public double Length
+        public double Perimeter
         {
-            get { return 2 * Math.PI * this.R; }
+            get { return 2 * Math.PI * this.Radius; }
         }
         
         public double Area
         {
-            get { return Math.PI * this.R * this.R; }
+            get { return Math.PI * this.Radius * this.Radius; }
         }
     }
 }

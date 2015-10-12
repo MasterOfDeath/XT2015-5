@@ -2,14 +2,27 @@
 {
     using System;
 
-    public class Hero : GameObject
+    public class Hero : GameObject, IMovable
     {
+        private const int MaxLife = 1000;
+        private int life;
+        private int score = 0;
+
         public Hero(Point position)
         {
             this.Position = position;
+            this.life = MaxLife;
         }
 
         public Point Position { get; set; }
+
+        public int Life
+        {
+            get
+            {
+                return this.life;
+            }
+        }
 
         public bool HeroMadeCollWithEnemy { get; set; } = false;
 
@@ -71,7 +84,8 @@
             {
                 if (Game.EnemyMap.ContainsKey(newPosition))
                 {
-                    this.TakeDamage(Game.EnemyMap[newPosition]);
+                    this.TakeDamage(Game.EnemyMap[newPosition] as IAttackable);
+                    this.DrawDamageAnim();
                     return false;
                 }
 
@@ -90,30 +104,48 @@
             }
         }
 
-        private void TakeDamage(Enemy enemy)
+        private void TakeDamage(IAttackable obj)
         {
-            enemy.Damage();
+            this.life += obj.Damage;
         }
 
         private void TakeBonus(Bonus bonus)
         {
-            bonus.IncScore();
+            if (bonus is IScorable)
+            {
+                this.score += ((IScorable)bonus).Score;
+            }
+
+            if (bonus is IHealthy)
+            {
+                int newLife = this.life + ((IHealthy)bonus).Health;
+                this.life = (newLife >= MaxLife) ? MaxLife : newLife;
+            }
         }
 
         private void DrawUpAnim(Point position)
         {
+            throw new NotImplementedException();
         }
 
         private void DrawDownAnim(Point position)
         {
+            throw new NotImplementedException();
         }
 
         private void DrawLeftAnim(Point position)
         {
+            throw new NotImplementedException();
         }
 
         private void DrawRightAnim(Point position)
         {
+            throw new NotImplementedException();
+        }
+
+        private void DrawDamageAnim()
+        {
+            throw new NotImplementedException();
         }
     }
 }

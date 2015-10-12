@@ -15,10 +15,6 @@
 
         public static int Height { get; } = 600;
 
-        public static int Life { get; set; } = 1000;
-
-        public static int Score { get; set; } = 0;
-
         public static Dictionary<Point, Bonus> BonusMap
         {
             get { return bonusMap; }
@@ -36,16 +32,7 @@
 
         public static void GameOver()
         {
-        }
-
-        public static void MakeDamage(int damage)
-        {
-            Life -= damage;
-
-            if (Life <= 0)
-            {
-                GameOver();
-            }
+            throw new NotImplementedException();
         }
 
         public static bool LoadMapFromResource(string res)

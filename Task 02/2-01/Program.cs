@@ -21,9 +21,9 @@ namespace _2_01
         {
             var round = new Round(10);
 
-            round.R = 10;
+            round.Radius = 10;
 
-            Console.WriteLine("Lenght of circle: {0}", round.Length);
+            Console.WriteLine("Lenght of circle: {0}", round.Perimeter);
             Console.WriteLine("Area of round: {0}", round.Area);
         }
     }

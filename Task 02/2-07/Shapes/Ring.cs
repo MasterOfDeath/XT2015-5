@@ -3,49 +3,49 @@
     using System;
     using System.Drawing;
 
-    public class Ring : Figure
+    public class Ring : Shape, IHasArea, IHasPerimeter
     {
-        private int outR;
+        private int outerRadius;
 
-        private int inR;
+        private int innerRadius;
 
-        public Ring(Point center, int outR, int inR)
+        public Ring(Point center, int outerRadius, int innerRadius)
         {
             this.Center = center;
-            this.SetRs(outR, inR);
+            this.SetRadiuses(outerRadius, innerRadius);
         }
 
-        public Ring(Point center, int outR, int inR, Color color)
-            : this(center, outR, inR)
+        public Ring(Point center, int outerRadius, int innerRadius, Color color)
+            : this(center, outerRadius, innerRadius)
         {
             this.Color = color;
         }
 
         public Point Center { get; set; }
 
-        public int OutR
+        public int OuterRadius
         {
             get
             {
-                return this.outR;
+                return this.outerRadius;
             }
 
             set
             {
-                this.SetRs(value, this.InR);
+                this.SetRadiuses(value, this.InnerRadius);
             }
         }
 
-        public int InR
+        public int InnerRadius
         {
             get
             {
-                return this.inR;
+                return this.innerRadius;
             }
 
             set
             {
-                this.SetRs(this.OutR, value);
+                this.SetRadiuses(this.OuterRadius, value);
             }
         }
 
@@ -53,7 +53,7 @@
         {
             get
             {
-                return (2 * Math.PI * this.InR) + (2 * Math.PI * this.OutR);
+                return (2 * Math.PI * this.InnerRadius) + (2 * Math.PI * this.OuterRadius);
             }
         }
 
@@ -61,36 +61,36 @@
         {
             get
             {
-                return (Math.PI * this.OutR * this.OutR) - (Math.PI * this.InR * this.InR);
+                return (Math.PI * this.OuterRadius * this.OuterRadius) - (Math.PI * this.InnerRadius * this.InnerRadius);
             }
         }
         
-        public override void Draw()
+        public override string ToString()
         {
             string toScreen =
                 "Figure: \t\"Ring\"\n" +
                 "X: \t\t\"" + this.Center.X.ToString() + "\"\n" +
                 "Y: \t\t\"" + this.Center.Y.ToString() + "\"\n" +
-                "Outer radius: \t\"" + this.OutR.ToString() + "\"\n" +
-                "Inner radius: \t\"" + this.InR.ToString() + "\"\n" +
+                "Outer radius: \t\"" + this.OuterRadius.ToString() + "\"\n" +
+                "Inner radius: \t\"" + this.InnerRadius.ToString() + "\"\n" +
                 "Color: \t\t\"" + this.Color.ToString() + "\"\n" +
                 "Perimeter: \t\"" + this.Perimeter.ToString() + "\"\n" +
                 "Area: \t\t\"" + this.Area.ToString() + "\"\n";
 
-            Console.WriteLine(toScreen);
+            return toScreen;
         }
 
-        private void SetRs(int outR, int inR)
+        private void SetRadiuses(int outerRadius, int innerRadius)
         {
-            if (outR < 0 || inR < 0)
+            if (outerRadius < 0 || innerRadius < 0)
             {
                 throw new ArgumentException("The radius mustn't be negative!");
             }
 
-            if (outR > inR)
+            if (outerRadius > innerRadius)
             {
-                this.outR = outR;
-                this.inR = inR;
+                this.outerRadius = outerRadius;
+                this.innerRadius = innerRadius;
             }
             else
             {

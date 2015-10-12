@@ -145,7 +145,15 @@ namespace _2_03
         /// </summary>
         public int Age
         {
-            get { return this.GetDiffByYears(this.birthDate); }
+            get { return GetDiffByYears(this.birthDate); }
+        }
+        
+        public static int GetDiffByYears(DateTime date)
+        {
+            DateTime nowDate = DateTime.Today;
+            int diff = nowDate.Year - date.Year;
+
+            return (date > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
 
         public override string ToString()
@@ -154,14 +162,6 @@ namespace _2_03
                 "Last name: \t\"" + this.LastName + "\"\n" +
                 "Midle name: \t\"" + this.MidleName + "\"\n" +
                 "Birth day: \t\"" + this.BirthDate.ToShortDateString() + "\"\n";
-        }
-
-        protected int GetDiffByYears(DateTime date)
-        {
-            DateTime nowDate = DateTime.Today;
-            int diff = nowDate.Year - date.Year;
-
-            return (date > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
     }
 }

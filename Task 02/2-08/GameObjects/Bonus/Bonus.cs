@@ -4,12 +4,9 @@
 
     public class Bonus : GameObject
     {
-        public virtual void IncScore()
-        {
-        }
-
         public virtual void AnimateBonus()
         {
+            throw new NotImplementedException();
         }
     }
 }

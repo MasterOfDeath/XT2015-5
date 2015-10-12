@@ -4,18 +4,17 @@
 
     public class EnemyBear : Enemy
     {
-        private int damageLevel = 400;
+        private const int DamageLevel = -400;
+        private const int SpeedLevel = 10;
 
-        protected override int Speed { get; } = 10;
-
-        public override void Damage()
+        public EnemyBear()
+            : base(DamageLevel, SpeedLevel)
         {
-            Game.MakeDamage(this.damageLevel);
-            this.DamageAnim();
         }
 
         protected override void DamageAnim()
         {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,6 +6,7 @@
     {
         public virtual void Draw(Point position)
         {
+            throw new NotImplementedException();
         }
     }
 }

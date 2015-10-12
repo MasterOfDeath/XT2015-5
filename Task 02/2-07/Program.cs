@@ -6,7 +6,7 @@
 
     internal class Program
     {
-        private static List<Figure> figures = new List<Figure>();
+        private static List<Shape> shapes = new List<Shape>();
 
         private static void Main(string[] args)
         {
@@ -25,7 +25,7 @@
                 "3) Draw a ring.\n" +
                 "4) Draw a round.\n" +
                 "5) Draw a rectangle.\n" +
-                "6) Print figures.\n" +
+                "6) Print shapes.\n" +
                 "7) Clear all.\n" +
                 "8) Exit.\n\n" +
                 "Your choice: ");
@@ -55,11 +55,11 @@
                     break;
 
                 case "6":
-                    PrintFigeres();
+                    PrintShapes();
                     break;
 
                 case "7":
-                    figures.Clear();
+                    shapes.Clear();
                     break;
 
                 case "8":
@@ -72,11 +72,11 @@
             }
         }
 
-        private static void PrintFigeres()
+        private static void PrintShapes()
         {
-            foreach (var figure in figures)
+            foreach (var shape in shapes)
             {
-                figure.Draw();
+                Console.WriteLine(shape.ToString());
             }
         }
 
@@ -90,20 +90,16 @@
             var p2 = new Point(x2, y2);
             Color color = InputColor("Enter color (default: Black): ");
 
-            figures.Add(new Line(p1, p2, color));
+            shapes.Add(new Line(p1, p2, color));
         }
 
         private static void InputRectangle()
         {
-            int x1 = InputIntegerNumber("Enter X1: ");
-            int y1 = InputIntegerNumber("Enter Y1: ");
-            var p1 = new Point(x1, y1);
-            int x2 = InputIntegerNumber("Enter X2: ");
-            int y2 = InputIntegerNumber("Enter Y2: ");
-            var p2 = new Point(x2, y2);
+            int a = InputIntegerNumber("Enter Lenght of A side: ");
+            int b = InputIntegerNumber("Enter Lenght of B side: ");
             Color color = InputColor("Enter color (default: Black): ");
 
-            figures.Add(new Rectangle(p1, p2, color));
+            shapes.Add(new Rectangle(a, b, color));
         }
 
         private static void InputRound()
@@ -114,7 +110,7 @@
             int r = InputIntegerNumber("Enter radius: ");
             Color color = InputColor("Enter color (default: Black): ");
 
-            figures.Add(new Round(center, r, color));
+            shapes.Add(new Round(center, r, color));
         }
 
         private static void InpuCircle()
@@ -125,7 +121,7 @@
             int r = InputIntegerNumber("Enter radius: ");
             Color color = InputColor("Enter color (default: Black): ");
 
-            figures.Add(new Circle(center, r, color));
+            shapes.Add(new Circle(center, r, color));
         }
 
         private static void InputRing()
@@ -137,38 +133,33 @@
             int inR = InputIntegerNumber("Enter inner radius: ");
             Color color = InputColor("Enter color (default: Black): ");
 
-            figures.Add(new Ring(center, outR, inR, color));
+            shapes.Add(new Ring(center, outR, inR, color));
         }
 
         private static int InputIntegerNumber(string promptStr)
         {
-            bool stay = true;
-            int num = 0;
+            int num;
 
-            while (stay)
+            while (true)
             {
                 try
                 {
                     Console.Write(promptStr);
                     num = Convert.ToInt32(Console.ReadLine());
-                    stay = false;
+                    return num;
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("Input string is not a sequence of digits.");
-                    stay = true;
                 }
             }
-
-            return num;
         }
 
         private static Color InputColor(string promptStr)
         {
-            bool stay = true;
-            Color color = Color.Black;
+            Color color;
 
-            while (stay)
+            while (true)
             {
                 Console.Write(promptStr);
 
@@ -183,16 +174,13 @@
 
                 if ((color.A + color.R + color.G + color.B) != 0)
                 {
-                    stay = false;
+                    return color;
                 }
                 else
                 {
                     Console.WriteLine("Input string is not a color.");
-                    stay = true;
                 }
             }
-
-            return color;
         }
     }
 }

@@ -2,51 +2,29 @@
 {
     using System;
 
-    public class Enemy : GameObject
+    public class Enemy : GameObject, IMovable, IAttackable
     {
         private Point[] track;
 
-        public Enemy()
+        public Enemy(int damage, int speed)
         {
             this.Move();
+            this.Damage = damage;
+            this.Speed = speed;
         }
 
-        protected virtual int Speed { get; }
+        public int Damage { get; }
 
-        public virtual void Damage()
-        {
-        }
+        public int Speed { get; }
 
         protected virtual void DamageAnim()
         {
+            throw new NotImplementedException();
         }
 
         private void Move()
         {
-            int length = this.track.Length;
-            int step = 0;
-            bool direction = true;
-
-            while (true)
-            {
-                System.Threading.Thread.Sleep(this.Speed * 1000);
-                
-                for (int i = 0; i < length; i++)
-                {
-                    if (direction)
-                    {
-                        step++;
-                    }
-                    else
-                    {
-                        step--;
-                    }
-
-                    this.Draw(this.track[i]);
-                }
-
-                direction = !direction;
-            }
+            throw new NotImplementedException();
         }
     }
 }
