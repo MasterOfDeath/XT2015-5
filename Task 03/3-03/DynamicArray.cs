@@ -3,12 +3,13 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class DynamicArray<T> : IEnumerable<T>, IEnumerable, ICloneable
     {
         private const int DefaultCapacity = 8;
 
-        protected T[] array;
+        private T[] array;
 
         public DynamicArray()
             : this(DefaultCapacity)
@@ -17,39 +18,25 @@
 
         public DynamicArray(int n)
         {
-            this.array = this.Generate(n);
+            this.array = new T[n];
             this.Length = 0;
         }
 
         public DynamicArray(DynamicArray<T> toClone)
         {
-            this.array = this.Generate(toClone.array.Length);
+            this.array = new T[toClone.array.Length];
             toClone.array.CopyTo(this.array, 0);
             this.Length = toClone.Length;
         }
 
         public DynamicArray(IEnumerable<T> collection)
         {
-            int count = 0;
-            int n = 0;
-            IEnumerator<T> enumerator = collection.GetEnumerator();
+            T[] newArray = collection.ToArray<T>();
 
-            enumerator.Reset();
-            while (enumerator.MoveNext())
-            {
-                count++;
-            }
+            this.array = new T[newArray.Length + DefaultCapacity];
+            Array.Copy(newArray, this.array, newArray.Length);
 
-            this.array = this.Generate(count + DefaultCapacity);
-
-            enumerator.Reset();
-            while (enumerator.MoveNext())
-            {
-                this.array[n] = enumerator.Current;
-                n++;
-            }
-
-            this.Length = count;
+            this.Length = newArray.Length;
         }
 
         public int Capacity
@@ -78,7 +65,11 @@
         {
             get
             {
-                if (id >= -this.Length && id < this.Length)
+                if (id < -this.Length && id >= this.Length)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                else
                 {
                     if (id < 0)
                     {
@@ -87,15 +78,15 @@
 
                     return this.array[id];
                 }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
             }
 
             set
             {
-                if (id >= -this.Length && id < this.Length)
+                if (id < -this.Length && id >= this.Length)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                else
                 {
                     if (id < 0)
                     {
@@ -103,10 +94,6 @@
                     }
 
                     this.array[id] = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -124,49 +111,33 @@
 
         public void AddRange(IEnumerable<T> collection)
         {
-            int count = 0;
-            int n = 0;
-            IEnumerator<T> enumerator = collection.GetEnumerator();
+            T[] newArray = collection.ToArray<T>();
 
-            enumerator.Reset();
-            while (enumerator.MoveNext())
+            if (this.Length + newArray.Length >= this.Capacity - 1)
             {
-                count++;
+                this.Capacity = this.Length + newArray.Length + DefaultCapacity;
             }
 
-            T[] newArray = this.Generate(count);
+            Array.Copy(newArray, 0, this.array, this.Length, newArray.Length);
 
-            enumerator.Reset();
-            while (enumerator.MoveNext())
-            {
-                newArray[n] = enumerator.Current;
-                n++;
-            }
-
-            if (this.Length + count >= this.Capacity - 1)
-            {
-                this.Capacity = this.Length + count + DefaultCapacity;
-            }
-
-            Array.Copy(newArray, 0, this.array, this.Length, count);
-
-            this.Length += count;
+            this.Length += newArray.Length;
         }
 
         public bool Remove(T item)
         {
             int id = Array.IndexOf(this.array, item);
-            if (id >= 0)
+
+            if (id < 0)
+            {
+                return false;
+            }
+            else
             {
                 T[] newArray = new T[this.Capacity];
                 Array.Copy(this.array, newArray, id);
                 Array.Copy(this.array, id + 1, newArray, id, this.Length - id - 1);
                 this.array = newArray;
                 this.Length--;
-            }
-            else
-            {
-                return false;
             }
 
             return true;
@@ -198,7 +169,7 @@
 
         public T[] ToArray()
         {
-            T[] newArray = Generate(this.Length);
+            T[] newArray = new T[this.Length];
             Array.Copy(this.array, newArray, this.Length);
 
             return newArray;
@@ -214,7 +185,6 @@
 
         public object Clone()
         {
-            //return this.MemberwiseClone();
             return new DynamicArray<T>(this);
         }
 
@@ -223,20 +193,9 @@
             return this.GetEnumerator();
         }
 
-        private T[] Generate(int n)
-        {
-            T[] newArray = new T[n];
-
-            // for (int i = 0; i < newArray.Length; i++)
-            // {
-            //    newArray[i] = default(T);
-            // }
-            return newArray;
-        }
-
         private void SetCapacity(int newCapacity)
         {
-            T[] newArray = this.Generate(newCapacity);
+            T[] newArray = new T[newCapacity];
 
             int newLength = (newCapacity < this.Length) ? newCapacity : this.Length;
 

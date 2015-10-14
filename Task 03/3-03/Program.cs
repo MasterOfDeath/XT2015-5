@@ -1,7 +1,6 @@
 ﻿namespace _3_03
 {
     using System;
-    using System.Collections.Generic;
 
     internal class Program
     {
@@ -20,6 +19,7 @@
             Print(array1);
 
             array1.Capacity = 4;
+            array1.Remove(2);
             Print(array1);
 
             array1.Add(1);

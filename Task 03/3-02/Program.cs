@@ -7,24 +7,24 @@
     {
         private static void Main(string[] args)
         {
-            string str = "table glass door glass tool table table";
-            string[] strArray = str.Split(new char[]{ ' ', '.'}, StringSplitOptions.RemoveEmptyEntries);
+            string str = "tAble glass door glass tool table table";
+            string[] strArray = str.Split(new char[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Dictionary<string, int> dic = new Dictionary<string, int>();
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
 
             foreach (var item in strArray)
             {
-                if (dic.ContainsKey(item))
+                if (dictionary.ContainsKey(item.ToLowerInvariant()))
                 {
-                    dic[item] += 1;
+                    dictionary[item] += 1;
                 }
                 else
                 {
-                    dic.Add(item, 1);
+                    dictionary.Add(item.ToLowerInvariant(), 1);
                 }
             }
 
-            foreach (var item in dic)
+            foreach (var item in dictionary)
             {
                 Console.WriteLine("{0}\t{1}", item.Key, item.Value);
             }

@@ -1,12 +1,10 @@
 ﻿namespace _3_03
 {
-    using System;
     using System.Collections.Generic;
 
-    class CycledDynamicArray<T> : DynamicArray<T>
+    internal class CycledDynamicArray<T> : DynamicArray<T>
     {
-
-        public new IEnumerator<T> GetEnumerator()
+        /*public new IEnumerator<T> GetEnumerator()
         {
             bool direction = true;
             int n = -1;
@@ -26,6 +24,6 @@
             }
 
             direction = !direction;
-        }
+        }*/
     }
 }
