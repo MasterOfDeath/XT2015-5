@@ -1,29 +1,56 @@
 ﻿namespace _3_03
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
 
-    internal class CycledDynamicArray<T> : DynamicArray<T>
+    internal class CycledDynamicArray<T> : DynamicArray<T>, IEnumerable<T>, IEnumerable, ICloneable
     {
-        /*public new IEnumerator<T> GetEnumerator()
-        {
-            bool direction = true;
-            int n = -1;
+        private const int DefaultCapacity = 8;
 
-            for (int i = 0; i < this.Length; i++)
+        public CycledDynamicArray()
+            : this(DefaultCapacity)
+        {
+        }
+
+        public CycledDynamicArray(int n)
+            : base(n)
+        {
+        }
+
+        public CycledDynamicArray(IEnumerable<T> collection)
+            : base(collection)
+        {
+        }
+
+        public CycledDynamicArray(DynamicArray<T> toClone)
+            : base(toClone)
+        {
+        }
+
+        public new IEnumerator<T> GetEnumerator()
+        {
+            /*IEnumerator<T> enumerator = base.GetEnumerator();
+
+            while (true)
             {
-                if (direction)
+                if (enumerator.MoveNext())
                 {
-                    n++;
+                    yield return enumerator.Current;
                 }
                 else
                 {
-                    n--;
+                    enumerator = base.GetEnumerator();
                 }
+            }*/
 
-                yield return this.array[n];
+            while (true)
+            {
+                foreach (var item in (DynamicArray<T>)this)
+                {
+                    yield return item;
+                }
             }
-
-            direction = !direction;
-        }*/
+        }
     }
 }

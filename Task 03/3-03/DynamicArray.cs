@@ -45,18 +45,6 @@
             {
                 return this.array.Length;
             }
-
-            set
-            {
-                if (value > 0)
-                {
-                    this.SetCapacity(value);
-                }
-                else
-                {
-                    throw new ArgumentException("Capacity mustn't be negative or 0!");
-                }
-            }
         }
 
         public int Length { get; private set; }
@@ -102,7 +90,7 @@
         {
             if (this.Length >= this.Capacity - 1)
             {
-                this.Capacity *= 2;
+                this.SetCapacity(this.Capacity * 2);
             }
 
             this.array[this.Length] = newItem;
@@ -115,12 +103,54 @@
 
             if (this.Length + newArray.Length >= this.Capacity - 1)
             {
-                this.Capacity = this.Length + newArray.Length + DefaultCapacity;
+                this.SetCapacity(this.Length + newArray.Length + DefaultCapacity);
             }
 
             Array.Copy(newArray, 0, this.array, this.Length, newArray.Length);
 
             this.Length += newArray.Length;
+        }
+
+        public object Clone()
+        {
+            return new DynamicArray<T>(this);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (int i = 0; i < this.Length; i++)
+            {
+                yield return this.array[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public bool Insert(int id, T item)
+        {
+            if (id < 0 && id >= this.Length)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            else
+            {
+                if (this.Length >= this.Capacity - 1)
+                {
+                    this.SetCapacity(this.Capacity * 2);
+                }
+
+                T[] newArray = new T[this.Capacity];
+                Array.Copy(this.array, newArray, id);
+                Array.Copy(this.array, id, newArray, id + 1, this.Length - id);
+                newArray[id] = item;
+                this.array = newArray;
+                this.Length++;
+            }
+
+            return true;
         }
 
         public bool Remove(T item)
@@ -143,30 +173,6 @@
             return true;
         }
 
-        public bool Insert(int id, T item)
-        {
-            if (id >= 0 && id < this.Length)
-            {
-                if (this.Length >= this.Capacity - 1)
-                {
-                    this.Capacity *= 2;
-                }
-
-                T[] newArray = new T[this.Capacity];
-                Array.Copy(this.array, newArray, id);
-                Array.Copy(this.array, id, newArray, id + 1, this.Length - id);
-                newArray[id] = item;
-                this.array = newArray;
-                this.Length++;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            return true;
-        }
-
         public T[] ToArray()
         {
             T[] newArray = new T[this.Length];
@@ -175,33 +181,22 @@
             return newArray;
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public void SetCapacity(int newCapacity)
         {
-            for (int i = 0; i < this.Length; i++)
+            if (newCapacity <= 0)
             {
-                yield return this.array[i];
+                throw new ArgumentException("Capacity mustn't be negative or 0!");
             }
-        }
+            else
+            {
+                T[] newArray = new T[newCapacity];
 
-        public object Clone()
-        {
-            return new DynamicArray<T>(this);
-        }
+                int newLength = (newCapacity < this.Length) ? newCapacity : this.Length;
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        private void SetCapacity(int newCapacity)
-        {
-            T[] newArray = new T[newCapacity];
-
-            int newLength = (newCapacity < this.Length) ? newCapacity : this.Length;
-
-            Array.Copy(this.array, newArray, newLength);
-            this.array = newArray;
-            this.Length = newLength;
+                Array.Copy(this.array, newArray, newLength);
+                this.array = newArray;
+                this.Length = newLength;
+            }
         }
     }
 }

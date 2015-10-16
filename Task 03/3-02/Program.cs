@@ -10,17 +10,17 @@
             string str = "tAble glass door glass tool table table";
             string[] strArray = str.Split(new char[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+            Dictionary<string, int> dictionary = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var item in strArray)
             {
-                if (dictionary.ContainsKey(item.ToLowerInvariant()))
+                if (dictionary.ContainsKey(item))
                 {
                     dictionary[item] += 1;
                 }
                 else
                 {
-                    dictionary.Add(item.ToLowerInvariant(), 1);
+                    dictionary.Add(item, 1);
                 }
             }
 
