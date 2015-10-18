@@ -142,11 +142,8 @@
                     this.SetCapacity(this.Capacity * 2);
                 }
 
-                T[] newArray = new T[this.Capacity];
-                Array.Copy(this.array, newArray, id);
-                Array.Copy(this.array, id, newArray, id + 1, this.Length - id);
-                newArray[id] = item;
-                this.array = newArray;
+                Array.Copy(this.array, id, this.array, id + 1, this.Length - id);
+                this.array[id] = item;
                 this.Length++;
             }
 
@@ -163,10 +160,8 @@
             }
             else
             {
-                T[] newArray = new T[this.Capacity];
-                Array.Copy(this.array, newArray, id);
-                Array.Copy(this.array, id + 1, newArray, id, this.Length - id - 1);
-                this.array = newArray;
+                Array.Copy(this.array, id + 1, this.array, id, this.Length - id - 1);
+                this.array[this.Length - 1] = default(T);
                 this.Length--;
             }
 

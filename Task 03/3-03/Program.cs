@@ -6,7 +6,7 @@
     {
         private static void Main(string[] args)
         {
-            /*DynamicArray<int> array1 = new DynamicArray<int>(new int[] { 1, 2, 3, 4, 5 });
+            DynamicArray<int> array1 = new DynamicArray<int>(new int[] { 1, 2, 3, 4, 5 });
             array1.AddRange(new int[] { 7, 5, 8, 10, 65 });
 
             Print(array1);
@@ -30,14 +30,15 @@
 
             DynamicArray<int> array2 = (DynamicArray<int>)array1.Clone();
             array2.SetCapacity(2);
+            array1.Insert(4, 56);
             Print(array1);
-            Print(array2);*/
+            Print(array2);
 
-            CycledDynamicArray<int> array1 = new CycledDynamicArray<int>(new int[] { 1, 2, 3, 4, 5 });
-            Print(array1);
+            //CycledDynamicArray<int> array1 = new CycledDynamicArray<int>(new int[] { 1, 2, 3, 4, 5 });
+            //Print(array1);
         }
 
-        private static void Print(CycledDynamicArray<int> array)
+        private static void Print<T>(DynamicArray<T> array)
         {
             foreach (var item in array)
             {
