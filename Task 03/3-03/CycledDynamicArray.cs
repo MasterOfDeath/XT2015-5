@@ -30,20 +30,6 @@
 
         public new IEnumerator<T> GetEnumerator()
         {
-            /*IEnumerator<T> enumerator = base.GetEnumerator();
-
-            while (true)
-            {
-                if (enumerator.MoveNext())
-                {
-                    yield return enumerator.Current;
-                }
-                else
-                {
-                    enumerator = base.GetEnumerator();
-                }
-            }*/
-
             while (true)
             {
                 foreach (var item in (DynamicArray<T>)this)

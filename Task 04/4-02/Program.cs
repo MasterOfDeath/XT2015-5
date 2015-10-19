@@ -1,15 +1,15 @@
 ﻿namespace _4_02
 {
     using System;
+    using _4_01;
 
     internal class Program
     {
-        public delegate int CompareMethod<T>(T obj1, T obj2);
-
         private static void Main(string[] args)
         {
-            Random random = new Random();
-            string[] array = new string[10] 
+            Sort sort = new Sort();
+
+            string[] array = new string[10]
             {
                 "table",
                 "coffee",
@@ -24,46 +24,21 @@
             };
 
             Console.WriteLine("Before sorting:");
-            Print(array);
+            sort.Print(array);
 
-            SortArray(array, new CompareMethod<string>(CompareStrings));
+            sort.SortArray(array, CompareStrings);
 
             Console.WriteLine("After sorting:");
-            Print(array);
-        }
-
-        private static void SortArray<T>(T[] array, CompareMethod<T> compare)
-        {
-            T buf;
-            for (int k = array.Length - 1; k > 0; k--)
-            {
-                for (int i = 0; i < k; i++)
-                {
-                    if (compare(array[i], array[i + 1]) > 0)
-                    {
-                        buf = array[i];
-                        array[i] = array[i + 1];
-                        array[i + 1] = buf;
-                    }
-                }
-            }
+            sort.Print(array);
         }
 
         private static int CompareStrings(string str1, string str2)
         {
-            // <
-            if (str1.Length < str2.Length)
+            if (str1.Length != str2.Length)
             {
-                return -1;
+                return str1.Length - str2.Length;
             }
 
-            // >
-            if (str1.Length > str2.Length)
-            {
-                return 1;
-            }
-
-            // ==
             return str1.CompareTo(str2);
         }
 
@@ -80,16 +55,6 @@
             }
 
             return 0;
-        }
-
-        private static void Print<T>(T[] array)
-        {
-            foreach (var item in array)
-            {
-                Console.Write("{0} ", item);
-            }
-
-            Console.WriteLine("\n");
         }
     }
 }

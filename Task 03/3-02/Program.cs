@@ -26,7 +26,7 @@
 
             foreach (var item in dictionary)
             {
-                Console.WriteLine("{0}\t{1}", item.Key, item.Value);
+                Console.WriteLine("{0}\t{1}", item.Key, (double)item.Value / dictionary.Count);
             }
         }
     }
