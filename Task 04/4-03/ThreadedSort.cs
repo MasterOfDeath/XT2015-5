@@ -7,7 +7,7 @@
     internal class ThreadedSort : Sort
     {
         public event EventHandler<EventArgs> Finish;
-
+        
         public void SortArrayInThread<T>(T[] array, Func<T, T, int> compare, int threadID)
         {
             new Thread(() =>

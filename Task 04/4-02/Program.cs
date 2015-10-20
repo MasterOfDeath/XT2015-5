@@ -44,17 +44,7 @@
 
         private static int CompareByHash<T>(T obj1, T obj2)
         {
-            if (obj1.GetHashCode() < obj2.GetHashCode())
-            {
-                return -1;
-            }
-
-            if (obj1.GetHashCode() > obj2.GetHashCode())
-            {
-                return 1;
-            }
-
-            return 0;
+            return obj1.GetHashCode() - obj2.GetHashCode();
         }
     }
 }
