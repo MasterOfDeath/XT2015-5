@@ -8,7 +8,7 @@
     {
         public static List<int> OnlyPositive(int[] array)
         {
-            List<int> result = new List<int>();
+            List<int> result = new List<int>(array.Length + 10);
 
             foreach (var item in array)
             {
@@ -23,12 +23,7 @@
 
         public static List<int> OnlyPositive(int[] array, DelPredicate isPositive)
         {
-            if (isPositive == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            List<int> result = new List<int>();
+            List<int> result = new List<int>(array.Length + 10);
 
             foreach (var item in array)
             {
@@ -43,12 +38,7 @@
 
         public static List<int> OnlyPositiveAnonim(int[] array, Func<int, bool> isPositive)
         {
-            if (isPositive == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            List<int> result = new List<int>();
+            List<int> result = new List<int>(array.Length + 10);
 
             foreach (var item in array)
             {
@@ -63,7 +53,9 @@
 
         public static List<int> OnlyPositiveLinq(int[] array)
         {
-            return array.Where(x => (x > 0)).ToList();
+            return array
+                .Where(x => (x > 0))
+                .ToList();
         }
     }
 }

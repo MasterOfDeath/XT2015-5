@@ -4,11 +4,11 @@
     using System.Threading;
     using _4_01;
 
-    internal class ThreadedSort : Sort
+    public class ThreadedSort<T> : Sort<T>
     {
-        public event EventHandler<EventArgs> Finish;
+        public event EventHandler<SortEventArgs> Finish;
         
-        public void SortArrayInThread<T>(T[] array, Func<T, T, int> compare, int threadID)
+        public void SortArrayInThread(T[] array, Func<T, T, int> compare, int threadID)
         {
             new Thread(() =>
             {

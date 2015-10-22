@@ -4,22 +4,74 @@
 
     public static class MyExtention
     {
-        public static int ArraySum(this int[] array)
+        public static int? ArraySum(this byte?[] array)
         {
             return array.Sum(x => x);
         }
 
-        public static bool IsPositiveNumber(this string str)
+        public static int ArraySum(this byte[] array)
         {
-            foreach (var litter in str)
-            {
-                if (!char.IsNumber(litter) && litter != '+')
-                {
-                    return false;
-                }
-            }
+            return array.Sum(x => x);
+        }
 
-            return true;
+        public static int? ArraySum(this sbyte?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static int ArraySum(this sbyte[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static decimal? ArraySum(this decimal?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static decimal ArraySum(this decimal[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static double? ArraySum(this double?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static double ArraySum(this double[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static float? ArraySum(this float?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static float ArraySum(this float[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static long? ArraySum(this long?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static long ArraySum(this long[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static int? ArraySum(this int?[] array)
+        {
+            return array.Sum(x => x);
+        }
+
+        public static int ArraySum(this int[] array)
+        {
+            return array.Sum(x => x);
         }
     }
 }

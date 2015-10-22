@@ -7,7 +7,7 @@
     {
         private static void Main(string[] args)
         {
-            string[] array = new string[] { "scds", "+1", "34.3", "4332", "-134" };
+            string[] array = new string[] { "scds", "+1", "34.3", "4332", "-134", "12.3e1" };
 
             foreach (var str in array)
             {

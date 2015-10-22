@@ -7,7 +7,7 @@
     {
         private static void Main(string[] args)
         {
-            Sort sort = new Sort();
+            Sort<string> sort = new Sort<string>();
 
             string[] array = new string[10]
             {
@@ -40,11 +40,6 @@
             }
 
             return str1.CompareTo(str2);
-        }
-
-        private static int CompareByHash<T>(T obj1, T obj2)
-        {
-            return obj1.GetHashCode() - obj2.GetHashCode();
         }
     }
 }
