@@ -1,7 +1,6 @@
 ﻿namespace ExtensionMethods
 {
     using System;
-    using System.Text;
 
     public static class MyExtention
     {
@@ -65,8 +64,8 @@
                 return false;
             }
 
-            double gradeNum = StrToInt(grade.Clone().ToString());
-            double mantissaNum = StrToInt(mantissa.Clone().ToString());
+            double mantissaNum = StrToDouble(mantissa);
+            double gradeNum = StrToDouble(grade);
 
             double resultNumber = mantissaNum * Math.Pow(10, gradeNum);
 
@@ -122,8 +121,10 @@
         }
         
         // Only for valided values, like: "-123" or "12.3"
-        public static double StrToInt(string str)
+        private static double StrToDouble(string strToDouble)
         {
+            string str = strToDouble.Clone().ToString();
+
             int negative = 1;
             if (str[0] == '-')
             {

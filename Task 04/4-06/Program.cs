@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Threading;
 
     internal delegate bool DelPredicate(int x);
 
@@ -19,6 +20,15 @@
             {
                 array[i] = random.Next(-100, 100);
             }
+
+            // Uses the second Core or Processor for the Test
+            Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(2); 
+
+            // Prevents "Normal" processes from interrupting Threads
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+
+            // Prevents "Normal" Threads from interrupting this thread
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;     
 
             Stopwatch stopWatch = new Stopwatch();
             List<long> results = new List<long>();

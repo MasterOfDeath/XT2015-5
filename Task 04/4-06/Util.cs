@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     internal class Util
     {
+        [MethodImpl(MethodImplOptions.NoOptimization)]
         public static List<int> OnlyPositive(int[] array)
         {
             List<int> result = new List<int>(array.Length + 10);
@@ -21,6 +23,7 @@
             return result;
         }
 
+        [MethodImpl(MethodImplOptions.NoOptimization)]
         public static List<int> OnlyPositive(int[] array, DelPredicate isPositive)
         {
             List<int> result = new List<int>(array.Length + 10);
@@ -36,6 +39,7 @@
             return result;
         }
 
+        [MethodImpl(MethodImplOptions.NoOptimization)]
         public static List<int> OnlyPositiveAnonim(int[] array, Func<int, bool> isPositive)
         {
             List<int> result = new List<int>(array.Length + 10);
@@ -51,6 +55,7 @@
             return result;
         }
 
+        [MethodImpl(MethodImplOptions.NoOptimization)]
         public static List<int> OnlyPositiveLinq(int[] array)
         {
             return array
