@@ -4,6 +4,7 @@
     using System.Data;
     using System.Data.SQLite;
     using System.IO;
+    using System.Collections.Generic;
 
     internal class Db
     {
@@ -65,10 +66,30 @@
 
         public Event GetLastEventByName(string name)
         {
+            //string sqlFind =
+            //    "SELECT * " +
+            //    "FROM " +
+            //    "(" +
+            //        "SELECT * " +
+            //        $"FROM {Event.TableName} " +
+            //        $"WHERE {Event.FName} = '{name}' " +
+            //    ")" +
+            //    $"WHERE {Event.FDate} = " +
+            //    "(" +
+            //        $"SELECT max({Event.FDate}) " +
+            //        "from " +
+            //        "(" +
+            //            "SELECT * " +
+            //            $"FROM {Event.TableName} " +
+            //            $"WHERE {Event.FName} = '{name}'" +
+            //        ")" +
+            //    ") " +
+            //    "LIMIT 1";
+
             string sqlFind =
-                $"SELECT *, MAX({Event.FDate}) " + 
-                $"FROM {Event.TableName} " +
+                $"SELECT * FROM {Event.TableName} " +
                 $"WHERE {Event.FName} = '{name}' " +
+                $"ORDER BY {Event.FDate} DESC" +
                 "LIMIT 1";
 
             SQLiteCommand command = new SQLiteCommand(sqlFind, sqlConnection);
@@ -82,6 +103,18 @@
             else
             {
                 return null;
+            }
+        }
+
+        public IEnumerable<SQLiteDataReader> ListAll()
+        {
+            string sqlAll = "select * from history";
+            SQLiteCommand command = new SQLiteCommand(sqlAll, sqlConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                yield return reader;
             }
         }
 

@@ -11,7 +11,8 @@
         private static readonly string DestinationDir = "c:\\Backup";
         private static readonly string FileExtention = "txt";
 
-        private static readonly string Usage = "Usage: --restore dd.MM.yyyy:hh:mm";
+        private static readonly string Usage = "Usage:\n For restore files: --restore dd.MM.yyyy-hh:mm" +
+            "\n For watching: just launch it without arguments.";
 
         private static Db sqlDb;
         private static FileSystemWatcher watcher;
@@ -23,41 +24,33 @@
 
             sqlDb.Init();
 
-            Regex reg = new Regex(
-                "^(0[1-9]|[12][0-9]|3[01])" + 
-                "\\." +
-                "(0[1-9]|1[012])" +
-                "\\." +
-                "(19\\d{2}|20\\d{2})" +
-                "-" +
-                "([01][0-9]|2[0-4])" + 
-                ":" +
-                "([0-5][0-9])$");
-
-            // Console.WriteLine(reg.IsMatch("05.12.2093-00:60"));
-
+            foreach (var item in sqlDb.ListAll())
+            {
+                Console.WriteLine(item["guid"]);
+            } 
+            
             if (args.Length == 0)
             {
-                Run();
+                Watch();
             }
             else if (args.Length == 2
                 && args[0] == "--restore"
-                && reg.IsMatch(args[1]))
+                && IsValidDate(args[1]))
             {
-                Restore();
+                Restore(args[1]);
             }
-
-            
-
-            
+            else
+            {
+                Console.WriteLine(Usage);
+            }  
         }
 
-        private static void Restore()
+        private static void Restore(string date)
         {
             throw new NotImplementedException();
         }
 
-        private static void Run()
+        private static void Watch()
         {
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
@@ -156,7 +149,9 @@
         }
 
         private static bool IsDirectory(string str)
-            => Path.GetExtension(str) == string.Empty;
+        {
+            return Path.GetExtension(str) == string.Empty;
+        }  
 
         private static void OnInit(object sender, EventArgs e)
         {
@@ -184,11 +179,20 @@
             File.Copy(name, dest);
         }
 
-        private bool IsValidDate(string date)
+        private static bool IsValidDate(string date)
         {
-            
+            Regex reg = new Regex(
+                "^(0[1-9]|[12][0-9]|3[01])" +
+                "\\." +
+                "(0[1-9]|1[012])" +
+                "\\." +
+                "(19\\d{2}|20\\d{2})" +
+                "-" +
+                "([01][0-9]|2[0-3])" +
+                ":" +
+                "([0-5][0-9])$");
 
-            return true;
+            return reg.IsMatch(date);
         }
     }
 }
