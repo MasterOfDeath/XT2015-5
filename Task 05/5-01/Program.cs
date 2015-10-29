@@ -1,8 +1,12 @@
 ﻿namespace _5_01
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
 
     internal class Program
     {
@@ -10,8 +14,9 @@
         private static readonly string SourceDir = "c:\\Test";
         private static readonly string DestinationDir = "c:\\Backup";
         private static readonly string FileExtention = "txt";
+        private static readonly string DateFormat = "dd.MM.yyyy-HH:mm";
 
-        private static readonly string Usage = "Usage:\n For restore files: --restore dd.MM.yyyy-hh:mm" +
+        private static readonly string Usage = $"Usage:\n For restore files: --restore {DateFormat}" +
             "\n For watching: just launch it without arguments.";
 
         private static Db sqlDb;
@@ -24,11 +29,6 @@
 
             sqlDb.Init();
 
-            foreach (var item in sqlDb.ListAll())
-            {
-                Console.WriteLine(item["guid"]);
-            } 
-            
             if (args.Length == 0)
             {
                 Watch();
@@ -42,12 +42,23 @@
             else
             {
                 Console.WriteLine(Usage);
-            }  
+            }
         }
 
         private static void Restore(string date)
         {
-            throw new NotImplementedException();
+            IEnumerable<Event> events = sqlDb.ListToRestore(String2Epoch(date));
+
+            if (events.Any())
+            {
+                CleanSourceDir();
+
+                foreach (var item in events)
+                {
+                    DoRestore(item.Name, item.Guid, item.Version);
+                    Console.WriteLine($"File: {item.Name} has restored.");
+                }
+            }
         }
 
         private static void Watch()
@@ -111,7 +122,6 @@
             {
                 watcher.EnableRaisingEvents = true;
             }
-            
         }
 
         private static void OnRename(object source, RenamedEventArgs e)
@@ -140,7 +150,7 @@
 
         private static int GetNowInEpoch()
         {
-            return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            return (int)(DateTime.Now - new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         private static string Epoch2String(int epoch)
@@ -148,18 +158,32 @@
             return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(epoch).ToString();
         }
 
+        static int String2Epoch(string strDate)
+        {
+            DateTime date = DateTime.Now;
+            DateTime.TryParseExact(
+                strDate, 
+                DateFormat, 
+                CultureInfo.CurrentCulture, 
+                DateTimeStyles.None, 
+                out date);
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            return (int)(date - origin).TotalSeconds;
+        }
+
         private static bool IsDirectory(string str)
         {
             return Path.GetExtension(str) == string.Empty;
-        }  
+        }
 
         private static void OnInit(object sender, EventArgs e)
         {
+            int version = 0;
             foreach (var file in Directory.EnumerateFiles(SourceDir, "*." + FileExtention, SearchOption.AllDirectories))
             {
                 string guid = Guid.NewGuid().ToString();
-                int version = 0;
-
+                
                 sqlDb.Add(
                     guid,
                     version,
@@ -176,7 +200,24 @@
         {
             string dest =
                 DestinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
+            Directory.CreateDirectory(Path.GetDirectoryName(dest));
             File.Copy(name, dest);
+        }
+
+        private static void DoRestore(string name, string guid, int version)
+        {
+            string dest =
+                DestinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
+            Directory.CreateDirectory(Path.GetDirectoryName(name));
+            File.Copy(dest, name);
+        }
+
+        private static void CleanSourceDir()
+        {
+            foreach (var file in Directory.EnumerateFiles(SourceDir, "*." + FileExtention, SearchOption.AllDirectories))
+            {
+                File.Delete(file);
+            }
         }
 
         private static bool IsValidDate(string date)

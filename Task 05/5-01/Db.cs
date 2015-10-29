@@ -1,24 +1,22 @@
 ﻿namespace _5_01
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.SQLite;
     using System.IO;
-    using System.Collections.Generic;
 
     internal class Db
     {
-        public event EventHandler<EventArgs> InitEvent;
-
         private readonly string sqlCreate =
-            $"CREATE TABLE IF NOT EXISTS \"{Event.TableName}\"(" +
-            $"\"{Event.FId}\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            $"\"{Event.FGuid}\" TEXT NOT NULL," +
-            $"\"{Event.FVersion}\" INTEGER NOT NULL," +
-            $"\"{Event.FName}\" TEXT NOT NULL," +
-            $"\"{Event.FOldName}\" TEXT NULL," +
-            $"\"{Event.FDate}\" INTEGER NOT NULL," +
-            $"\"{Event.FChange}\" INTEGER NOT NULL);";
+            $"CREATE TABLE IF NOT EXISTS {Event.TableName}(" +
+            $"{Event.FId} INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            $"{Event.FGuid} TEXT NOT NULL," +
+            $"{Event.FVersion} INTEGER NOT NULL," +
+            $"{Event.FName} TEXT NOT NULL," +
+            $"{Event.FOldName} TEXT NULL," +
+            $"{Event.FDate} INTEGER NOT NULL," +
+            $"{Event.FChange} INTEGER NOT NULL);";
 
         private readonly string sqlFileName;
 
@@ -40,15 +38,17 @@
             }
         }
 
+        public event EventHandler<EventArgs> InitEvent;
+
         public void Init()
         {
-            if (IsDbEmpty())
+            if (this.IsDbEmpty())
             {
-                CreateDb();
+                this.CreateDb();
 
-                if (InitEvent != null)
+                if (this.InitEvent != null)
                 {
-                    InitEvent(this, EventArgs.Empty);
+                    this.InitEvent(this, EventArgs.Empty);
                 }
             }
         }
@@ -66,39 +66,19 @@
 
         public Event GetLastEventByName(string name)
         {
-            //string sqlFind =
-            //    "SELECT * " +
-            //    "FROM " +
-            //    "(" +
-            //        "SELECT * " +
-            //        $"FROM {Event.TableName} " +
-            //        $"WHERE {Event.FName} = '{name}' " +
-            //    ")" +
-            //    $"WHERE {Event.FDate} = " +
-            //    "(" +
-            //        $"SELECT max({Event.FDate}) " +
-            //        "from " +
-            //        "(" +
-            //            "SELECT * " +
-            //            $"FROM {Event.TableName} " +
-            //            $"WHERE {Event.FName} = '{name}'" +
-            //        ")" +
-            //    ") " +
-            //    "LIMIT 1";
-
             string sqlFind =
                 $"SELECT * FROM {Event.TableName} " +
                 $"WHERE {Event.FName} = '{name}' " +
-                $"ORDER BY {Event.FDate} DESC" +
+                $"ORDER BY {Event.FDate} DESC " +
                 "LIMIT 1";
 
-            SQLiteCommand command = new SQLiteCommand(sqlFind, sqlConnection);
+            SQLiteCommand command = new SQLiteCommand(sqlFind, this.sqlConnection);
 
             SQLiteDataReader reader = command.ExecuteReader();
 
             if (reader.Read())
             {
-                return OneRowToEvent(reader);
+                return this.OneRowToEvent(reader);
             }
             else
             {
@@ -106,15 +86,19 @@
             }
         }
 
-        public IEnumerable<SQLiteDataReader> ListAll()
+        public IEnumerable<Event> ListToRestore(int date)
         {
-            string sqlAll = "select * from history";
-            SQLiteCommand command = new SQLiteCommand(sqlAll, sqlConnection);
+            string sqlList = 
+                $"SELECT * FROM {Event.TableName} " +
+                $"WHERE {Event.FDate} <= {date} " +
+                $"ORDER BY {Event.FGuid};";
+
+            SQLiteCommand command = new SQLiteCommand(sqlList, this.sqlConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
-                yield return reader;
+                yield return this.OneRowToEvent(reader);
             }
         }
 
@@ -130,7 +114,7 @@
                 this.sqlConnection = new SQLiteConnection($"Data Source={this.sqlFileName};Version=3;");
                 this.sqlConnection.Open();
             }
-            
+
             SQLiteCommand command = new SQLiteCommand(this.sqlCreate, this.sqlConnection);
             command.ExecuteNonQuery();
         }
@@ -161,10 +145,10 @@
                 this.sqlConnection.Open();
             }
 
-            string sqlExistTable = 
+            string sqlExistTable =
                 $"SELECT name FROM sqlite_master WHERE type='table' AND name='{Event.TableName}';";
 
-            SQLiteCommand command = new SQLiteCommand(sqlExistTable, sqlConnection);
+            SQLiteCommand command = new SQLiteCommand(sqlExistTable, this.sqlConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -174,7 +158,7 @@
             string sqlConsistsRows =
                 $"SELECT * FROM '{Event.TableName}';";
 
-            command = new SQLiteCommand(sqlConsistsRows, sqlConnection);
+            command = new SQLiteCommand(sqlConsistsRows, this.sqlConnection);
             reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
