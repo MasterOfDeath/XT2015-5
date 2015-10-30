@@ -6,7 +6,7 @@
     using System.Data.SQLite;
     using System.IO;
 
-    internal class Db
+    internal class Db : IDataSource
     {
         private readonly string sqlCreate =
             $"CREATE TABLE IF NOT EXISTS {Event.TableName}(" +
@@ -58,7 +58,7 @@
             string sqlInsert =
                 $"INSERT INTO {Event.TableName} " +
                 $"({Event.FGuid},{Event.FVersion},{Event.FName},{Event.FOldName},{Event.FDate},{Event.FChange})" +
-                $"VALUES('{guid}', {version}, '{fileName}', '{oldName}', '{date}', '{(int)changeType}');";
+                $"VALUES('{guid}', {version}, '{fileName.ToLower()}', '{oldName}', '{date}', '{(int)changeType}');";
 
             SQLiteCommand command = new SQLiteCommand(sqlInsert, this.sqlConnection);
             command.ExecuteNonQuery();
@@ -68,7 +68,7 @@
         {
             string sqlFind =
                 $"SELECT * FROM {Event.TableName} " +
-                $"WHERE {Event.FName} = '{name}' " +
+                $"WHERE {Event.FName} = '{name.ToLower()}' " +
                 $"ORDER BY {Event.FDate} DESC " +
                 "LIMIT 1";
 
@@ -91,9 +91,23 @@
             string sqlList = 
                 $"SELECT * FROM {Event.TableName} " +
                 $"WHERE {Event.FDate} <= {date} " +
-                $"ORDER BY {Event.FGuid};";
+                $"GROUP BY {Event.FGuid};";
 
             SQLiteCommand command = new SQLiteCommand(sqlList, this.sqlConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                yield return this.OneRowToEvent(reader);
+            }
+        }
+
+        public IEnumerable<Event> ListAll()
+        {
+            string sqlListAll =
+                $"SELECT * FROM {Event.TableName};";
+
+            SQLiteCommand command = new SQLiteCommand(sqlListAll, this.sqlConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())

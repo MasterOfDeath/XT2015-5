@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Db.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="IDataSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
