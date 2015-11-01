@@ -20,36 +20,21 @@
 
         private readonly string sqlFileName;
 
-        private SQLiteConnection sqlConnection;
+        private IDbConnection sqlConnection;
 
         public Db(string sqlFileName)
         {
             this.sqlFileName = sqlFileName;
-
-            if (!File.Exists(this.sqlFileName))
+            
+            if (this.IsDbEmpty())
             {
-                SQLiteConnection.CreateFile(this.sqlFileName);
+                this.CreateDb();
             }
 
             if (this.sqlConnection == null || this.sqlConnection.State == ConnectionState.Closed)
             {
                 this.sqlConnection = new SQLiteConnection($"Data Source={this.sqlFileName};Version=3;");
                 this.sqlConnection.Open();
-            }
-        }
-
-        public event EventHandler<EventArgs> InitEvent;
-
-        public void Init()
-        {
-            if (this.IsDbEmpty())
-            {
-                this.CreateDb();
-
-                if (this.InitEvent != null)
-                {
-                    this.InitEvent(this, EventArgs.Empty);
-                }
             }
         }
 
@@ -60,7 +45,7 @@
                 $"({Event.FGuid},{Event.FVersion},{Event.FName},{Event.FOldName},{Event.FDate},{Event.FChange})" +
                 $"VALUES('{guid}', {version}, '{fileName.ToLower()}', '{oldName}', '{date}', '{(int)changeType}');";
 
-            SQLiteCommand command = new SQLiteCommand(sqlInsert, this.sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlInsert, (SQLiteConnection)sqlConnection);
             command.ExecuteNonQuery();
         }
 
@@ -72,9 +57,9 @@
                 $"ORDER BY {Event.FDate} DESC " +
                 "LIMIT 1";
 
-            SQLiteCommand command = new SQLiteCommand(sqlFind, this.sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlFind, (SQLiteConnection)sqlConnection);
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            IDataReader reader = command.ExecuteReader();
 
             if (reader.Read())
             {
@@ -93,8 +78,8 @@
                 $"WHERE {Event.FDate} <= {date} " +
                 $"GROUP BY {Event.FGuid};";
 
-            SQLiteCommand command = new SQLiteCommand(sqlList, this.sqlConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            IDbCommand command = new SQLiteCommand(sqlList, (SQLiteConnection)sqlConnection);
+            IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -107,8 +92,8 @@
             string sqlListAll =
                 $"SELECT * FROM {Event.TableName};";
 
-            SQLiteCommand command = new SQLiteCommand(sqlListAll, this.sqlConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            IDbCommand command = new SQLiteCommand(sqlListAll, (SQLiteConnection)sqlConnection);
+            IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -129,11 +114,11 @@
                 this.sqlConnection.Open();
             }
 
-            SQLiteCommand command = new SQLiteCommand(this.sqlCreate, this.sqlConnection);
+            IDbCommand command = new SQLiteCommand(this.sqlCreate, (SQLiteConnection)sqlConnection);
             command.ExecuteNonQuery();
         }
 
-        private Event OneRowToEvent(SQLiteDataReader reader)
+        private Event OneRowToEvent(IDataReader reader)
         {
             int id = Convert.ToInt32(reader[Event.FId]);
             string guid = reader[Event.FGuid].ToString();
@@ -162,19 +147,9 @@
             string sqlExistTable =
                 $"SELECT name FROM sqlite_master WHERE type='table' AND name='{Event.TableName}';";
 
-            SQLiteCommand command = new SQLiteCommand(sqlExistTable, this.sqlConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            if (!reader.HasRows)
-            {
-                return true;
-            }
-
-            string sqlConsistsRows =
-                $"SELECT * FROM '{Event.TableName}';";
-
-            command = new SQLiteCommand(sqlConsistsRows, this.sqlConnection);
-            reader = command.ExecuteReader();
-            if (!reader.HasRows)
+            IDbCommand command = new SQLiteCommand(sqlExistTable, (SQLiteConnection)sqlConnection);
+            IDataReader reader = command.ExecuteReader();
+            if (!reader.Read())
             {
                 return true;
             }

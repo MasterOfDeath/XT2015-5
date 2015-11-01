@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -10,51 +11,55 @@
 
     internal class Program
     {
-        private static readonly string DbFileName = "BackupDB.sqlite";
-        private static string sourceDir = "c:\\Source";
-        private static string destinationDir = "Backups";
-        private static readonly string FileExtention = "txt";
+        private static readonly string FileTepmlate = "*.txt";
         private static readonly string DateFormat = "dd.MM.yyyy-HH:mm";
         private static readonly string AssemblyName = Assembly.GetCallingAssembly().GetName().Name;
-
-        private static readonly string Usage = 
+        private static readonly char DirSeparator = Path.DirectorySeparatorChar;
+        private static readonly string DbFileName = ConfigurationManager.AppSettings["DbFileName"];
+        private static readonly string DestinationDir = ConfigurationManager.AppSettings["DestinationDir"].TrimEnd(DirSeparator);
+        private static readonly string SourceDir = ConfigurationManager.AppSettings["SourceDir"].TrimEnd(DirSeparator);
+        private static readonly string OptRestore = "--restore";
+        private static readonly string OptListAll = "--listall";
+        private static readonly string OptReInit = "--reinit";
+        private static readonly string Usage =
             "Usage:\n" +
-            "For restore files:\n" +
-            $"\t{AssemblyName} --restore {DateFormat} \n" +
             "For watching:\n" +
-            $"\t{AssemblyName} SourceDirectory\n" +
-            $"\tIf you launch it without arguments, it'll start for watching {sourceDir}";
+            $"\tJust launch it without arguments and it'll start for watching {SourceDir}\n" +
+            "For restore files:\n" +
+            $"\t{AssemblyName} {OptRestore} {DateFormat}\n" +
+            $"For print all log:\n\t{AssemblyName} {OptListAll}\n" +
+            $"For delete all backups use:\n\t{AssemblyName} {OptReInit}";
 
-        private static IDataSource sqlDb;
+        private static IDataSource dataSource;
         private static FileSystemWatcher watcher;
 
         private static void Main(string[] args)
         {
-            sqlDb = new Db(DbFileName);
-            sqlDb.InitEvent += OnInit;
+            int epoch;
 
-            sqlDb.Init();
+            if (args.Length == 1 && args[0] == OptReInit)
+            {
+                ReInit();
+            }
 
+            dataSource = new Db(DbFileName);
+
+            //File.Copy(@"c:\source\3.txt\новый текстовый документ.txt", @"c:\source\3.txt", true);
+            
             if (args.Length == 0)
             {
                 Watch();
             }
             else if (args.Length == 1
-                && args[0] == "--listall")
+                && args[0] == OptListAll)
             {
                 ListAll();
             }
-            else if (args.Length == 1
-                && Directory.Exists(args[0]))
-            {
-                sourceDir = args[0];
-                Watch();
-            }
             else if (args.Length == 2
-                && args[0] == "--restore"
-                && IsValidDate(args[1]))
+                && args[0] == OptRestore
+                && String2Epoch(args[1], out epoch))
             {
-                Restore(args[1]);
+                Restore(epoch);
             }
             else
             {
@@ -62,52 +67,71 @@
             }
         }
 
-        private static void Restore(string date)
+        private static void ReInit()
         {
-            IEnumerable<Event> events = sqlDb.ListToRestore(String2Epoch(date));
-
-            if (events.Any())
+            Console.WriteLine("Are you sure? Y/N");
+            string answer = Console.ReadLine();
+            if (answer.Equals("y", StringComparison.InvariantCultureIgnoreCase))
             {
-                foreach (var item in events)
-                {
-                    Console.WriteLine
-                    ($"File: {item.Name}; Time: {Epoch2String(item.Date)}");
-                }
+                File.Delete(DbFileName);
+                CleanDir(DestinationDir, "????????-????-????-????-????????????.*");
 
-                Console.WriteLine("Would you like to restore them? Y/N");
-                string answer = Console.ReadLine();
-                if (answer.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    CleanSourceDir();
+                Environment.Exit(0);
+            }
+        }
 
-                    foreach (var item in events)
-                    {
-                        if (item.Change != (int)WatcherChangeTypes.Deleted)
-                        {
-                            DoRestore(item.Name, item.Guid, item.Version);
-                            Console.WriteLine($"File: {item.Name} has restored.");
-                        }
-                    }
-                }
+        private static void Restore(int epoch)
+        {
+            IEnumerable<Event> events = dataSource.ListToRestore(epoch);
+
+            if (!events.Any())
+            {
+                return;
+            }
+
+            foreach (var item in events)
+            {
+                Console.WriteLine($"File: {item.Name}; Time: {Epoch2String(item.Date)}");
+            }
+
+            Console.WriteLine("Would you like to restore them? Y/N");
+            string answer = Console.ReadLine();
+            if (!answer.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
+            CleanDir(SourceDir, FileTepmlate);
+
+            foreach (var item in events.Where(ev => ev.Change != (int)WatcherChangeTypes.Deleted))
+            {
+                DoRestore(item.Name, item.Guid, item.Version);
+                Console.WriteLine($"File: {item.Name} has restored.");
             }
         }
 
         private static void ListAll()
         {
-            foreach (var item in sqlDb.ListAll())
+            foreach (var item in dataSource.ListAll())
             {
-                Console.WriteLine
-                    ($"File: {item.Name}; Change: {Enum.GetName(typeof(WatcherChangeTypes), item.Change)}; Time: {Epoch2String(item.Date)}");
+                Console.WriteLine(
+                    $"File: {item.Name}; Change: {Enum.GetName(typeof(WatcherChangeTypes), item.Change)}; Time: {Epoch2String(item.Date)}");
             }
         }
 
         private static void Watch()
         {
+            if (!IsDirEmpty(SourceDir, FileTepmlate)
+                && IsDirEmpty(DestinationDir, "????????-????-????-????-????????????.*"))
+            {
+                Init();
+            }
+
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
-            watcher.Path = sourceDir;
+            watcher.Path = SourceDir;
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
-            watcher.Filter = "*." + FileExtention;
+            watcher.Filter = FileTepmlate;
             watcher.Changed += new FileSystemEventHandler(OnChange);
             watcher.Created += new FileSystemEventHandler(OnChange);
             watcher.Deleted += new FileSystemEventHandler(OnChange);
@@ -115,7 +139,7 @@
 
             watcher.EnableRaisingEvents = true;
 
-            Console.WriteLine($"Watching for {sourceDir}");
+            Console.WriteLine($"Watching for {SourceDir} to {DestinationDir}");
             Console.WriteLine("Enter 'q' to exit.");
             while (Console.Read() != 'q')
             {
@@ -124,48 +148,38 @@
 
         private static void OnChange(object source, FileSystemEventArgs e)
         {
-            Event curEvent;
             string guid;
             int version;
+            
+            Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
+            Event curEvent = dataSource.GetLastEventByName(e.FullPath);
 
-            try
+            switch (e.ChangeType)
             {
-                watcher.EnableRaisingEvents = false;
+                case WatcherChangeTypes.Created:
+                    guid = Guid.NewGuid().ToString();
+                    version = 0;
+                    break;
 
-                Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-                curEvent = sqlDb.GetLastEventByName(e.FullPath);
+                case WatcherChangeTypes.Deleted:
+                    guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
+                    version = curEvent?.Version ?? 0;
+                    break;
 
-                switch (e.ChangeType)
-                {
-                    case WatcherChangeTypes.Created:
-                        guid = Guid.NewGuid().ToString();
-                        version = 0;
-                        break;
+                case WatcherChangeTypes.Changed:
+                    guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
+                    version = (curEvent?.Version ?? 0) + 1;
+                    break;
 
-                    case WatcherChangeTypes.Deleted:
-                        guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
-                        version = curEvent?.Version ?? 0;
-                        break;
-
-                    case WatcherChangeTypes.Changed:
-                        guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
-                        version = (curEvent != null) ? curEvent.Version + 1 : 0;
-                        break;
-
-                    default:
-                        goto case WatcherChangeTypes.Created;
-                }
-
-                sqlDb.Add(guid, version, e.FullPath, string.Empty, GetNowInEpoch(), e.ChangeType);
-
-                if (e.ChangeType != WatcherChangeTypes.Deleted)
-                {
-                    DoBuckup(e.FullPath, guid, version);
-                }
+                default:
+                    goto case WatcherChangeTypes.Created;
             }
-            finally
+
+            dataSource.Add(guid, version, e.FullPath, string.Empty, GetNowInEpoch(), e.ChangeType);
+
+            if (e.ChangeType != WatcherChangeTypes.Deleted)
             {
-                watcher.EnableRaisingEvents = true;
+                DoBackup(e.FullPath, guid, version);
             }
         }
 
@@ -177,7 +191,7 @@
 
             Console.WriteLine("File: " + e.OldFullPath + " renemed to " + e.FullPath);
 
-            curEvent = sqlDb.GetLastEventByName(e.OldFullPath);
+            curEvent = dataSource.GetLastEventByName(e.OldFullPath);
 
             if (curEvent == null)
             {
@@ -190,12 +204,12 @@
                 version = curEvent.Version;
             }
 
-            sqlDb.Add(guid, version, e.FullPath, e.OldFullPath, GetNowInEpoch(), e.ChangeType);
+            dataSource.Add(guid, version, e.FullPath, e.OldFullPath, GetNowInEpoch(), e.ChangeType);
         }
 
         private static int GetNowInEpoch()
         {
-            return (int)(DateTime.Now - new DateTime(1970, 1, 1)).TotalSeconds;
+            return (int)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
         }
 
         private static string Epoch2String(int epoch)
@@ -203,18 +217,22 @@
             return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(epoch).ToString();
         }
 
-        private static int String2Epoch(string strDate)
+        private static bool String2Epoch(string strDate, out int epoch)
         {
+            bool result;
+
             DateTime date = DateTime.Now;
-            DateTime.TryParseExact(
-                strDate, 
-                DateFormat, 
-                CultureInfo.CurrentCulture, 
-                DateTimeStyles.None, 
+            result = DateTime.TryParseExact(
+                strDate,
+                DateFormat,
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.None,
                 out date);
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            return (int)(date - origin).TotalSeconds;
+            epoch = (int)(date - origin).TotalSeconds;
+
+            return result;
         }
 
         private static bool IsDirectory(string str)
@@ -222,29 +240,36 @@
             return Path.GetExtension(str) == string.Empty;
         }
 
-        private static void OnInit(object sender, EventArgs e)
+        private static void Init()
         {
             int version = 0;
-            foreach (var file in Directory.EnumerateFiles(sourceDir, "*." + FileExtention, SearchOption.AllDirectories))
+            foreach (var file in Directory.EnumerateFiles(SourceDir, FileTepmlate, SearchOption.AllDirectories))
             {
-                string guid = Guid.NewGuid().ToString();
-                
-                sqlDb.Add(
-                    guid,
-                    version,
-                    file,
-                    string.Empty,
-                    GetNowInEpoch(),
-                    WatcherChangeTypes.Created);
+                FileSystemEventArgs arg = new FileSystemEventArgs(
+                    WatcherChangeTypes.Created,
+                    SourceDir,
+                    file.Replace(SourceDir + DirSeparator, ""));
 
-                DoBuckup(file, guid, version);
+                OnChange(new object(), arg);
+
+                //string guid = Guid.NewGuid().ToString();
+
+                //dataSource.Add(
+                //    guid,
+                //    version,
+                //    file,
+                //    string.Empty,
+                //    GetNowInEpoch(),
+                //    WatcherChangeTypes.Created);
+
+                //DoBackup(file, guid, version);
             }
         }
 
-        private static void DoBuckup(string name, string guid, int version)
+        private static void DoBackup(string name, string guid, int version)
         {
             string dest =
-                destinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
+                DestinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
             Directory.CreateDirectory(Path.GetDirectoryName(dest));
             File.Copy(name, dest);
         }
@@ -252,33 +277,27 @@
         private static void DoRestore(string name, string guid, int version)
         {
             string dest =
-                destinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
+                DestinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
             Directory.CreateDirectory(Path.GetDirectoryName(name));
             File.Copy(dest, name);
         }
 
-        private static void CleanSourceDir()
+        private static void CleanDir(string dirName, string fileTepmlate)
         {
-            foreach (var file in Directory.EnumerateFiles(sourceDir, "*." + FileExtention, SearchOption.AllDirectories))
+            foreach (var file in Directory.EnumerateFiles(dirName, fileTepmlate, SearchOption.AllDirectories))
             {
                 File.Delete(file);
             }
         }
 
-        private static bool IsValidDate(string date)
+        private static bool IsDirEmpty(string dirName, string fileTepmlate)
         {
-            Regex reg = new Regex(
-                "^(0[1-9]|[12][0-9]|3[01])" +
-                "\\." +
-                "(0[1-9]|1[012])" +
-                "\\." +
-                "(19\\d{2}|20\\d{2})" +
-                "-" +
-                "([01][0-9]|2[0-3])" +
-                ":" +
-                "([0-5][0-9])$");
+            foreach (var file in Directory.EnumerateFiles(dirName, fileTepmlate, SearchOption.AllDirectories))
+            {
+                return false;
+            }
 
-            return reg.IsMatch(date);
+            return true;
         }
     }
 }
