@@ -7,14 +7,14 @@
 
     internal class Program
     {
-        public static readonly string SrcFileTepmlate = "*.txt";
-        public static readonly string DstFileTemplate = "????????-????-????-????-????????????.*";
         public static readonly string DateFormat = "d.MM.yyyy-HH:mm:ss";
-        private static readonly string AssemblyName = Assembly.GetCallingAssembly().GetName().Name;
         public static readonly char DirSeparator = Path.DirectorySeparatorChar;
-        public static readonly string DbFileName = ConfigurationManager.AppSettings["DbFileName"];
+        public static readonly string SrcFileTepmlate = ConfigurationManager.AppSettings["SrcFileTepmlate"];
+        public static readonly string DstFileTemplate = ConfigurationManager.AppSettings["DstFileTemplate"];
+        public static readonly string DataFileName = ConfigurationManager.AppSettings["DataFileName"];
         public static readonly string DestinationDir = ConfigurationManager.AppSettings["DestinationDir"].TrimEnd(DirSeparator);
         public static readonly string SourceDir = ConfigurationManager.AppSettings["SourceDir"].TrimEnd(DirSeparator);
+        private static readonly string AssemblyName = Assembly.GetCallingAssembly().GetName().Name;
         private static readonly string OptRestore = "--restore";
         private static readonly string OptListAll = "--listall";
         private static readonly string OptDestroy = "--destroy";
@@ -60,7 +60,7 @@
             string answer = Console.ReadLine();
             if (answer.Equals("y", StringComparison.InvariantCultureIgnoreCase))
             {
-                File.Delete(DbFileName);
+                File.Delete(DataFileName);
                 Utils.CleanDir(DestinationDir, DstFileTemplate);
 
                 Environment.Exit(0);
@@ -69,7 +69,7 @@
 
         private static void ListAll()
         {
-            IDataSource dataSource = new Db(DbFileName);
+            IDataSource dataSource = new Db(DataFileName);
 
             foreach (var item in dataSource.ListAll())
             {

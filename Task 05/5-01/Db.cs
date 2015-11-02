@@ -45,7 +45,7 @@
                 $"({Event.FGuid},{Event.FVersion},{Event.FName},{Event.FOldName},{Event.FDate},{Event.FChange})" +
                 $"VALUES('{guid}', {version}, '{fileName.ToLower()}', '{oldName}', '{date}', '{(int)changeType}');";
 
-            IDbCommand command = new SQLiteCommand(sqlInsert, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlInsert, (SQLiteConnection)this.sqlConnection);
             command.ExecuteNonQuery();
         }
 
@@ -57,7 +57,7 @@
                 $"ORDER BY {Event.FDate} DESC " +
                 "LIMIT 1";
 
-            IDbCommand command = new SQLiteCommand(sqlFind, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlFind, (SQLiteConnection)this.sqlConnection);
 
             IDataReader reader = command.ExecuteReader();
 
@@ -78,7 +78,7 @@
                 $"WHERE {Event.FDate} <= {date} " +
                 $"GROUP BY {Event.FGuid};";
 
-            IDbCommand command = new SQLiteCommand(sqlList, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlList, (SQLiteConnection)this.sqlConnection);
             IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
@@ -92,7 +92,7 @@
             string sqlListAll =
                 $"SELECT * FROM {Event.TableName};";
 
-            IDbCommand command = new SQLiteCommand(sqlListAll, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlListAll, (SQLiteConnection)this.sqlConnection);
             IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
@@ -114,7 +114,7 @@
                 this.sqlConnection.Open();
             }
 
-            IDbCommand command = new SQLiteCommand(this.sqlCreate, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(this.sqlCreate, (SQLiteConnection)this.sqlConnection);
             command.ExecuteNonQuery();
         }
 
@@ -147,7 +147,7 @@
             string sqlExistTable =
                 $"SELECT name FROM sqlite_master WHERE type='table' AND name='{Event.TableName}';";
 
-            IDbCommand command = new SQLiteCommand(sqlExistTable, (SQLiteConnection)sqlConnection);
+            IDbCommand command = new SQLiteCommand(sqlExistTable, (SQLiteConnection)this.sqlConnection);
             IDataReader reader = command.ExecuteReader();
             if (!reader.Read())
             {

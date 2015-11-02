@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace _5_01
+﻿namespace _5_01
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     internal class Restore
     {
-        private readonly string DbFileName = Program.DbFileName;
-        private readonly string DestinationDir = Program.DestinationDir;
-        private readonly string SourceDir = Program.SourceDir;
-        private readonly string SrcFileTepmlate = Program.SrcFileTepmlate;
-        //private readonly string DstFileTemplate = Program.DstFileTemplate;
-        //private readonly char DirSeparator = Program.DirSeparator;
+        private readonly string dataFileName = Program.DataFileName;
+        private readonly string destinationDir = Program.DestinationDir;
+        private readonly string sourceDir = Program.SourceDir;
+        private readonly string srcFileTepmlate = Program.SrcFileTepmlate;
 
         private IDataSource dataSource;
 
         public Restore(int epoch)
         {
-            dataSource = new Db(DbFileName);
+            this.dataSource = new Db(this.dataFileName);
 
-            IEnumerable<Event> events = dataSource.ListToRestore(epoch);
+            IEnumerable<Event> events = this.dataSource.ListToRestore(epoch);
 
             if (!events.Any())
             {
@@ -40,11 +38,11 @@ namespace _5_01
                 return;
             }
 
-            Utils.CleanDir(SourceDir, SrcFileTepmlate);
+            Utils.CleanDir(this.sourceDir, this.srcFileTepmlate);
 
             foreach (var item in events.Where(ev => ev.Change != (int)WatcherChangeTypes.Deleted))
             {
-                DoRestore(item.Name, item.Guid, item.Version);
+                this.DoRestore(item.Name, item.Guid, item.Version);
                 Console.WriteLine($"File: {item.Name} has restored.");
             }
         }
@@ -52,12 +50,12 @@ namespace _5_01
         private void DoRestore(string name, string guid, int version)
         {
             string source =
-                DestinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
+                this.destinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
 
             Directory.CreateDirectory(Path.GetDirectoryName(name));
             if (Directory.Exists(name))
             {
-                ReverseDirRename(name + " - copy(1)", name);
+                this.ReverseDirRename(name + " - copy(1)", name);
             }
 
             File.Copy(source, name);
@@ -71,13 +69,15 @@ namespace _5_01
             }
             else
             {
-                dstName = Regex.Replace(dstName, @"copy\((\d+)\)$",
+                dstName = Regex.Replace(
+                    dstName, 
+                    @"copy\((\d+)\)$",
                     (match) =>
                     {
                         return "copy(" + (Convert.ToInt32(match.Groups[1].Value) + 1).ToString() + ")";
                     });
 
-                ReverseDirRename(dstName, sourceName);
+                this.ReverseDirRename(dstName, sourceName);
             }
         }
     }
