@@ -8,6 +8,11 @@
         {
             str = str.ToLower().Trim();
 
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return false;
+            }
+
             int indexE = str.IndexOf('e');
 
             if (indexE < 0)
@@ -54,23 +59,39 @@
             string mantissa = res[0];
             string grade = res[1];
 
-            if (!IsMantissaValid(mantissa))
+            if (!IsMantissaValid(mantissa) || !IsGradeValid(grade))
             {
                 return false;
             }
+            
+            int gradeNum = (int)StrToDouble(grade);
 
-            if (!IsGradeValid(grade))
+            int indexPoint = mantissa.IndexOf(".");
+            if (indexPoint < 0)
+            {
+                indexPoint = mantissa.Length;
+            }
+
+            int newIndexPoint = indexPoint + gradeNum;
+
+            if (newIndexPoint < 0)
             {
                 return false;
             }
+            else if (newIndexPoint < (mantissa.Length - 1))
+            {
+                string rest = mantissa.Substring(newIndexPoint + 1);
 
-            double mantissaNum = StrToDouble(mantissa);
-            double gradeNum = StrToDouble(grade);
-
-            double resultNumber = mantissaNum * Math.Pow(10, gradeNum);
-
-            // Console.WriteLine("Result: {0}; Mantissa: {1}; Grade: {2}", resultNumber, mantissaNum, gradeNum);
-            return Math.Floor(resultNumber) == resultNumber;
+                foreach (var item in rest)
+                {
+                    if (item != '0')
+                    {
+                        return false;
+                    }   
+                }
+            }
+            
+            return true;
         }
 
         private static bool IsMantissaValid(string mantissa)

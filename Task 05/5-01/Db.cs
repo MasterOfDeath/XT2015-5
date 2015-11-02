@@ -25,7 +25,7 @@
         public Db(string sqlFileName)
         {
             this.sqlFileName = sqlFileName;
-            
+
             if (this.IsDbEmpty())
             {
                 this.CreateDb();
@@ -73,7 +73,7 @@
 
         public IEnumerable<Event> ListToRestore(int date)
         {
-            string sqlList = 
+            string sqlList =
                 $"SELECT * FROM {Event.TableName} " +
                 $"WHERE {Event.FDate} <= {date} " +
                 $"GROUP BY {Event.FGuid};";

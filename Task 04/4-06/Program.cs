@@ -31,9 +31,21 @@
             Thread.CurrentThread.Priority = ThreadPriority.Highest;     
 
             Stopwatch stopWatch = new Stopwatch();
-            List<long> results = new List<long>();
+            List<long> results = new List<long>(testsCount + 10);
 
             // --- 1.
+            for (int i = 0; i < testsCount; i++)
+            {
+                stopWatch.Start();
+                Util.OnlyPositive(array);
+                stopWatch.Stop();
+
+                results.Add(stopWatch.ElapsedTicks);
+                stopWatch.Reset();
+            }
+
+            results.Clear();
+
             for (int i = 0; i < testsCount; i++)
             {
                 stopWatch.Start();
@@ -61,11 +73,35 @@
                 stopWatch.Reset();
             }
 
+            results.Clear();
+
+            for (int i = 0; i < testsCount; i++)
+            {
+                stopWatch.Start();
+                Util.OnlyPositive(array, del);
+                stopWatch.Stop();
+
+                results.Add(stopWatch.ElapsedTicks);
+                stopWatch.Reset();
+            }
+
             results.Sort();
             Console.WriteLine("Simple delegate: \t{0}", results[results.Count / 2]);
             results.Clear();
 
             // --- 3.
+            for (int i = 0; i < testsCount; i++)
+            {
+                stopWatch.Start();
+                Util.OnlyPositive(array, new DelPredicate(x => (x > 0)));
+                stopWatch.Stop();
+
+                results.Add(stopWatch.ElapsedTicks);
+                stopWatch.Reset();
+            }
+
+            results.Clear();
+
             for (int i = 0; i < testsCount; i++)
             {
                 stopWatch.Start();
@@ -91,11 +127,35 @@
                 stopWatch.Reset();
             }
 
+            results.Clear();
+
+            for (int i = 0; i < testsCount; i++)
+            {
+                stopWatch.Start();
+                Util.OnlyPositiveAnonim(array, x => (x > 0));
+                stopWatch.Stop();
+
+                results.Add(stopWatch.ElapsedTicks);
+                stopWatch.Reset();
+            }
+
             results.Sort();
             Console.WriteLine("Anonim method: \t\t{0}", results[results.Count / 2]);
             results.Clear();
 
             // --- 5.
+            for (int i = 0; i < testsCount; i++)
+            {
+                stopWatch.Start();
+                Util.OnlyPositiveLinq(array);
+                stopWatch.Stop();
+
+                results.Add(stopWatch.ElapsedTicks);
+                stopWatch.Reset();
+            }
+
+            results.Clear();
+
             for (int i = 0; i < testsCount; i++)
             {
                 stopWatch.Start();
