@@ -34,7 +34,8 @@
 
             if (args.Length == 0)
             {
-                new Watch();
+                var watch = new Watch();
+                watch.Start();
             }
             else if (args.Length == 1 && args[0] == OptListAll)
             {
@@ -46,7 +47,8 @@
             }
             else if (args.Length == 2 && args[0] == OptRestore && Utils.String2Epoch(args[1], out epoch))
             {
-                new Restore(epoch);
+                var restore = new Restore();
+                restore.Start(epoch);
             }
             else
             {

@@ -23,6 +23,12 @@
             }
         }
 
+        public static bool IsDir(string fileName)
+        {
+            FileInfo file = new FileInfo(fileName);
+            return file.Attributes == FileAttributes.Directory;
+        }
+
         public static int GetNowInEpoch()
         {
             return (int)(DateTime.Now - OriginDate).TotalSeconds;

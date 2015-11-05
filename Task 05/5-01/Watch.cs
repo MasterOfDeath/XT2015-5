@@ -23,7 +23,10 @@
             {
                 this.Init();
             }
+        }
 
+        public void Start()
+        {
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
             watcher.Path = this.sourceDir;
@@ -45,20 +48,32 @@
 
         private void OnChange(object source, FileSystemEventArgs e)
         {
-            Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-            Event curEvent = this.dataSource.GetLastEventByName(e.FullPath);
+            if (!Utils.IsDir(e.FullPath))
+            {
+                Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
+                Event curEvent = this.dataSource.GetLastEventByName(e.FullPath);
 
-            string guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
-            int version = (curEvent?.Version ?? 0) + 1;
+                string guid;
+                int version;
 
-            this.dataSource.Add(guid, version, e.FullPath, string.Empty, Utils.GetNowInEpoch(), e.ChangeType);
-            this.DoBackup(e.FullPath, guid, version);
+                if (curEvent == null)
+                {
+                    throw new ArgumentException("Incorrect state of a data store");
+                }
+                else
+                {
+                    guid = curEvent.Guid;
+                    version = curEvent.Version + 1;
+                }
+
+                this.dataSource.Add(guid, version, e.FullPath, string.Empty, Utils.GetNowInEpoch(), e.ChangeType);
+                this.DoBackup(e.FullPath, guid, version);
+            }
         }
 
         private void OnCreate(object source, FileSystemEventArgs e)
         {
             Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-            Event curEvent = this.dataSource.GetLastEventByName(e.FullPath);
 
             string guid = Guid.NewGuid().ToString();
             int version = 0;
@@ -72,8 +87,18 @@
             Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
             Event curEvent = this.dataSource.GetLastEventByName(e.FullPath);
 
-            string guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
-            int version = curEvent?.Version ?? 0;
+            string guid;
+            int version;
+
+            if (curEvent == null)
+            {
+                throw new ArgumentException("Incorrect state of a data store");
+            }
+            else
+            {
+                guid = curEvent.Guid;
+                version = curEvent.Version;
+            }
 
             this.dataSource.Add(guid, version, e.FullPath, string.Empty, Utils.GetNowInEpoch(), e.ChangeType);
         }
@@ -83,8 +108,18 @@
             Console.WriteLine("File: " + e.OldFullPath + " renemed to " + e.FullPath);
             Event curEvent = this.dataSource.GetLastEventByName(e.OldFullPath);
 
-            string guid = curEvent?.Guid ?? Guid.NewGuid().ToString();
-            int version = curEvent?.Version ?? 0;
+            string guid;
+            int version;
+
+            if (curEvent == null)
+            {
+                throw new ArgumentException("Incorrect state of a data store");
+            }
+            else
+            {
+                guid = curEvent.Guid;
+                version = curEvent.Version;
+            }
 
             this.dataSource.Add(guid, version, e.FullPath, e.OldFullPath, Utils.GetNowInEpoch(), e.ChangeType);
         }
@@ -94,12 +129,13 @@
             string dest =
                 this.destinationDir + Path.DirectorySeparatorChar + guid + "." + version.ToString();
             Directory.CreateDirectory(Path.GetDirectoryName(dest));
-            File.Copy(name, dest);
+
+            FileInfo file = new FileInfo(name);
+            file.CopyTo(dest, true);
         }
 
         private void Init()
         {
-            //int version = 0;
             foreach (var file in Directory.EnumerateFiles(this.sourceDir, this.srcFileTepmlate, SearchOption.AllDirectories))
             {
                 FileSystemEventArgs arg = new FileSystemEventArgs(
@@ -108,18 +144,6 @@
                     file.Replace(this.sourceDir + this.dirSeparator, ""));
 
                 this.OnCreate(new object(), arg);
-
-                //string guid = Guid.NewGuid().ToString();
-
-                //dataSource.Add(
-                //    guid,
-                //    version,
-                //    file,
-                //    string.Empty,
-                //    GetNowInEpoch(),
-                //    WatcherChangeTypes.Created);
-
-                //DoBackup(file, guid, version);
             }
         }
     }

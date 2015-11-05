@@ -15,7 +15,7 @@
 
         private IDataSource dataSource;
 
-        public Restore(int epoch)
+        public void Start(int epoch)
         {
             this.dataSource = new Db(this.dataFileName);
 
