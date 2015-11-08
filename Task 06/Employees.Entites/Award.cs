@@ -1,43 +1,24 @@
 ﻿namespace Employees.Entites
 {
-    using System;
-    
     public class Award
     {
-        private int id;
-        private string title;
+        public static readonly string TableName = "award";
+        public static readonly string FId = "id";
+        public static readonly string FTitle = "title";
 
-        public int Id
-        { 
-            get
-            {
-                return this.id;
-            }
-            
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Id mustn't be negative");
-                }
-                else
-                {
-                    this.id = value;
-                }
-            }
+        public Award(int id, string title)
+        {
+            this.Id = id;
+            this.Title = title;
         }
+
+        public Award(string title)
+            : this(0, title)
+        {
+        }
+
+        public int Id { get; set; }
         
-        public string Title
-        { 
-            get
-            {
-                return this.title;
-            }
-            
-            set
-            {
-                this.title = value;
-            }
-        }
+        public string Title { get; set; }
     }
 }

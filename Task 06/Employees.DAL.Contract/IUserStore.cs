@@ -5,10 +5,10 @@
 
     public interface IUserStore
     {
-        bool Add(User user);
+        bool AddUser(User user);
 
-        bool Delete(int id);
+        bool DeleteUser(int id);
 
-        IEnumerable<User> ListAll();
+        IEnumerable<User> ListAllUsers();
     }
 }

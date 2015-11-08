@@ -33,7 +33,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IUserLogic.cs" />
-    <Compile Include="IUserLogicCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Employees.Entites\Employees.Entites.csproj">

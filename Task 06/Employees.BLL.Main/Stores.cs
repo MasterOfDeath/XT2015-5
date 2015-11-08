@@ -8,7 +8,7 @@
     {
         static Stores()
         {
-            UserDao = new UserXmlStoreCreator().CreateInstance();
+            UserDao = new UserXmlStore();
         }
         
         public static IUserStore UserDao { get; }

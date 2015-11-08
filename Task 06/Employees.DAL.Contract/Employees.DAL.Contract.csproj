@@ -31,9 +31,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAwardStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IUserStore.cs" />
-    <Compile Include="IUserStoreCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Employees.Entites\Employees.Entites.csproj">

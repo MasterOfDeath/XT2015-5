@@ -3,16 +3,18 @@
     using System;
     using System.Globalization;
     using Employees.BLL.Contract;
-    using Employees.BLL.Main;
     using Employees.Entites;
+    using System.Collections.Generic;
 
-    internal class Program
+    internal class ConsoleUI
     {
         private static readonly string DateFormat = "d.MM.yyyy";
 
         private static void Main(string[] args)
         {
-            var logic = new UserMainLogicCreator().CreateInstance();
+            IUserLogic logic = new BLL.Main.UserMainLogic();
+
+            //Console.ReadKey(true);
 
             while (true)
             {
@@ -50,30 +52,42 @@
 
         private static void AddUser(IUserLogic logic)
         {
-            Console.Write("Enter Name: ");
-            string name = Console.ReadLine();
-
-            DateTime date = new DateTime();
-            bool incorrect = true;
-            while (incorrect)
+            try
             {
+                // Name
+                Console.Write("Enter Name: ");
+                string name = Console.ReadLine();
+
+                // BirthDay
+                DateTime date = new DateTime();
                 Console.Write($"Enter BirthDay ({DateFormat}): ");
                 string dateStr = Console.ReadLine();
-
-                incorrect = !DateTime.TryParseExact(
+                if(!DateTime.TryParseExact(
                     dateStr,
                     DateFormat,
                     CultureInfo.CurrentCulture,
                     DateTimeStyles.None,
-                    out date);
-
-                if (incorrect)
+                    out date))
                 {
-                    Console.WriteLine($"Incorrect input, use this template {DateFormat}");
+                    throw new ArgumentException($"Incorrect input, use this template {DateFormat}");
                 }
-            }
 
-            logic.Add(new User(name, date));
+                var user = new User(name, date);
+
+                // Awards
+                Console.WriteLine("Add award: ");
+                var awardStr = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(awardStr))
+                {
+                    user.AddAward(new Award(awardStr));
+                }
+
+                logic.AddUser(user);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void ListAllUsers(IUserLogic logic)
@@ -84,9 +98,14 @@
                     $"{user.Id}. Name: {user.Name} " +
                     $"BirthDay:({user.BirthDay.ToShortDateString()}) " +
                     $"Age: {user.Age}");
-            }
 
-            Console.WriteLine();
+                foreach (var award in user.Awards)
+                {
+                    Console.WriteLine($"\t Has award: \"{award.Title}\"");
+                }
+
+                Console.WriteLine();
+            }
         }
 
         private static void DelUser(IUserLogic logic)
@@ -94,7 +113,7 @@
             Console.Write("Enter user's number: ");
             int id = Convert.ToInt32(Console.ReadLine());
 
-            if (!logic.Delete(id))
+            if (!logic.DeleteUser(id))
             {
                 Console.WriteLine($"The user {id} hasn't found.");
             }

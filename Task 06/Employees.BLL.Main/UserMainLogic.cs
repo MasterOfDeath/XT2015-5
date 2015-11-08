@@ -3,25 +3,30 @@
     using System;
     using System.Collections.Generic;
     using Employees.BLL.Contract;
-    using Employees.DAL.Contract;
-    using Employees.DAL.Xml;
     using Employees.Entites;
     
     public class UserMainLogic : IUserLogic
     {
-        public bool Add(User user)
+        public bool AddUser(User user)
         {
-            return Stores.UserDao.Add(user);
+            return Stores.UserDao.AddUser(user);
         }
         
-        public bool Delete(int id)
+        public bool DeleteUser(int id)
         {
-            return Stores.UserDao.Delete(id);
+            try
+            {
+                return Stores.UserDao.DeleteUser(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         
         public IEnumerable<User> ListAll()
         {
-            return Stores.UserDao.ListAll();
+            return Stores.UserDao.ListAllUsers();
         }
     }
 }
