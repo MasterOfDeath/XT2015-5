@@ -10,11 +10,5 @@
         bool DeleteUser(int id);
 
         IEnumerable<User> ListAllUsers();
-
-        User GetUserById(int userId);
-
-        bool RewardUser(User user, Award award);
-
-        bool PullOffAward(User user, Award award);
     }
 }

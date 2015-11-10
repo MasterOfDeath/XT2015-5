@@ -1,5 +1,6 @@
 ﻿namespace Employees.BLL.Main
 {
+    using System;
     using Employees.DAL.Contract;
     using Employees.DAL.Xml;
     
@@ -8,11 +9,8 @@
         static Stores()
         {
             UserStore = new UserXmlStore();
-            AwardStore = AwardXmlStore.Instance;
         }
         
         public static IUserStore UserStore { get; }
-
-        public static IAwardStore AwardStore { get; }
     }
 }

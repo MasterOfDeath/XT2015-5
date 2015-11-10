@@ -12,28 +12,37 @@
     public class UserXmlStore : IUserStore
     {
         private XDocument document;
+        // private IDictionary<int, string> awards;
         private IAwardStore awardStore;
-        private string pathUserXml = ConfigurationManager.AppSettings["pathUserXml"];
+        private string pathXml = ConfigurationManager.AppSettings["pathUserXml"];
         
         public UserXmlStore()
         {
-            if (!File.Exists(this.pathUserXml))
+            if (!File.Exists(this.pathXml))
             {
                 new XDocument(new XElement("head"))
-                    .Save(this.pathUserXml);
+                    .Save(this.pathXml);
             }
             
             this.document = new XDocument();
-            this.document = XDocument.Load(this.pathUserXml);
+            this.document = XDocument.Load(this.pathXml);
 
-            this.awardStore = AwardXmlStore.Instance;
+            this.awardStore = new AwardXmlStore();
+
+            //this.awards = this.awardStore.ListAllAwards();
+
+            //var us = new User(5, "Test", DateTime.Now);
+            //us.AddAward(new Award(2, "Prise 1"));
+            //us.AddAward(new Award(3, "Prise 2"));
+            //us.AddAward(new Award(1, "Prise 3"));
+
+            //this.AddUser(us);
         }
 
         public bool AddUser(User user)
         {
-            var elements = this.document
-                .Root
-                .Elements(User.TableName);
+            var elements = this.document.
+                Root.Elements(User.TableName);
 
             int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(User.FId));
 
@@ -49,7 +58,7 @@
             }
             
             this.document.Root.Add(userElement);
-            this.document.Save(this.pathUserXml);
+            this.document.Save(this.pathXml);
             
             return true;
         }
@@ -67,7 +76,7 @@
             }
             
             elements.First().Remove();
-            this.document.Save(this.pathUserXml);
+            this.document.Save(this.pathXml);
             
             return true;
         }
@@ -89,84 +98,25 @@
 
             User user = new User(id, name, birthDay);
 
-            if (this.awardStore.Awards.Count > 0)
+            if (this.awardStore.Awards?.Count > 0)
             {
                 foreach (var el in element.Elements(User.FHasAward))
                 {
                     var awardId = (int)el;
 
-                    var award = this.awardStore.GetAwardById(awardId);
-
-                    if (award == null)
+                    if (!this.awardStore.Awards.ContainsKey(awardId))
                     {
                         throw new ArgumentException("Incorrect state of data source");
                     }
                     else
                     {
-                        user.AddAward(award);
+                        var awardTitle = this.awardStore.Awards[awardId];
+                        user.AddAward(new Award(awardId, awardTitle));
                     }
                 }
             }
             
             return user;
-        }
-
-        public User GetUserById(int userId)
-        {
-            var elements = this.ListAllUsers().Where(user => user.Id == userId);
-
-            if (elements.Count() == 0)
-            {
-                return null;
-            }
-
-            return elements.First();
-        }
-
-        public bool RewardUser(User user, Award award)
-        {
-            var elements = this.document
-                .Root
-                .Elements(User.TableName)
-                .Where(el => (int)el.Attribute(User.FId) == user.Id);
-
-            if (elements.Count() == 0)
-            {
-                return false;
-            }
-
-            elements.First().Add(new XElement(User.FHasAward, award.Id));
-            this.document.Save(this.pathUserXml);
-
-            return true;
-        }
-
-        public bool PullOffAward(User user, Award award)
-        {
-            var userEls = this.document
-                .Root
-                .Elements(User.TableName)
-                .Where(el => (int)el.Attribute(User.FId) == user.Id);
-
-            if (userEls.Count() == 0)
-            {
-                return false;
-            }
-
-            var awardEls = userEls
-                .First()
-                .Elements(User.FHasAward)
-                .Where(el => Convert.ToInt32(el.Value) == award.Id);
-
-            if (awardEls.Count() == 0)
-            {
-                return false;
-            }
-
-            awardEls.First().Remove();
-            this.document.Save(this.pathUserXml);
-
-            return true;
         }
     }
 }

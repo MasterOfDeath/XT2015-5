@@ -5,12 +5,12 @@
     
     public class User : IAwardable
     {
-        public const string TableName = "user";
-        public const string FId = "id";
-        public const string FName = "name";
-        public const string FBirthDay = "birth_day";
-        public const string FAge = "age";
-        public const string FHasAward = "has_award";
+        public static readonly string TableName = "user";
+        public static readonly string FId = "id";
+        public static readonly string FName = "name";
+        public static readonly string FBirthDay = "birth_day";
+        public static readonly string FAge = "age";
+        public static readonly string FHasAward = "has_award";
 
         private List<Award> awards;
         

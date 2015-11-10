@@ -5,14 +5,11 @@
 
     public interface IAwardStore
     {
-        ICollection<Award> Awards { get; }
-
+        // Returns ID of added award 
         int AddAward(Award award);
 
-        ICollection<Award> ListAllAwards();
+        IDictionary<int, string> Awards { get; }
 
-        Award GetAwardByTitle(string titleStr);
-
-        Award GetAwardById(int id);
+        IDictionary<int,string> ListAllAwards();
     }
 }

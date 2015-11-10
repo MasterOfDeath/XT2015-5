@@ -2,9 +2,9 @@
 {
     public class Award
     {
-        public const string TableName = "award";
-        public const string FId = "id";
-        public const string FTitle = "title";
+        public static readonly string TableName = "award";
+        public static readonly string FId = "id";
+        public static readonly string FTitle = "title";
 
         public Award(int id, string title)
         {
