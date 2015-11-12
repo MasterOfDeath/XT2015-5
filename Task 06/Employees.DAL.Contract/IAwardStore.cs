@@ -5,8 +5,6 @@
 
     public interface IAwardStore
     {
-        ICollection<Award> Awards { get; }
-
         int AddAward(Award award);
 
         ICollection<Award> ListAllAwards();
@@ -14,5 +12,11 @@
         Award GetAwardByTitle(string titleStr);
 
         Award GetAwardById(int id);
+
+        IEnumerable<Award> ListAwardsByUserId(int userId);
+
+        bool PresentAward(int userId, int awardId);
+
+        bool PullOffAward(int userId, int awardId);
     }
 }

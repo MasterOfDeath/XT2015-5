@@ -1,18 +1,16 @@
 ﻿namespace Employees.DAL.Xml
 {
-    using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
     using Employees.DAL.Contract;
-    using Entites;
+    using Employees.Entites;
 
     public class AwardXmlStore : IAwardStore
     {
         private string pathAwardXml = ConfigurationManager.AppSettings["pathAwardXml"];
-        internal ICollection<Award> awards;
         private XDocument document;
 
         private AwardXmlStore()
@@ -25,24 +23,9 @@
 
             this.document = new XDocument();
             this.document = XDocument.Load(this.pathAwardXml);
-
-            this.awards = this.ListAllAwards();
         }
 
         public static AwardXmlStore Instance { get; } = new AwardXmlStore();
-
-        public ICollection<Award> Awards
-        {
-            get
-            {
-                return this.awards;
-            }
-
-            private set
-            {
-                this.awards = value;
-            }
-        }
 
         public int AddAward(Award award)
         {
@@ -60,9 +43,6 @@
             this.document.Root.Add(awardElement);
             this.document.Save(this.pathAwardXml);
 
-            // Refresh public Awards list
-            this.Awards = this.ListAllAwards();
-
             return maxId;
         }
 
@@ -77,27 +57,105 @@
 
         public Award GetAwardByTitle(string titleStr)
         {
-            IEnumerable<Award> aw = this.awards
+            var els = this.document
+                .Root
+                .Elements(Award.TableName)
+                .Select(el => this.ElementToAward(el))
                 .Where(award => award.Title.ToLower() == titleStr.ToLower());
 
-            if (aw.Count() == 0)
+            if (els.Count() == 0)
             {
                 return null;
             }
 
-            return aw.First();
+            return els.First();
         }
 
         public Award GetAwardById(int id)
         {
-            IEnumerable<Award> aw = this.Awards.Where(award => award.Id == id);
+            var els = this.document
+                .Root
+                .Elements(Award.TableName)
+                .Select(el => this.ElementToAward(el))
+                .Where(award => award.Id == id);
 
-            if (aw.Count() == 0)
+            if (els.Count() == 0)
             {
                 return null;
             }
 
-            return aw.First();
+            return els.First();
+        }
+
+        public IEnumerable<Award> ListAwardsByUserId(int userId)
+        {
+            var els = this.document
+                .Root
+                .Elements(Award.TableName)
+                .Where(awEls => awEls.Elements(Award.FOwner).Select(el => (int)el).Contains(userId))
+                .Select(el => this.ElementToAward(el));
+
+            return els;
+        }
+
+        public bool PresentAward(int userId, int awardId)
+        {
+            var elements = this.document
+                .Root
+                .Elements(Award.TableName)
+                .Where(el => (int)el.Attribute(Award.FId) == awardId);
+
+            if (elements.Count() == 0)
+            {
+                return false;
+            }
+
+            elements.First().Add(new XElement(Award.FOwner, userId));
+            this.document.Save(this.pathAwardXml);
+
+            return true;
+        }
+
+        public bool PullOffAward(int userId, int awardId)
+        {
+            var awardEls = this.document
+                .Root
+                .Elements(Award.TableName)
+                .Where(el => (int)el.Attribute(Award.FId) == awardId);
+
+            if (awardEls.Count() == 0)
+            {
+                return false;
+            }
+
+            var userEls = awardEls
+                .First()
+                .Elements(Award.FOwner)
+                .Where(el => (int)el == userId);
+
+            if (userEls.Count() == 0)
+            {
+                return false;
+            }
+
+            userEls.First().Remove();
+            this.document.Save(this.pathAwardXml);
+
+            return true;
+        }
+
+        internal void RemoveUserIdElements(int userId)
+        {
+            var elements = this.document
+                .Root
+                .Elements(Award.TableName)
+                .SelectMany(awEls => awEls.Elements(Award.FOwner).Where(el => (int)el == userId));
+
+            if (elements.Any())
+            {
+                elements.Remove();
+                this.document.Save(this.pathAwardXml);
+            }
         }
 
         private Award ElementToAward(XElement element)

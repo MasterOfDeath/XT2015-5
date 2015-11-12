@@ -1,11 +1,9 @@
-﻿namespace Employees.PL.ConsoleApp
+﻿namespace Employees.PL.ConsoleUI
 {
     using System;
-    using System.Linq;
     using System.Globalization;
     using Employees.BLL.Contract;
     using Employees.Entites;
-    using System.Text.RegularExpressions;
 
     internal class ConsoleUI
     {
@@ -16,13 +14,11 @@
             IUserLogic userLogic = new BLL.Main.UserMainLogic();
             IAwardLogic awardLogic = new BLL.Main.AwardMainLogic();
 
-            //Regex regName = new Regex(@"[^\w- \.]+");
-            //foreach (Match item in regName.Matches(":=Пр2и%веЁт"))
-            //{
-            //    Console.WriteLine(item.Value);
-            //}
-            //Console.WriteLine(regName.Matches(":=Пр2ив%еЁт").Count);
+            DisplayMenu(userLogic, awardLogic);
+        }
 
+        private static void DisplayMenu(IUserLogic userLogic, IAwardLogic awardLogic)
+        {
             while (true)
             {
                 Console.WriteLine("1. Add New Employee\t\t6. Add New Award");
@@ -48,15 +44,15 @@
                         break;
 
                     case "3":
-                        ListAllUsers(userLogic);
+                        ListAllUsers(userLogic, awardLogic);
                         break;
 
                     case "4":
-                        RewardUser(userLogic);
+                        RewardUser(awardLogic);
                         break;
 
                     case "5":
-                        PullOffAward(userLogic);
+                        PullOffAward(awardLogic);
                         break;
 
                     case "6":
@@ -77,7 +73,7 @@
             }
         }
 
-        private static void PullOffAward(IUserLogic userLogic)
+        private static void PullOffAward(IAwardLogic logic)
         {
             try
             {
@@ -87,7 +83,7 @@
                 Console.Write("Enter Id of Award: ");
                 int awardId = Convert.ToInt32(Console.ReadLine());
 
-                if (!userLogic.PullOffAward(userId, awardId))
+                if (!logic.PullOffAward(userId, awardId))
                 {
                     Console.WriteLine("Employee or Award haven't found.");
                 }
@@ -142,7 +138,7 @@
             Console.WriteLine();
         }
 
-        private static void RewardUser(IUserLogic userLogic)
+        private static void RewardUser(IAwardLogic logic)
         {
             try
             {
@@ -152,7 +148,7 @@
                 Console.Write("Enter Id of Award: ");
                 int awardId = Convert.ToInt32(Console.ReadLine());
 
-                if (!userLogic.RewardUser(userId, awardId))
+                if (!logic.PresentAward(userId, awardId))
                 {
                     Console.WriteLine("Employee or Award haven't found.");
                 }
@@ -211,26 +207,30 @@
             Console.WriteLine();
         }
 
-        private static void ListAllUsers(IUserLogic logic)
+        private static void ListAllUsers(IUserLogic userLogic, IAwardLogic awardLogic)
         {
             try
             {
-                foreach (var user in logic.ListAll())
+                foreach (var user in userLogic.ListAll())
                 {
-                    Console.WriteLine(
-                        $"{user.Id}. Name: \"{user.Name}\" " +
-                        $"BirthDay: \"{user.BirthDay.ToShortDateString()}\" " +
-                        $"Age: \"{user.Age}\"");
+                    string strId = $"{user.Id}.";
+                    string strName = $" Name: \"{user.Name}\"";
+                    string strDate = $" BirthDay: \"{user.BirthDay.ToShortDateString()}\"";
+                    string strAge = $" Age: \"{userLogic.GetAge(user)}\"";
 
-                    foreach (var award in user.Awards)
+                    Console.WriteLine(strId + strName + strDate + strAge);
+
+                    foreach (var award in awardLogic.ListAwardsByUserId(user.Id))
                     {
                         Console.WriteLine($"    Has award: \"{award.Title}\"");
                     }
+
+                    Console.WriteLine();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); ;
+                Console.WriteLine(ex.Message);
             }
 
             Console.WriteLine();

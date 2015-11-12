@@ -7,14 +7,10 @@
     {
         bool AddUser(User user);
 
-        bool DeleteUser(int id);
+        bool DeleteUser(User user);
 
         IEnumerable<User> ListAllUsers();
 
         User GetUserById(int userId);
-
-        bool RewardUser(User user, Award award);
-
-        bool PullOffAward(User user, Award award);
     }
 }

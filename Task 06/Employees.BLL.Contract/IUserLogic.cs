@@ -12,8 +12,6 @@
         
         IEnumerable<User> ListAll();
 
-        bool RewardUser(int userId, int awardId);
-
-        bool PullOffAward(int userId, int awardId);
+        int GetAge(User user);
     }
 }

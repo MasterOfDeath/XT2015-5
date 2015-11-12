@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Text.RegularExpressions;
-    using Employees.Entites;
     using Employees.BLL.Contract;
+    using Employees.Entites;
 
     public class AwardMainLogic : IAwardLogic
     {
@@ -14,13 +14,13 @@
 
         public int AddAward(string awardTitle)
         {
-            checkAwardsValues(awardTitle);
+            this.CheckAwardsValues(awardTitle);
 
             var award = Stores.AwardStore.GetAwardByTitle(awardTitle);
 
             if (award != null)
             {
-                throw new InvalidOperationException($"Award \"{awardTitle}\" allready exests.");
+                throw new InvalidOperationException($"Award '{awardTitle}' allready exests.");
             }
 
             award = new Award(awardTitle);
@@ -46,11 +46,65 @@
 
         public IEnumerable<Award> ListAllAwards()
         {
-            return Stores.AwardStore.Awards;
+            return Stores.AwardStore.ListAllAwards();
         }
 
-        private void checkAwardsValues(string strTitle)
+        public IEnumerable<Award> ListAwardsByUserId(int userId)
         {
+            return Stores.AwardStore.ListAwardsByUserId(userId);
+        }
+
+        public bool PresentAward(int userId, int awardId)
+        {
+            if (userId < 0 || awardId < 0)
+            {
+                throw new ArgumentException($"User ID and Award ID must be positive.");
+            }
+
+            var user = Stores.UserStore.GetUserById(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var award = Stores.AwardStore.GetAwardById(awardId);
+            if (award == null)
+            {
+                return false;
+            }
+
+            return Stores.AwardStore.PresentAward(user.Id, award.Id);
+        }
+
+        public bool PullOffAward(int userId, int awardId)
+        {
+            if (userId < 0 || awardId < 0)
+            {
+                throw new ArgumentException($"User ID and Award ID must be positive.");
+            }
+
+            var user = Stores.UserStore.GetUserById(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var award = Stores.AwardStore.GetAwardById(awardId);
+            if (award == null)
+            {
+                return false;
+            }
+
+            return Stores.AwardStore.PullOffAward(user.Id, award.Id);
+        }
+
+        private void CheckAwardsValues(string strTitle)
+        {
+            if (string.IsNullOrWhiteSpace(strTitle))
+            {
+                throw new ArgumentException($"The Title mustn't be empty.");
+            }
+
             if (strTitle.Length > this.maxTitleLength)
             {
                 throw new ArgumentException($"The Title mustn't be longer than {this.maxTitleLength}");
@@ -67,7 +121,7 @@
                     strMatches.Append(match.Value);
                 }
 
-                throw new ArgumentException($"Characters \"{strMatches.ToString()}\" aren't correct for the Title.");
+                throw new ArgumentException($"Characters '{strMatches.ToString()}' aren't correct for the Title.");
             }
         }
     }

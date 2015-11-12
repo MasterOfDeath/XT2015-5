@@ -1,13 +1,13 @@
 ﻿namespace Employees.BLL.Main
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using Employees.BLL.Contract;
     using Employees.Entites;
-    
+
     public class UserMainLogic : IUserLogic
     {
         private readonly Regex regUserName = new Regex(@"[^\w- \.]+");
@@ -15,74 +15,48 @@
 
         public bool AddUser(User user)
         {
-            this.checkUsersValues(user);
+            this.CheckUsersValues(user);
 
             return Stores.UserStore.AddUser(user);
         }
 
         public bool DeleteUser(int id)
         {
-            try
+            if (id < 0)
             {
-                return Stores.UserStore.DeleteUser(id);
+                throw new ArgumentException("Id mustn't be negative.");
             }
-            catch (Exception)
+
+            var user = Stores.UserStore.GetUserById(id);
+
+            if (user == null)
             {
-                throw;
+                throw new ArgumentException("The Employee not found.");
             }
+
+            return Stores.UserStore.DeleteUser(user);
         }
-        
+
         public IEnumerable<User> ListAll()
         {
             return Stores.UserStore.ListAllUsers();
         }
 
-        public bool RewardUser(int userId, int awardId)
+        public int GetAge(User user)
         {
-            if (userId < 0 || awardId < 0)
-            {
-                throw new ArgumentException($"User ID and Award ID must be positive.");
-            }
+            DateTime nowDate = DateTime.Today;
+            int diff = nowDate.Year - user.BirthDay.Year;
 
-            var user = Stores.UserStore.GetUserById(userId);
-            if (user == null)
-            {
-                return false;
-            }
-
-            var award = Stores.AwardStore.GetAwardById(awardId);
-            if (award == null)
-            {
-                return false;
-            } 
-
-            return Stores.UserStore.RewardUser(user, award);
+            return (user.BirthDay > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
 
-        public bool PullOffAward(int userId, int awardId)
+        private void CheckUsersValues(User user)
         {
-            if (userId < 0 || awardId < 0)
+            if (string.IsNullOrWhiteSpace(user.Name))
             {
-                throw new ArgumentException($"User ID and Award ID must be positive.");
+                throw new ArgumentException($"The Name mustn't be empty.");
             }
 
-            var user = Stores.UserStore.GetUserById(userId);
-            if (user == null)
-            {
-                return false;
-            }
-
-            var award = Stores.AwardStore.GetAwardById(awardId);
-            if (award == null)
-            {
-                return false;
-            }
-
-            return Stores.UserStore.PullOffAward(user, award);
-        }
-
-        private void checkUsersValues(User user)
-        {
             if (user.Name.Length > this.maxNameLength)
             {
                 throw new ArgumentException($"The Name mustn't be longer than {this.maxNameLength}");
@@ -99,7 +73,7 @@
                     strMatches.Append(match.Value);
                 }
 
-                throw new ArgumentException($"Characters \"{strMatches.ToString()}\" aren't correct for name.");
+                throw new ArgumentException($"Characters '{strMatches.ToString()}' aren't correct for name.");
             }
 
             if (user.BirthDay > DateTime.Now)

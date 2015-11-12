@@ -12,7 +12,7 @@
     public class UserXmlStore : IUserStore
     {
         private XDocument document;
-        private IAwardStore awardStore;
+        private AwardXmlStore awardStore;
         private string pathUserXml = ConfigurationManager.AppSettings["pathUserXml"];
         
         public UserXmlStore()
@@ -43,23 +43,18 @@
                 new XElement(User.FName, user.Name),
                 new XElement(User.FBirthDay, user.BirthDay));
 
-            foreach (var award in user.Awards)
-            {
-                userElement.Add(new XElement(User.FHasAward, award.Id));
-            }
-            
             this.document.Root.Add(userElement);
             this.document.Save(this.pathUserXml);
             
             return true;
         }
         
-        public bool DeleteUser(int id)
+        public bool DeleteUser(User user)
         {
             IEnumerable<XElement> elements = this.document
                 .Root
                 .Elements(User.TableName)
-                .Where(el => el.Attribute(User.FId).Value == id.ToString());
+                .Where(el => (int)el.Attribute(User.FId) == user.Id);
 
             if (!elements.Any())
             {
@@ -68,6 +63,9 @@
             
             elements.First().Remove();
             this.document.Save(this.pathUserXml);
+
+            // Remove dependences in awards
+            this.awardStore.RemoveUserIdElements(user.Id);
             
             return true;
         }
@@ -79,36 +77,6 @@
                 .Elements(User.TableName)
                 .Select(el => this.ElementToUser(el))
                 .ToList();
-        }
-        
-        private User ElementToUser(XElement element)
-        {
-            int id = (int)element.Attribute(User.FId);
-            string name = (string)element.Element(User.FName);
-            DateTime birthDay = Convert.ToDateTime((string)element.Element(User.FBirthDay));
-
-            User user = new User(id, name, birthDay);
-
-            if (this.awardStore.Awards.Count > 0)
-            {
-                foreach (var el in element.Elements(User.FHasAward))
-                {
-                    var awardId = (int)el;
-
-                    var award = this.awardStore.GetAwardById(awardId);
-
-                    if (award == null)
-                    {
-                        throw new ArgumentException("Incorrect state of data source");
-                    }
-                    else
-                    {
-                        user.AddAward(award);
-                    }
-                }
-            }
-            
-            return user;
         }
 
         public User GetUserById(int userId)
@@ -123,50 +91,15 @@
             return elements.First();
         }
 
-        public bool RewardUser(User user, Award award)
+        private User ElementToUser(XElement element)
         {
-            var elements = this.document
-                .Root
-                .Elements(User.TableName)
-                .Where(el => (int)el.Attribute(User.FId) == user.Id);
+            int id = (int)element.Attribute(User.FId);
+            string name = (string)element.Element(User.FName);
+            DateTime birthDay = Convert.ToDateTime((string)element.Element(User.FBirthDay));
 
-            if (elements.Count() == 0)
-            {
-                return false;
-            }
+            User user = new User(id, name, birthDay);
 
-            elements.First().Add(new XElement(User.FHasAward, award.Id));
-            this.document.Save(this.pathUserXml);
-
-            return true;
-        }
-
-        public bool PullOffAward(User user, Award award)
-        {
-            var userEls = this.document
-                .Root
-                .Elements(User.TableName)
-                .Where(el => (int)el.Attribute(User.FId) == user.Id);
-
-            if (userEls.Count() == 0)
-            {
-                return false;
-            }
-
-            var awardEls = userEls
-                .First()
-                .Elements(User.FHasAward)
-                .Where(el => Convert.ToInt32(el.Value) == award.Id);
-
-            if (awardEls.Count() == 0)
-            {
-                return false;
-            }
-
-            awardEls.First().Remove();
-            this.document.Save(this.pathUserXml);
-
-            return true;
+            return user;
         }
     }
 }
