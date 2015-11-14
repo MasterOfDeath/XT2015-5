@@ -10,11 +10,12 @@
             Console.WriteLine("Введите текст: ");
 
             // var str = Console.ReadLine();
-            var str = "<b>Это</b> <br/> текст <i>с</i> <font color=\"red\">HTML</font> кодами";
+            var str = "<h2>Это</h2> <br/> текст <   > <1232> <!-- fbrb --> <i>с</i> <font color=\"red\">HTML</font> кодами";
 
-            // Regex reg = new Regex(@"<[/]?.+?>"); 
+            Regex reg = new Regex(@"</?[a-zA-Z!][^>]*>");
+
             // Regex reg = new Regex(@"(?></?\w+)(?>(?:[^>'""]+|'[^']*'|""[^""]*"")*)>");
-            Regex reg = new Regex(@"</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>");
+            // Regex reg = new Regex(@"</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>");
 
             Console.WriteLine(reg.Replace(str, "_"));
 

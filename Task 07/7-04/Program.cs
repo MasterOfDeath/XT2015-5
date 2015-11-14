@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
 
     internal class Program
     {
@@ -17,7 +15,10 @@
             //while (!string.IsNullOrEmpty(input))
             //{
             //    input = Console.ReadLine();
-            //    strings.Add(input);
+            //    if (!string.IsNullOrWhiteSpace(input))
+            //    {
+            //        strings.Add(input);
+            //    }
             //}
 
             strings.Add("40");
@@ -32,7 +33,8 @@
                 Console.Write("String \"{0}\" is ", str);
                 Console.WriteLine(ParseNumbers(str)); 
             }
-            
+
+            Console.WriteLine("Press Enter to exit");
             Console.Read();
         }
 
