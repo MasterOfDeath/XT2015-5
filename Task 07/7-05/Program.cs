@@ -12,8 +12,8 @@
         {
             Console.WriteLine("Введите текст: ");
 
-            //var str = Console.ReadLine();
-            var str = "В 7:55 я встал, позавтракал и к 10:77 пошёл на работу.";
+            var str = Console.ReadLine();
+            //var str = "В 7:55 я встал, позавтракал и к 10:77 пошёл на работу.";
 
             Regex reg = new Regex(@"\b(?:[0-9]|[0-1][0-9]|[2][0-3]):(?:[0-5][0-9])\b");
 
