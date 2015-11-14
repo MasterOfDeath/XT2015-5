@@ -8,7 +8,7 @@
         static Stores()
         {
             UserStore = new UserXmlStore();
-            AwardStore = AwardXmlStore.Instance;
+            AwardStore = new AwardXmlStore();
         }
         
         public static IUserStore UserStore { get; }

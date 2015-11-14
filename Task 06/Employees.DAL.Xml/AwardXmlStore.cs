@@ -10,10 +10,15 @@
 
     public class AwardXmlStore : IAwardStore
     {
+        private const string TableName = "award";
+        private const string FId = "id";
+        private const string FTitle = "title";
+        private const string FOwner = "owner";
+
         private string pathAwardXml = ConfigurationManager.AppSettings["pathAwardXml"];
         private XDocument document;
 
-        private AwardXmlStore()
+        public AwardXmlStore()
         {
             if (!File.Exists(this.pathAwardXml))
             {
@@ -21,24 +26,21 @@
                     .Save(this.pathAwardXml);
             }
 
-            this.document = new XDocument();
             this.document = XDocument.Load(this.pathAwardXml);
         }
-
-        public static AwardXmlStore Instance { get; } = new AwardXmlStore();
 
         public int AddAward(Award award)
         {
             var elements = this.document
                 .Root
-                .Elements(Award.TableName);
+                .Elements(TableName);
 
-            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(Award.FId));
+            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
 
             XElement awardElement = new XElement(
-                Award.TableName,
-                new XAttribute(Award.FId, ++maxId),
-                new XElement(Award.FTitle, award.Title));
+                TableName,
+                new XAttribute(FId, ++maxId),
+                new XElement(FTitle, award.Title));
 
             this.document.Root.Add(awardElement);
             this.document.Save(this.pathAwardXml);
@@ -50,7 +52,7 @@
         {
             return this.document
                 .Root
-                .Elements(Award.TableName)
+                .Elements(TableName)
                 .Select(el => this.ElementToAward(el))
                 .ToList();
         }
@@ -59,7 +61,7 @@
         {
             var els = this.document
                 .Root
-                .Elements(Award.TableName)
+                .Elements(TableName)
                 .Select(el => this.ElementToAward(el))
                 .Where(award => award.Title.ToLower() == titleStr.ToLower());
 
@@ -75,7 +77,7 @@
         {
             var els = this.document
                 .Root
-                .Elements(Award.TableName)
+                .Elements(TableName)
                 .Select(el => this.ElementToAward(el))
                 .Where(award => award.Id == id);
 
@@ -91,8 +93,8 @@
         {
             var els = this.document
                 .Root
-                .Elements(Award.TableName)
-                .Where(awEls => awEls.Elements(Award.FOwner).Select(el => (int)el).Contains(userId))
+                .Elements(TableName)
+                .Where(awEls => awEls.Elements(FOwner).Select(el => (int)el).Contains(userId))
                 .Select(el => this.ElementToAward(el));
 
             return els;
@@ -102,15 +104,15 @@
         {
             var elements = this.document
                 .Root
-                .Elements(Award.TableName)
-                .Where(el => (int)el.Attribute(Award.FId) == awardId);
+                .Elements(TableName)
+                .Where(el => (int)el.Attribute(FId) == awardId);
 
             if (elements.Count() == 0)
             {
                 return false;
             }
 
-            elements.First().Add(new XElement(Award.FOwner, userId));
+            elements.First().Add(new XElement(FOwner, userId));
             this.document.Save(this.pathAwardXml);
 
             return true;
@@ -120,8 +122,8 @@
         {
             var awardEls = this.document
                 .Root
-                .Elements(Award.TableName)
-                .Where(el => (int)el.Attribute(Award.FId) == awardId);
+                .Elements(TableName)
+                .Where(el => (int)el.Attribute(FId) == awardId);
 
             if (awardEls.Count() == 0)
             {
@@ -130,7 +132,7 @@
 
             var userEls = awardEls
                 .First()
-                .Elements(Award.FOwner)
+                .Elements(FOwner)
                 .Where(el => (int)el == userId);
 
             if (userEls.Count() == 0)
@@ -144,24 +146,10 @@
             return true;
         }
 
-        internal void RemoveUserIdElements(int userId)
-        {
-            var elements = this.document
-                .Root
-                .Elements(Award.TableName)
-                .SelectMany(awEls => awEls.Elements(Award.FOwner).Where(el => (int)el == userId));
-
-            if (elements.Any())
-            {
-                elements.Remove();
-                this.document.Save(this.pathAwardXml);
-            }
-        }
-
         private Award ElementToAward(XElement element)
         {
-            int id = (int)element.Attribute(Award.FId);
-            string title = (string)element.Element(Award.FTitle);
+            int id = (int)element.Attribute(FId);
+            string title = (string)element.Element(FTitle);
 
             return new Award(id, title);
         }

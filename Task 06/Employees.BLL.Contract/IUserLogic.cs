@@ -10,8 +10,8 @@
         
         bool DeleteUser(int id);
         
-        IEnumerable<User> ListAll();
+        IEnumerable<User> GetAllUsers();
 
-        int GetAge(User user);
+        int GetAge(DateTime birthDay);
     }
 }

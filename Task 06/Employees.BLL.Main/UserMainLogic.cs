@@ -37,21 +37,26 @@
             return Stores.UserStore.DeleteUser(user);
         }
 
-        public IEnumerable<User> ListAll()
+        public IEnumerable<User> GetAllUsers()
         {
             return Stores.UserStore.ListAllUsers();
         }
 
-        public int GetAge(User user)
+        public int GetAge(DateTime birthDay)
         {
             DateTime nowDate = DateTime.Today;
-            int diff = nowDate.Year - user.BirthDay.Year;
+            int diff = nowDate.Year - birthDay.Year;
 
-            return (user.BirthDay > nowDate.AddYears(-diff)) ? diff - 1 : diff;
+            return (birthDay > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
 
         private void CheckUsersValues(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentException("The User mustn't be null");
+            }
+
             if (string.IsNullOrWhiteSpace(user.Name))
             {
                 throw new ArgumentException($"The Name mustn't be empty.");

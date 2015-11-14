@@ -4,11 +4,6 @@
     
     public class User
     {
-        public const string TableName = "user";
-        public const string FId = "id";
-        public const string FName = "name";
-        public const string FBirthDay = "birth_day";
-        
         public User(int id, string name, DateTime birthDay)
         {
             this.Id = id;

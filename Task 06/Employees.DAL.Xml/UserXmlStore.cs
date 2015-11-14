@@ -11,10 +11,17 @@
     
     public class UserXmlStore : IUserStore
     {
+        private const string TableName = "user";
+        private const string FId = "id";
+        private const string FName = "name";
+        private const string FBirthDay = "birth_day";
+        private const string AwardTableName = "award";
+        private const string FOwner = "owner";
+
         private XDocument document;
-        private AwardXmlStore awardStore;
         private string pathUserXml = ConfigurationManager.AppSettings["pathUserXml"];
-        
+        private string pathAwardXml = ConfigurationManager.AppSettings["pathAwardXml"];
+
         public UserXmlStore()
         {
             if (!File.Exists(this.pathUserXml))
@@ -23,25 +30,22 @@
                     .Save(this.pathUserXml);
             }
             
-            this.document = new XDocument();
             this.document = XDocument.Load(this.pathUserXml);
-
-            this.awardStore = AwardXmlStore.Instance;
         }
 
         public bool AddUser(User user)
         {
             var elements = this.document
                 .Root
-                .Elements(User.TableName);
+                .Elements(TableName);
 
-            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(User.FId));
+            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
 
             XElement userElement = new XElement(
-                User.TableName,
-                new XAttribute(User.FId, ++maxId),
-                new XElement(User.FName, user.Name),
-                new XElement(User.FBirthDay, user.BirthDay));
+                TableName,
+                new XAttribute(FId, ++maxId),
+                new XElement(FName, user.Name),
+                new XElement(FBirthDay, user.BirthDay));
 
             this.document.Root.Add(userElement);
             this.document.Save(this.pathUserXml);
@@ -53,8 +57,8 @@
         {
             IEnumerable<XElement> elements = this.document
                 .Root
-                .Elements(User.TableName)
-                .Where(el => (int)el.Attribute(User.FId) == user.Id);
+                .Elements(TableName)
+                .Where(el => (int)el.Attribute(FId) == user.Id);
 
             if (!elements.Any())
             {
@@ -65,7 +69,7 @@
             this.document.Save(this.pathUserXml);
 
             // Remove dependences in awards
-            this.awardStore.RemoveUserIdElements(user.Id);
+            this.RemoveUserIdElements(XDocument.Load(this.pathAwardXml), user.Id);
             
             return true;
         }
@@ -74,7 +78,7 @@
         {
             return this.document
                 .Root
-                .Elements(User.TableName)
+                .Elements(TableName)
                 .Select(el => this.ElementToUser(el))
                 .ToList();
         }
@@ -93,13 +97,27 @@
 
         private User ElementToUser(XElement element)
         {
-            int id = (int)element.Attribute(User.FId);
-            string name = (string)element.Element(User.FName);
-            DateTime birthDay = Convert.ToDateTime((string)element.Element(User.FBirthDay));
+            int id = (int)element.Attribute(FId);
+            string name = (string)element.Element(FName);
+            DateTime birthDay = Convert.ToDateTime((string)element.Element(FBirthDay));
 
             User user = new User(id, name, birthDay);
 
             return user;
+        }
+
+        private void RemoveUserIdElements(XDocument document, int userId)
+        {
+            var elements = document
+                .Root
+                .Elements(AwardTableName)
+                .SelectMany(awEls => awEls.Elements(FOwner).Where(el => (int)el == userId));
+
+            if (elements.Any())
+            {
+                elements.Remove();
+                document.Save(this.pathAwardXml);
+            }
         }
     }
 }

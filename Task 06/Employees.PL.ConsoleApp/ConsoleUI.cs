@@ -25,7 +25,7 @@
                 Console.WriteLine("2. Delete Employee\t\t7. List All Awards");
                 Console.WriteLine("3. List All Employees");
                 Console.WriteLine("4. Give Award to Employee");
-                Console.WriteLine("5. Pull off Award");
+                Console.WriteLine("5. Revoke Award");
                 Console.WriteLine();
                 Console.WriteLine("0. Exit");
                 Console.WriteLine();
@@ -108,7 +108,7 @@
         {
             try
             {
-                foreach (var award in awardLogic.ListAllAwards())
+                foreach (var award in awardLogic.GetAllAwards())
                 {
                     Console.WriteLine($"{award.Id}. Title: \"{award.Title}\"");
                 }
@@ -128,7 +128,7 @@
                 Console.Write("Enter Title: ");
                 var awardTitle = Console.ReadLine();
 
-                awardlogic.AddAward(awardTitle);
+                awardlogic.AddAward(new Award(awardTitle));
             }
             catch (Exception ex)
             {
@@ -211,18 +211,18 @@
         {
             try
             {
-                foreach (var user in userLogic.ListAll())
+                foreach (var user in userLogic.GetAllUsers())
                 {
                     string strId = $"{user.Id}.";
                     string strName = $" Name: \"{user.Name}\"";
                     string strDate = $" BirthDay: \"{user.BirthDay.ToShortDateString()}\"";
-                    string strAge = $" Age: \"{userLogic.GetAge(user)}\"";
+                    string strAge = $" Age: \"{userLogic.GetAge(user.BirthDay)}\"";
 
                     Console.WriteLine(strId + strName + strDate + strAge);
 
-                    foreach (var award in awardLogic.ListAwardsByUserId(user.Id))
+                    foreach (var award in awardLogic.GetAwardsByUserId(user.Id))
                     {
-                        Console.WriteLine($"    Has award: \"{award.Title}\"");
+                        Console.WriteLine($"\tHas award: \"{award.Title}\"");
                     }
 
                     Console.WriteLine();

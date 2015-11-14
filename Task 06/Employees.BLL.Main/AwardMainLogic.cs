@@ -12,44 +12,28 @@
         private readonly Regex regAwardTitle = new Regex(@"[^\w- \.?!]+");
         private readonly int maxTitleLength = 50;
 
-        public int AddAward(string awardTitle)
+        public bool AddAward(Award award)
         {
-            this.CheckAwardsValues(awardTitle);
+            this.CheckAwardsValues(award);
 
-            var award = Stores.AwardStore.GetAwardByTitle(awardTitle);
+            var awardNew = Stores.AwardStore.GetAwardByTitle(award.Title);
 
-            if (award != null)
+            if (awardNew != null)
             {
-                throw new InvalidOperationException($"Award '{awardTitle}' allready exests.");
+                throw new InvalidOperationException($"Award '{award.Title}' allready exests.");
             }
 
-            award = new Award(awardTitle);
-            award.Id = Stores.AwardStore.AddAward(award);
+            Stores.AwardStore.AddAward(new Award(award.Title));
 
-            return award.Id;
+            return true;
         }
 
-        public Award GetOrAddAward(string awardTitle)
-        {
-            var award = Stores.AwardStore.GetAwardByTitle(awardTitle);
-
-            if (award != null)
-            {
-                return award;
-            }
-
-            award = new Award(awardTitle);
-            award.Id = Stores.AwardStore.AddAward(award);
-
-            return award;
-        }
-
-        public IEnumerable<Award> ListAllAwards()
+        public IEnumerable<Award> GetAllAwards()
         {
             return Stores.AwardStore.ListAllAwards();
         }
 
-        public IEnumerable<Award> ListAwardsByUserId(int userId)
+        public IEnumerable<Award> GetAwardsByUserId(int userId)
         {
             return Stores.AwardStore.ListAwardsByUserId(userId);
         }
@@ -78,7 +62,7 @@
 
         public bool PullOffAward(int userId, int awardId)
         {
-            if (userId < 0 || awardId < 0)
+            if (userId <= 0 || awardId <= 0)
             {
                 throw new ArgumentException($"User ID and Award ID must be positive.");
             }
@@ -98,19 +82,24 @@
             return Stores.AwardStore.PullOffAward(user.Id, award.Id);
         }
 
-        private void CheckAwardsValues(string strTitle)
+        private void CheckAwardsValues(Award award)
         {
-            if (string.IsNullOrWhiteSpace(strTitle))
+            if (award == null)
+            {
+                throw new ArgumentException($"The Award mustn't be null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(award.Title))
             {
                 throw new ArgumentException($"The Title mustn't be empty.");
             }
 
-            if (strTitle.Length > this.maxTitleLength)
+            if (award.Title.Length > this.maxTitleLength)
             {
                 throw new ArgumentException($"The Title mustn't be longer than {this.maxTitleLength}");
             }
 
-            var matches = this.regAwardTitle.Matches(strTitle);
+            var matches = this.regAwardTitle.Matches(award.Title);
 
             if (matches.Count != 0)
             {

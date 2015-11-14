@@ -5,11 +5,11 @@
     
     public interface IAwardLogic 
     {
-        int AddAward(string awardTitle);
+        bool AddAward(Award award);
 
-        IEnumerable<Award> ListAllAwards();
+        IEnumerable<Award> GetAllAwards();
 
-        IEnumerable<Award> ListAwardsByUserId(int userId);
+        IEnumerable<Award> GetAwardsByUserId(int userId);
 
         bool PresentAward(int userId, int awardId);
 
