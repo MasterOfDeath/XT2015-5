@@ -1,0 +1,20 @@
+@import url(html5reset-1.6.1.css);
+
+html {
+    padding: 15px;
+}
+
+menu.mainMenu {
+    background: #f9e497;
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 5px 5px #880000;
+    font-family: 'Times New Roman', serif;
+    color: #880000;
+}
+
+menu.mainMenu > ul > li {
+    list-style-type: none;
+    margin: 10px 5px;
+}

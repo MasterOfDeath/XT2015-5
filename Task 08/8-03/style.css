@@ -1,0 +1,81 @@
+@import url(html5reset-1.6.1.css);
+
+body {
+    padding: 15px;
+}
+
+.menu > li {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    list-style: none;
+    
+    border-radius: 10px 10px 0px 0px;
+    border-bottom-style: none;
+}
+
+.menu > li > a {
+    background: white;
+    padding: 5px;    
+}
+
+.menu > li a:visited {
+    color: #0000cc;
+}
+
+.menu > li > ul {
+    display:none;
+    position: absolute;
+    z-index: 2;
+    margin-top: 0.3em;
+    background: white;
+    box-shadow:  0 0 10px rgba(0,0,0,.5);
+/*    clip:rect(-10px 9em 6.3em -10px);*/
+    min-width: 10em;
+    padding: 0;
+    list-style: none;
+}
+
+.menu > li > ul li{
+    padding: 5px;
+    text-decoration: none;
+}
+
+.menu > li > ul a{
+    display: block;
+    text-decoration: none;
+}
+
+.menu > li:hover > ul{
+    display: block;
+}
+
+.menu .fileMenu:hover > a:before{
+    content: "Файл";
+}
+
+.menu .editMenu:hover > a:before{
+    content: "Правка";
+}
+
+.menu > li:hover > a:before{
+    position: absolute;
+    color: black;
+    background: white;
+    padding: 5px;
+    top: -0.3em;
+    left: 0;
+    z-index: 101; 
+    
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 4px -4px 6px -1px rgba(0, 0, 0, .2), -4px -4px 6px -1px rgba(0, 0, 0, .2);
+}
+
+.menu > li > ul li:hover {
+    background: #37abff;
+}
+
+.menu > li > ul li:hover a{
+    color: white;
+}
+

@@ -1,0 +1,67 @@
+body {
+    background: #4e6379;
+    padding: 2%;
+}
+
+.promo {
+    background: white;
+    border-radius: 5px;
+    box-shadow:  0 20px 30px rgba(0,0,0,0.5);
+    display: inline-block;
+    font-family: "Arial", sans-serif;
+    font-size: 11pt;
+    min-width: 584px;
+    padding: 10px 5px;
+}
+
+.promo > div:first-child {
+    border-left: none;
+}
+
+.promo > div {
+    border-left: 1px solid #d9d9d9; 
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.desc, .price, .promo button, .promo .img {
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.promo .desc {
+    color: #f56332;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.promo .price {
+    margin: 15px 0;
+}
+
+.promo button {
+    background: #f56332;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 3px 10px;
+}
+
+.promo .img {
+    height: 42px;
+    width: 61px;
+}
+
+.promo .img-virtual {
+    background: url("hosting.png") 0 126px;
+}
+
+.promo .img-cloud {
+    background: url("hosting.png") 0 84px;
+}
+
+.promo .img-server {
+    background: url("hosting.png") 0 42px;
+}
+

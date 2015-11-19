@@ -10,11 +10,12 @@
             Console.Write("Введите текст, содержащий дату в формате dd-mm-yyyy: ");
             
             // var str = Console.ReadLine();
-            var str = "2016 год наступит 01-01-2016";
+            var str = "2016 год наступит 01-02-2016";
             Console.WriteLine();
 
-            // Regex reg = new Regex(@"(\D|^)([0][1-9]|[12][0-9]|[3][01])-([0][1-9]|[1][0-2])-(\d{4})(\D|$)");
-            Regex reg = new Regex(@"\b([0][1-9]|[12][0-9]|[3][01])-([0][1-9]|[1][0-2])-(\d{4})\b");
+            var datePattern = @"(\D|^)((0[1-9]|[12][0-9])-(0[1-9]|1[0-2])|30-(0[13-9]|1[0-2])|31-(0[13578]|1[02]))-\d{4}(\D|$)";
+
+            Regex reg = new Regex(datePattern);
 
             if (reg.IsMatch(str))
             {
@@ -25,6 +26,7 @@
                 Console.WriteLine("Тексте \"{0}\" не содержит дату.", str);
             }
 
+            Console.WriteLine();
             Console.Read();
         }
     }

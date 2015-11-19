@@ -24,6 +24,7 @@
             strings.Add("40");
             strings.Add("-3.4");
             strings.Add("5.75e-0003");
+            strings.Add("57.5e-0003");
             strings.Add("Hello World");
 
             Console.WriteLine();
@@ -40,9 +41,9 @@
 
         private static string ParseNumbers(string str)
         {
-            Regex regCommonNotation = new Regex(@"^[+-]?(?:[0-9]+|[0-9]+\.[0-9]+)$");
+            Regex regCommonNotation = new Regex(@"^[\+-]?(?:[0-9]+|[0-9]+\.[0-9]+)$");
 
-            Regex regExpNotation = new Regex(@"^[+-]?(?:[0-9]+|[0-9]+\.[0-9]+)e[+-]?[0]*[1-9][0-9]*$");
+            Regex regExpNotation = new Regex(@"^[\+-]?([1-9](\.[0-9]+)?)e[\+-]?0*[1-9][0-9]*$");
 
             if (regExpNotation.IsMatch(str))
             {
