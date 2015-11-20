@@ -1,0 +1,59 @@
+body {
+    background: #333333;
+    color: white;
+    padding: 15px;
+}
+
+.equalizer {
+    min-width: 440px;
+}
+
+.equalizer > div {
+    background: 
+        repeating-linear-gradient(to bottom, transparent, transparent 26px, #333 26px, #333 30px),
+        linear-gradient(to top, #ff8d02, #ffd059);
+    border-radius: 10px 10px 0 0;
+    display: inline-block;
+    margin: 0 5px;
+    width: 60px;
+}
+
+.equalizer .oneParts {
+    height: 30px;
+}
+
+.equalizer .twoParts {
+    height: 60px;
+}
+
+.equalizer .threeParts {
+    height: 90px;
+}
+
+.equalizer .fourParts {
+    height: 120px;
+}
+
+.equalizer .fiveParts {
+    height: 150px;
+}
+
+.equalizer .sixParts {
+    height: 180px;
+}
+
+.equalizer .sevenParts {
+    height: 210px;
+}
+
+.equalizer .eightParts {
+    height: 240px;
+}
+
+.equalizer .nineParts {
+    height: 270px;
+}
+
+.equalizer .tenParts {
+    height: 300px;
+}

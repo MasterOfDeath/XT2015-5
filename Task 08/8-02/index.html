@@ -9,19 +9,21 @@
 <body>
     <div class="registerForm">
         <header>Регистрация</header>
-        <div class="email">
-            <span>E-mail</span>       
-            <input type="text">
+        <div class="row">
+            <label for="email">E-mail</label>       
+            <input type="text" id="email">
         </div>
-        <div class="pass">
-            <span>Пароль</span>
-            <input type="text">
+        <div class="row">
+            <div class="pass">
+                <label for="password">Пароль</label>
+                <input type="password" id="password">
+            </div>
+            <div class="repeate">
+                <label for="repeat">Ещё раз</label>
+                <input type="password" id="repeat">
+            </div>
         </div>
-        <div class="repeate">
-            <span>Ещё раз</span>
-            <input type="text">
-        </div>
-        <div>
+        <div class="row">
             <button class="sendButton">Отправить</button>
         </div>
     </div> 

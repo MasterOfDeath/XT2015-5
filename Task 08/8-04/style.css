@@ -22,8 +22,8 @@ body {
     width: 90%;
 }
 
-.speech-bubble:before {
-    border-bottom: 36px solid #c2e1f5;
+.speech-bubble:before,
+.speech-bubble:after {
     border-left: 33px solid transparent;
     border-right: 33px solid transparent;
     content:"";
@@ -32,22 +32,17 @@ body {
     margin: auto;
     position: absolute;
     right: 0;
-    top: -41px;
     width: 0;
+}
+
+.speech-bubble:before {
+    border-bottom: 36px solid #c2e1f5;
+    top: -41px;
 }
 
 .speech-bubble:after {
     border-bottom: 36px solid #88b7d5;
-    border-left: 33px solid transparent;
-    border-right: 33px solid transparent;
-    content:"";
-    height: 0;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
     top: -34px;
-    width: 0;
 }
 
 .speech-bubble span {

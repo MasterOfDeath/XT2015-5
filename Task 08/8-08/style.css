@@ -1,0 +1,46 @@
+body {
+    background: black;
+    padding: 15px;
+}
+
+sup {
+    font-size: 70%;
+    vertical-align: super;
+}
+
+.topic {
+    background: white;
+    border-radius: 0 0 10px 10px;
+    font-family: "Arial", sans-serif;
+}
+
+.topic > header {
+    background: black;
+    color: #ffb163;
+    display: inline-block;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.topic > header span {
+    float: left;
+    padding: 5px;
+}
+
+.topic > div {
+    background: linear-gradient(to top, #dddddd, white);
+    border: 2px solid white;
+    border-radius: 0 0 10px 10px;
+    font-size: 11pt;
+    padding: 5px 15px 15px 15px;
+}
+
+.topic header:after {
+    border-bottom: 34px solid white;
+    border-left: 20px solid black;
+    content:"";
+    display: block;
+    float: left;
+    position: relative;
+    width: 0;
+}
