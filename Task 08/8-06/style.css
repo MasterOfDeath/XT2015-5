@@ -5,7 +5,7 @@ body {
 }
 
 .equalizer {
-    min-width: 440px;
+    min-width: 440px;   
 }
 
 .equalizer > div {
@@ -18,42 +18,42 @@ body {
     width: 60px;
 }
 
-.equalizer .oneParts {
+.equalizer .level1 {
     height: 30px;
 }
 
-.equalizer .twoParts {
+.equalizer .level2 {
     height: 60px;
 }
 
-.equalizer .threeParts {
+.equalizer .level3 {
     height: 90px;
 }
 
-.equalizer .fourParts {
+.equalizer .level4 {
     height: 120px;
 }
 
-.equalizer .fiveParts {
+.equalizer .level5 {
     height: 150px;
 }
 
-.equalizer .sixParts {
+.equalizer .level6 {
     height: 180px;
 }
 
-.equalizer .sevenParts {
+.equalizer .level7 {
     height: 210px;
 }
 
-.equalizer .eightParts {
+.equalizer .level8 {
     height: 240px;
 }
 
-.equalizer .nineParts {
+.equalizer .level9 {
     height: 270px;
 }
 
-.equalizer .tenParts {
+.equalizer .level10 {
     height: 300px;
 }

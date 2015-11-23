@@ -3,13 +3,12 @@ body {
 }
 
 .menu > li {
-    position: relative;
-    display: inline-block;
-    margin: 10px;
-    list-style: none;
-    
-    border-radius: 10px 10px 0px 0px;
     border-bottom-style: none;
+    border-radius: 10px 10px 0 0;
+    display: inline-block;
+    list-style: none;
+    margin: 10px;
+    position: relative;
 }
 
 .menu > li > a {
@@ -22,16 +21,16 @@ body {
 }
 
 .menu > li > ul {
-    display:none;
-    position: absolute;
-    z-index: 2;
-    margin-top: 0.3em;
     background: white;
-    box-shadow:  0 0 10px rgba(0, 0, 0, .2), -4px -4px 6px 0px rgba(0, 0, 0, .1);
-/*    clip:rect(-10px 9em 6.3em -10px);*/
+    box-shadow:  0 0 10px rgba(0, 0, 0, .2), -4px -4px 6px 0 rgba(0, 0, 0, .1);
+    display:none;
+    list-style: none;
+    margin-top: 0.3em;
     min-width: 10em;
     padding: 0;
-    list-style: none;
+    position: absolute;
+    z-index: 2;
+/*    clip:rect(-10px 9em 6.3em -10px);*/
 }
 
 .menu > li > ul li{
@@ -57,16 +56,18 @@ body {
 }
 
 .menu > li:hover > a:before{
+    background: white;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 
+        4px -4px 6px -1px rgba(0, 0, 0, .1), 
+        -4px -4px 6px 0 rgba(0, 0, 0, .2);
+    color: black;
+    left: 0;
+    padding: 5px;
     position: absolute;
 /*    clip:rect(-10px 70px 26px -10px);*/
-    color: black;
-    background: white;
-    padding: 5px;
     top: -0.3em;
-    left: 0;
     z-index: 101;
-    border-radius: 10px 10px 0px 0px;
-    box-shadow: 4px -4px 6px -1px rgba(0, 0, 0, .1), -4px -4px 6px 0px rgba(0, 0, 0, .2);
 }
 
 .menu > li > ul li:hover {

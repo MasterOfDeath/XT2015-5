@@ -2,7 +2,7 @@ body {
     background: #333333;
     bottom: 0;
     left: 0;
-    padding: 10%;
+    padding: 10px;
     position: absolute;
     right: 0;
     top: 0;
@@ -11,10 +11,16 @@ body {
 .speech-bubble {
     background: #88b7d5;
     border: 5px solid #c2e1f5;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+    
+    color: white;
     height: 90px;
     left: 0;
     line-height: 90px;
     margin: auto;
+    margin-top: 40px;
     position: absolute;
     right: 0;
     text-align: center;
@@ -43,13 +49,4 @@ body {
 .speech-bubble:after {
     border-bottom: 36px solid #88b7d5;
     top: -34px;
-}
-
-.speech-bubble span {
-    bottom: 0;
-    color: white;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
 }
