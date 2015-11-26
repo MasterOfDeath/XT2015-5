@@ -18,42 +18,42 @@ body {
     width: 60px;
 }
 
-.equalizer .level1 {
+.equalizer .level-1 {
     height: 30px;
 }
 
-.equalizer .level2 {
+.equalizer .level-2 {
     height: 60px;
 }
 
-.equalizer .level3 {
+.equalizer .level-3 {
     height: 90px;
 }
 
-.equalizer .level4 {
+.equalizer .level-4 {
     height: 120px;
 }
 
-.equalizer .level5 {
+.equalizer .level-5 {
     height: 150px;
 }
 
-.equalizer .level6 {
+.equalizer .level-6 {
     height: 180px;
 }
 
-.equalizer .level7 {
+.equalizer .level-7 {
     height: 210px;
 }
 
-.equalizer .level8 {
+.equalizer .level-8 {
     height: 240px;
 }
 
-.equalizer .level9 {
+.equalizer .level-9 {
     height: 270px;
 }
 
-.equalizer .level10 {
+.equalizer .level-10 {
     height: 300px;
 }
