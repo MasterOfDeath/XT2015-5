@@ -6,6 +6,35 @@
 	<title>Task 09-3</title>
 </head>
 <body>
+    
+    <form class="bControl bControl_1">
+        <select name="lSelect" multiple>
+            <option onclick="optionSelect(this)">Option 1</option>
+            <option onclick="optionSelect(this)">Option 2</option>
+            <option onclick="optionSelect(this)">Option 3</option>
+        </select>
+
+        <div class="buttonGroup">
+            <button type="button" name="allToRightBtn" onclick="moveAllItemsClick(this)">
+                &gt&gt
+            </button>
+            <button type="button" name="toRightBtn" onclick="moveItemClick(this)">
+                &gt
+            </button>
+            <button type="button" name="toLeftBtn" onclick="moveItemClick(this)">
+                &lt
+            </button>
+            <button type="button" name="allToLeftBtn" onclick="moveAllItemsClick(this)">
+                &lt&lt
+            </button>
+        </div>
+
+        <select name="rSelect" multiple>
+            <option onclick="optionSelect(this)">Option 4</option>
+            <option onclick="optionSelect(this)">Option 5</option>
+        </select>
+    </form>
+    
     <script src="main.js"></script>
 </body>
 </html>

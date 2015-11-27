@@ -1,3 +1,26 @@
 body {
     padding: 15px;
 }
+
+.bControl {
+}
+
+.bControl > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.bControl > select {
+    width: 35px;
+    margin: 2px 2px;
+    padding: 2px 2px;
+    width: 120px;
+    height: 150px;
+}
+
+.bControl > .buttonGroup > button {
+    display: block;
+    width: 35px;
+    margin: 2px 2px;
+    padding: 2px 2px;
+}
