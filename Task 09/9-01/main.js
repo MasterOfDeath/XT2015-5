@@ -1,6 +1,5 @@
 var separators = [" ", "\n", ".", ",", "!", ":", ";", "?"];
 
-
 Array.prototype.unique = function() {
     var a = this.concat();
     for(var i=0; i<a.length; ++i) {
@@ -12,6 +11,14 @@ Array.prototype.unique = function() {
 
     return a;
 };
+
+var string = "У попа была собака";
+document.write("<p>Original string: " + string + "</p>");
+
+var arr = mySplite(string);
+var forDel = getRepeatsAll(arr);
+string = removeChars(forDel, string);
+document.write("<p>Changed string: " + string + "</p>");
 
 function mySplite(str) {
     var result = [],
@@ -82,12 +89,3 @@ function removeChars(arr, str) {
     
     return result.join("");
 }
-
-var string = "У попа была собака";
-document.write("Original string: " + string + "<br><br>");
-
-var arr = mySplite(string);
-var forDel = getRepeatsAll(arr);
-string = removeChars(forDel, string);
-document.write("Changed string: " + string + "<br><br>");
-

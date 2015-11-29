@@ -1,30 +1,26 @@
 var expValid = /^ ?\d+(?:\.\d+)*(?: ?[\+\-\*\/] ?\d+(?:\.\d+)*)+ ?= ?$/;
 var exp = /(\d+(?:\.\d+)*)|([\+\-\*\/])/g;
 
-function onClick() {
-    var str = document.getElementById("exp").value;
+function isValid(str) {
+    "use strict";
     
-    if (isValid(str) === -1) {
-        msgOut("Invaid input");
-        return;
-    }
-    
-    var arr = parse(str);
-    var result = calc(arr).toFixed(2);
-    msgOut("Result: " + result);
+    return str.search(expValid);
 }
 
-function calc(arr) {
-    var result = arr[0];
+function msgOut(str) {
+    "use strict";
     
-    for (var i = 1, len = arr.length; i <= len - 1; i += 2) {
-        result = operation(result, arr[i+1], arr[i]);
-    }
+    document.getElementById("result").innerHTML = str;
+}
+
+function parse(str) {
+    "use strict";
     
-    return result;
+    return str.match(exp);
 }
 
 function operation(a, b, operator) {
+    "use strict";
     
     switch (operator) {
             case "+":
@@ -44,14 +40,37 @@ function operation(a, b, operator) {
     }
 }
 
-function isValid(str) {
-    return str.search(expValid);
+function calc(arr) {
+    "use strict";
+    
+    var result = arr[0],
+        i = 0,
+        len = 0;
+    
+    for (i = 1, len = arr.length; i <= len - 1; i += 2) {
+        result = operation(result, arr[i + 1], arr[i]);
+    }
+    
+    return result;
 }
 
-function parse(str) {
-    return str.match(exp);
+function onClick() {
+    "use strict";
+    
+    var str = document.getElementById("exp").value,
+        arr,
+        result;
+    
+    if (isValid(str) === -1) {
+        msgOut("Invaid input");
+        return;
+    }
+    
+    arr = parse(str);
+    result = calc(arr).toFixed(2);
+    msgOut("Result: " + result);
 }
 
-function msgOut(str) {
-    document.getElementById("result").innerHTML = str;
-}
+
+
+document.getElementById("calcBtn").onclick = onClick;

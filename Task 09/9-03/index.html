@@ -7,33 +7,69 @@
 </head>
 <body>
     
-    <form class="bControl bControl_1">
-        <select name="lSelect" multiple>
-            <option onclick="optionSelect(this)">Option 1</option>
-            <option onclick="optionSelect(this)">Option 2</option>
-            <option onclick="optionSelect(this)">Option 3</option>
-        </select>
-
+    <div class="bControl bControl_1">
+        <div class="selectContainer">
+            <p class="lLabel">Available</p>
+            <select class="lSelect" name="lSelect" multiple>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+            </select>
+        </div>
         <div class="buttonGroup">
-            <button type="button" name="allToRightBtn" onclick="moveAllItemsClick(this)">
-                &gt&gt
+            <button type="button" class="allToRightBtn" name="allToRightBtn">
+                &gt;&gt;
             </button>
-            <button type="button" name="toRightBtn" onclick="moveItemClick(this)">
-                &gt
+            <button type="button" class="toRightBtn" name="toRightBtn" disabled>
+                &gt;
             </button>
-            <button type="button" name="toLeftBtn" onclick="moveItemClick(this)">
-                &lt
+            <button type="button" class="toLeftBtn" name="toLeftBtn" disabled>
+                &lt;
             </button>
-            <button type="button" name="allToLeftBtn" onclick="moveAllItemsClick(this)">
-                &lt&lt
+            <button type="button" class="allToLeftBtn" name="allToLeftBtn">
+                &lt;&lt;
             </button>
         </div>
-
-        <select name="rSelect" multiple>
-            <option onclick="optionSelect(this)">Option 4</option>
-            <option onclick="optionSelect(this)">Option 5</option>
-        </select>
-    </form>
+        <div class="selectContainer">
+            <p class="rLabel">Selected</p>
+            <select class="rSelect" name="rSelect" multiple>
+                <option>Option 4</option>
+                <option>Option 5</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="bControl bControl_1">
+        <div class="selectContainer">
+            <p class="lLabel">Available</p>
+            <select class="lSelect" name="lSelect" multiple>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+            </select>
+        </div>
+        <div class="buttonGroup">
+            <button type="button" class="allToRightBtn" name="allToRightBtn">
+                &gt;&gt;
+            </button>
+            <button type="button" class="toRightBtn" name="toRightBtn" disabled>
+                &gt;
+            </button>
+            <button type="button" class="toLeftBtn" name="toLeftBtn" disabled>
+                &lt;
+            </button>
+            <button type="button" class="allToLeftBtn" name="allToLeftBtn">
+                &lt;&lt;
+            </button>
+        </div>
+        <div class="selectContainer">
+            <p class="rLabel">Selected</p>
+            <select class="rSelect" name="rSelect" multiple>
+                <option>Option 4</option>
+                <option>Option 5</option>
+            </select>
+        </div>
+    </div>
     
     <script src="main.js"></script>
 </body>

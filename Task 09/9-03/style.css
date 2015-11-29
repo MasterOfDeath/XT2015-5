@@ -3,24 +3,41 @@ body {
 }
 
 .bControl {
+    display: inline-block;
+    min-width: 290px;
 }
 
 .bControl > * {
     display: inline-block;
-    vertical-align: top;
+    float: left;
 }
 
-.bControl > select {
+.bControl .buttonGroup {
+    display: flex;
+    position: relative;
+    top: 26px;
+    height: 150px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bControl > .selectContainer > select {
     width: 35px;
-    margin: 2px 2px;
+    margin: 0 2px;
     padding: 2px 2px;
     width: 120px;
     height: 150px;
+    overflow: auto;
+}
+
+.bControl > .selectContainer > p {
+    margin: 4px 0;
+    font-weight: bold;
+    text-align: center;
 }
 
 .bControl > .buttonGroup > button {
-    display: block;
     width: 35px;
-    margin: 2px 2px;
+    margin: 4px 2px;
     padding: 2px 2px;
 }

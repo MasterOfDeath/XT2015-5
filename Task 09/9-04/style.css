@@ -1,3 +1,31 @@
 body {
     padding: 15px;
 }
+
+div.testPage > span {
+    display: block;
+    width: 30px;
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+    animation: mymove 1s infinite;
+}
+
+@keyframes mymove {
+    from {transform: none;}
+    to {transform: scale(1.5, 1.5);}
+}
+
+div.testPage > button, 
+.startBtn {
+    width: 80px;
+    background: cadetblue;
+}
+
+div.testPage > button:hover,
+div.testPage > button:focus,
+.startBtn:hover, .startBtn:focus {
+    background: #558d8f;
+}
