@@ -86,7 +86,7 @@
             len = 0;
 
         $btn = $(event.target);
-		$container = $btn.parent().parent();
+		$container = $btn.closest(".bControl");
 		
 
         if ($btn.hasClass("allToRightBtn")) {
