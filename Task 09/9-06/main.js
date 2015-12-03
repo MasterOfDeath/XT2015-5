@@ -54,7 +54,7 @@
             len = 0;
 		
 		$btn = $(event.target);
-		$container = $btn.parent().parent();
+		$container = $btn.closest(".bControl");
 		
 
         if ($btn.hasClass("toRightBtn")) {
@@ -115,7 +115,7 @@
     function switchBtn($element, className, disabled) {
 		var $container;
 		
-		$container = $element.parent().parent();
+		$container = $element.closest(".bControl");
 		$(className, $container).prop("disabled", disabled);
     }
 	
