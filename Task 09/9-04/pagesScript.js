@@ -6,6 +6,7 @@
         pauseBtn,
         refreshBtn,
         closeBtn,
+		finishPrompt,
         pageId,
         maxPages = 3,
         time = 5,
@@ -22,19 +23,19 @@
     
     pauseBtn = document.body.getElementsByClassName("pauseBtn").item(0);
     pauseBtn.onclick = pauseClick;
-    
-    refreshBtn = document.body.getElementsByClassName("refreshBtn").item(0);
-    refreshBtn.onclick = refreshClick;
-    
-    closeBtn = document.body.getElementsByClassName("closeBtn").item(0);
-    if (closeBtn !== null) {
-        closeBtn.onclick = closeClick;
-    }
-    
-
+	
+	finishPrompt = document.body.getElementsByClassName("finishPrompt").item(0);
+	if (finishPrompt !== null) {
+		closeBtn = finishPrompt.getElementsByClassName("closeBtn").item(0);
+		closeBtn.onclick = closeClick;
+	}
+	
     timerLabel.innerHTML = curTime;
-    timer = setInterval(timerFunc, 1000);
-    
+    timer = setInterval(timerFunc, 1000);   
+	
+	if (!isIE11) {
+		switchAnimation(timerLabel, true);
+	}
 
     function timerFunc() {
         if (curTime === 0) {
@@ -55,43 +56,62 @@
         var btnText = pauseBtn.firstChild;
 
         if (btnText.data === "Suspend") {
-            btnText.data = "Resume";
+            btnText.data = "Refresh";
             pause = true;
+			switchAnimation(timerLabel, false);
         } else {
-            btnText.data = "Suspend";
-            pause = false;
+			location.reload();
         }
     }
     
-    function refreshClick() {
-        location.reload();
-    }
-    
     function closeClick() {
-        window.close();
+        closeWindow();
     }
 
     function gotoPage(shift) {
         var pageNumber = +pageId + shift,
             url;
-
-        if (pageNumber <= maxPages) {
-            url = "page" + pageNumber + ".html";
-            if (pageNumber === 0) {
-                //url = "index.html";
-                window.close();
-            }
-            
-            window.location = url;
-        } else {
-            clearInterval(timer);
-            showDialog();
-        }
+		
+		if (pageNumber === 0) {
+			if (isIE11) {
+				window.location = indexPage;
+			} else {
+				closeWindow();
+			}
+			
+			return;
+		}
+		
+		if (pageNumber > maxPages) {
+			switchAnimation(timerLabel, false);
+			clearInterval(timer);
+			showDialog();
+			
+			return;
+		}
+		
+		window.location = getPageUrl(pageNumber);
     }
     
     function showDialog() {
-        $("#myModal").modal();
+        $(".finishPrompt").modal({backdrop: "static"});
     }
+	
+	function closeWindow() {
+		window.open(closePage, "_self");
+	}
+	
+	function switchAnimation(element, enabled) {
+		var className = element.className;
+		
+		if (enabled) {
+			if (className.search(/\banimated\b/) === -1) {
+				element.className = className + " animated";
+			}
+		} else {
+			element.className = className.replace(/ animated( |$)/, "");
+		}
+	}
     
 })();
 

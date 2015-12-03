@@ -2,7 +2,47 @@ body {
     padding: 15px;
 }
 
-span {
-    display: block;
-    margin: 10px 0;
+.calculator {
+    max-width: 270px;
+    height: 70px;
+}
+
+.calculator > * {
+    margin: 4px 0;
+}
+
+.calculator > span.animated {
+    -moz-animation: mymove .5s normal forwards ease-in-out;
+    -webkit-animation: mymove .5s normal forwards ease-in-out;
+         animation: mymove .5s normal forwards ease-in-out;
+}
+
+@keyframes mymove {
+    from {
+    	-moz-transform: none;
+    	transform: none;
+    }
+    50% {
+    	-moz-transform: scale(1.2, 1.2);
+    	transform: scale(1.2, 1.2);
+    }
+    to {
+    	-moz-transform: none;
+    	transform: none;
+    }
+}
+
+@-moz-keyframes mymove {
+    from {
+    	-moz-transform: none;
+    	transform: none;
+    }
+    50% {
+    	-moz-transform: scale(1.2, 1.2);
+    	transform: scale(1.2, 1.2);
+    }
+    to {
+    	-moz-transform: none;
+    	transform: none;
+    }
 }

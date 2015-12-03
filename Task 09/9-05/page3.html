@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <link href="bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
+	<title>Page 3</title>
+</head>
+<body>
+    <div class="testPage" data-id="3">
+        <h1>Page 3</h1>
+        <span class="timer">0</span>
+        <button class="btn btn-info backBtn">Back</button>
+        <button class="btn btn-info pauseBtn">Suspend</button>
+        
+        <!-- Modal -->
+        <div class="modal fade finishPrompt" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Finish</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You have finished. What do you want?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="page1.html" class="btn btn-info">Go to first page</a>
+                        <button type="button" class="btn btn-warning closeBtn" data-dismiss="modal">Close window</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="jquery-1.11.3/jquery.min.js"></script>
+    <script src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
+	<script src="scripts/globalSiteScript.js"></script>
+    <script src="scripts/pagesScript.js"></script>
+</body>
+</html>

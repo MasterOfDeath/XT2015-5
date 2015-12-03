@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link href="bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="style.css" rel="stylesheet">
 	<title>Task 09-3</title>
 </head>
@@ -10,67 +11,34 @@
     <div class="bControl bControl_1">
         <div class="selectContainer">
             <p class="lLabel">Available</p>
-            <select class="lSelect" name="lSelect" multiple>
+            <select class="lSelect" multiple>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
             </select>
         </div>
         <div class="buttonGroup">
-            <button type="button" class="allToRightBtn" name="allToRightBtn">
-                &gt;&gt;
-            </button>
-            <button type="button" class="toRightBtn" name="toRightBtn" disabled>
-                &gt;
-            </button>
-            <button type="button" class="toLeftBtn" name="toLeftBtn" disabled>
-                &lt;
-            </button>
-            <button type="button" class="allToLeftBtn" name="allToLeftBtn">
-                &lt;&lt;
-            </button>
+            <button type="button" class="btn btn-info allToRightBtn">&gt;&gt;</button>
+            <button type="button" class="btn btn-info toRightBtn">&gt;</button>
+            <button type="button" class="btn btn-info toLeftBtn">&lt;</button>
+            <button type="button" class="btn btn-info allToLeftBtn">&lt;&lt;</button>
         </div>
         <div class="selectContainer">
             <p class="rLabel">Selected</p>
-            <select class="rSelect" name="rSelect" multiple>
+            <select class="rSelect" multiple>
                 <option>Option 4</option>
                 <option>Option 5</option>
             </select>
         </div>
-    </div>
-    
-    <div class="bControl bControl_1">
-        <div class="selectContainer">
-            <p class="lLabel">Available</p>
-            <select class="lSelect" name="lSelect" multiple>
-                <option>Option 1</option>
-                <option>Option 2</option>
-                <option>Option 3</option>
-            </select>
-        </div>
-        <div class="buttonGroup">
-            <button type="button" class="allToRightBtn" name="allToRightBtn">
-                &gt;&gt;
-            </button>
-            <button type="button" class="toRightBtn" name="toRightBtn" disabled>
-                &gt;
-            </button>
-            <button type="button" class="toLeftBtn" name="toLeftBtn" disabled>
-                &lt;
-            </button>
-            <button type="button" class="allToLeftBtn" name="allToLeftBtn">
-                &lt;&lt;
-            </button>
-        </div>
-        <div class="selectContainer">
-            <p class="rLabel">Selected</p>
-            <select class="rSelect" name="rSelect" multiple>
-                <option>Option 4</option>
-                <option>Option 5</option>
-            </select>
-        </div>
+		
+		<!-- Alert -->
+		<div class="alert alert-danger hide">
+			<strong>Item have to be selected!</strong>
+		</div>
     </div>
     
     <script src="main.js"></script>
+	<script src="jquery-1.11.3/jquery.min.js"></script>
+    <script src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
