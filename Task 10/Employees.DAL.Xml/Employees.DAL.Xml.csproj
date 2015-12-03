@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C5114862-3B1C-4712-B154-17096EB78C30}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Employees.DAL.Xml</RootNamespace>
+    <AssemblyName>Employees.DAL.Xml</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AwardXmlStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserXmlStore.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Employees.DAL.Contract\Employees.DAL.Contract.csproj">
+      <Project>{9DA7843C-AC3B-43ED-ABE6-0097B6885186}</Project>
+      <Name>Employees.DAL.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Employees.Entites\Employees.Entites.csproj">
+      <Project>{55c5792e-f12d-46b6-b002-1b08399cf20e}</Project>
+      <Name>Employees.Entites</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

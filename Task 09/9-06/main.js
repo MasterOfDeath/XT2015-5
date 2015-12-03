@@ -20,7 +20,7 @@
 	$("select", $parents).click(clickSelect);
 	$errAlert = $(".alert", $parents);
 	
-    function clickSelect(event){
+    function clickSelect(event) {
         var $lLabel,
             $rLabel,
 			$container,
@@ -29,7 +29,7 @@
 		$sel = $(event.target);
 		$container = $sel.closest('.bControl');
 		$lLabel = $(".lLabel", $container);
-		$rLabel = $(".rLabel",$container);
+		$rLabel = $(".rLabel", $container);
         
         if ($sel.hasClass("lSelect")) {
             $lLabel.text("Selected");
@@ -121,11 +121,11 @@
 	
 	function showAlert($element, delay) {
 		$element.toggleClass("hide", false);
-		setTimeout(function() { $element.addClass("hide") }, delay);
+		setTimeout(function () { $element.addClass("hide"); }, delay);
 	}
 	
 	function animateAlert($element) {
 		$element.toggleClass("animated", true);
-		setTimeout(function() { $element.removeClass("animated")}, 1000);
+		setTimeout(function () { $element.removeClass("animated"); }, 1000);
 	}
 })();
