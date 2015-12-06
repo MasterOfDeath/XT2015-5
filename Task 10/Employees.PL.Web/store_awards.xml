@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<head>
+  <award id="1">
+    <title>The best</title>
+    <owner>2</owner>
+  </award>
+  <award id="2">
+    <title>The worst</title>
+  </award>
+  <award id="3">
+    <title>The best from the best</title>
+  </award>
+  <award id="4">
+    <title>No matter</title>
+  </award>
+</head>

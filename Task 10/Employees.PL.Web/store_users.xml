@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<head>
+  <user id="1">
+    <name>Rinat</name>
+    <birth_day>2000-12-12T00:00:00</birth_day>
+  </user>
+  <user id="2">
+    <name>Kirill</name>
+    <birth_day>2000-06-12T00:00:00</birth_day>
+  </user>
+  <user id="3">
+    <name>Anna</name>
+    <birth_day>1993-05-22T00:00:00</birth_day>
+  </user>
+  <user id="4">
+    <name>Test</name>
+    <birth_day>2015-12-04T20:57:35.5023888+03:00</birth_day>
+  </user>
+</head>

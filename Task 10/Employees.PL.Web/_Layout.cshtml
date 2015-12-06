@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <title>@PageData["Title"]</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    @RenderPage("~/Pages/_NavbarPartial.cshtml")
+    <!--  -->
+
+
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

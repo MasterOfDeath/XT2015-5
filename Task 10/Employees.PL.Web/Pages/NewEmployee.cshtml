@@ -1,0 +1,43 @@
+﻿@using Employees.PL.Web
+
+@{ 
+    Layout = "~/_Layout.cshtml";
+    PageData["Title"] = "New Employee";
+
+    var userLogic = LogicProvider.Instance.UserLogic;
+
+    Validation.RequireField("name", "Product name is required.");
+
+    var name = Request.Form["name"];
+}
+
+<div class="content">
+        <div class="row">
+            <div class="form-group has-feedback">
+                <label for="name">Name:</label>
+                <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+                <span class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group has-feedback">
+                <label for="bDay">Birth Day:</label>
+                <input class="form-control dateInput" id="bDay" name="bDay" type="text" />
+                <span class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-default saveBtn">
+                Save <span class="glyphicon glyphicon-floppy-save"></span>
+            </button>
+        </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.inputmask/inputmask.js"></script>
+    <script src="~/Scripts/jquery.inputmask/inputmask.date.extensions.js"></script>
+    <script src="~/Scripts/jquery.inputmask/jquery.inputmask.js"></script>
+    <script src="~/Scripts/newEmployee.js"></script>
+}

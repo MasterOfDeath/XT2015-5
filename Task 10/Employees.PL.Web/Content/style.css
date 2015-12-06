@@ -1,0 +1,56 @@
+﻿body {
+    padding: 10px;
+}
+
+/* Navbar */
+.navbar {
+  min-height:38px;
+  margin: auto;
+}
+
+.navbar .container {
+  max-width: none !important;
+}
+
+.navbar > .container > * {
+    /*display: inline-block;*/
+}
+/* -- */
+
+/* Content */
+.content {
+    padding: 25px;
+}
+
+.content .form-group {
+    padding-left: 0;
+}
+
+.content .row:first-child {
+    width: 240px;
+}
+
+.content .row:nth-child(2) {
+    width: 240px;
+}
+
+.content .row:nth-child(3) .btn {
+    width: 100px;
+}
+
+.content .row label {
+    margin-bottom: 5px;
+}
+
+.content > table {
+    /*display:inline-block;*/
+}
+
+.content > table > thead th {
+    cursor: default;
+}
+
+.content > table > tbody td {
+    cursor: pointer;
+} 
+/* -- */

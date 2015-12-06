@@ -1,0 +1,50 @@
+﻿@using Employees.PL.Web;
+
+@{ 
+    Layout = "~/_Layout.cshtml";
+    PageData["Title"] = "Employees";
+
+    var logicProvider = LogicProvider.Instance;
+
+    var userLogic = logicProvider.UserLogic;
+    var awardLogic = logicProvider.AwardLogic;
+}
+
+    <div class="content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Birth Day</th>
+                    <th>Awards</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in userLogic.GetAllUsers())
+                {
+                    <tr>
+                        @{
+                            var awrdsStr = new System.Text.StringBuilder();
+                        }
+
+                        @foreach (var award in awardLogic.GetAwardsByUserId(user.Id))
+                        {
+                            awrdsStr.Append(award.Title + ",");
+                        }
+
+                        <td>@user.Id</td>
+                        <td>@user.Name</td>
+                        <td>@user.BirthDay.ToShortDateString()</td>
+                        <td>@awrdsStr.ToString().TrimEnd(',')</td>
+                    </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+
+@section scripts {
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/employees.js"></script>
+}

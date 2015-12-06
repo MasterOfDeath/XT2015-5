@@ -1,0 +1,24 @@
+﻿@using Employees.PL.Web
+@{ 
+    var logicProvider = LogicProvider.Instance;
+    string result;
+
+    if (IsAjax)
+    {
+        var queryName = Request["queryName"];
+
+        switch (queryName)
+        {
+            case "clickSaveBtn":
+                var name = Request["name"];
+                result = logicProvider.clickSaveBtn(name);
+                break;
+
+            default:
+                result = "null";
+                break;
+        }
+
+        Response.Write(result);
+    }
+}
