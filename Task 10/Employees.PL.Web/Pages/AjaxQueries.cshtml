@@ -11,7 +11,8 @@
         {
             case "clickSaveBtn":
                 var name = Request["name"];
-                result = logicProvider.clickSaveBtn(name);
+                var date = Request["date"];
+                result = logicProvider.clickSaveBtn(name, date);
                 break;
 
             default:
@@ -19,6 +20,6 @@
                 break;
         }
 
-        Response.Write(result);
+        Response.Write("{\"result\": \"" + result + "\"}");
     }
 }
