@@ -7,7 +7,7 @@
     $("tbody > tr", $table).click(trClick);
 
     function trClick(event) {
-        var userId = $(event.target).parents("tr").data("user-id");
-        window.location = "NewEmployee?userid=" + userId;
+        var awardId = $(event.target).parents("tr").data("award-id");
+        window.location = "NewAward?awardid=" + awardId;
     }
 })();

@@ -12,5 +12,7 @@
         IEnumerable<User> ListAllUsers();
 
         User GetUserById(int userId);
+
+        IEnumerable<User> ListUsersByAwardId(int awardId);
     }
 }

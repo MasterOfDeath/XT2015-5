@@ -23,7 +23,7 @@
             <tbody>
                 @foreach (var user in userLogic.GetAllUsers())
                 {
-                    <tr>
+                    <tr data-user-id="@user.Id">
                         @{
                             var awrdsStr = new System.Text.StringBuilder();
                         }
@@ -46,5 +46,6 @@
 @section scripts {
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/employeesNavbar.js"></script>
     <script src="~/Scripts/employees.js"></script>
 }

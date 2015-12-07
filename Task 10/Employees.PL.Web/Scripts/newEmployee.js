@@ -2,7 +2,14 @@
     var $content,
         $nameInput,
         $dateInput,
-        nameExp = /[^\w\- \.]+|[ ]{2,}|[\-\.]{2,}|^[\-\.]+$|^[ \-\.]| $/;
+        $deletePrompt,
+        $awardPrompt,
+        $awardGivePromptBtn,
+        $awardRevokePromptBtn,
+        nameExp = /[^\w\- \.]+|[ ]{2,}|[\-\.]{2,}|^[\-\.]+$|^[ \-\.]| $/,
+        editMode,
+        userId,
+        awardId = "";
 
     $content = $(".content");
 
@@ -15,7 +22,28 @@
     $dateInput.keyup(changeDateInput);
     $dateInput.inputmask("d.m.9999", { "placeholder": "dd.mm.yyyy" });
 
+    editMode = (($content.data("edit-mode") + "") === "1");
+    if (editMode) {
+        $(".editBlock", $content).removeClass("hide");
+    }
+
+    userId = $content.data("user-id") + "";
+
     $(".saveBtn", $content).click(clickSaveBtn);
+
+    $(".giveAwardBtn", $content).click(clickGiveAwardBtn);
+    $(".revokeAwardBtn", $content).click(clickRevokeAwardBtn);
+
+    $awardPrompt = $(".awardPrompt", $content);
+    //$awardPrompt.on("show.bs.modal", giveMeAllAwardsTable);
+    $awardGivePromptBtn = $(".awardGivePromptBtn", $awardPrompt);
+    $awardGivePromptBtn.click(clickAwardGivePromptBtn);
+    $awardRevokePromptBtn = $(".awardRevokePromptBtn", $awardPrompt);
+    $awardRevokePromptBtn.click(clickAwardRevokePromptBtn);
+
+    $deletePrompt = $(".deletePrompt", $content);
+    $(".modal-title", $deletePrompt).text("Delete Employee");
+    $(".deletePromptBtn", $deletePrompt).click(clickDeletePrompt);
 
     function clickSaveBtn() {
         var name = $nameInput.val(),
@@ -36,19 +64,19 @@
             url: 'AjaxQueries',
             method: 'post',
             data: {
-                queryName: "clickSaveBtn",
+                queryName: "clickSaveEmployee",
+                userid: userId,
                 name: name,
                 date: date
             }
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.result === "") {
+            if (result.answer === "") {
                 window.location.replace("Employees");
             } else {
-                alert(result.result);
+                showError(result.answer);
             }
-
         })
     }
 
@@ -66,8 +94,132 @@
         toggleInputError($input, !isDate(str));
     }
 
+    function clickDeletePrompt() {
+        $.ajax({
+            url: 'AjaxQueries',
+            method: 'post',
+            data: {
+                queryName: "clickDeleteEmployee",
+                userid: userId
+            }
+        }).success(function (data) {
+            var result = JSON.parse(data);
+
+            if (result.answer === "") {
+                window.location.replace("Employees");
+            } else {
+                showError(result.answer);
+            }
+        })
+    }
+
+    function clickGiveAwardBtn() {
+        $awardGivePromptBtn.removeClass("hide");
+        $awardRevokePromptBtn.addClass("hide");
+
+        awardId = "";
+
+        giveMeAllAwardsTable();
+
+        $awardPrompt.modal();
+    }
+
+    function clickRevokeAwardBtn() {
+        $awardRevokePromptBtn.removeClass("hide");
+        $awardGivePromptBtn.addClass("hide");
+
+        awardId = "";
+
+        giveMeEmployeesAwardsTable();
+
+        $awardPrompt.modal();
+    }
+
+    function clickAwardGivePromptBtn() {
+        if (awardId !== "") {
+            $.ajax({
+                url: 'AjaxQueries',
+                method: 'post',
+                data: {
+                    queryName: "clickGiveAward",
+                    userid: userId,
+                    awardid: awardId
+                }
+            }).success(function (data) {
+                var result = JSON.parse(data);
+
+                if (result.answer === "") {
+                    window.location.reload();
+                } else {
+                    showError(result.answer);
+                }
+            })
+        }
+    }
+
+    function clickAwardRevokePromptBtn() {
+        if (awardId !== "") {
+            $.ajax({
+                url: 'AjaxQueries',
+                method: 'post',
+                data: {
+                    queryName: "clickRevokeAward",
+                    userid: userId,
+                    awardid: awardId
+                }
+            }).success(function (data) {
+                var result = JSON.parse(data);
+
+                if (result.answer === "") {
+                    window.location.reload();
+                } else {
+                    showError(result.answer);
+                }
+            })
+        }
+    }
+
+    function giveMeAllAwardsTable() {
+        $.ajax({
+            url: 'AjaxQueries',
+            method: 'post',
+            data: {
+                queryName: "giveMeAllAwardsTable"
+            }
+        }).success(insertTableInAwardPrompt)
+    }
+
+    function giveMeEmployeesAwardsTable() {
+        $.ajax({
+            url: 'AjaxQueries',
+            method: 'post',
+            data: {
+                queryName: "giveMeEmployeesAwardsTable",
+                userid: userId
+            }
+        }).success(insertTableInAwardPrompt)
+    }
+
+    function insertTableInAwardPrompt (data) {
+        var result = JSON.parse(data),
+            $table,
+            $td;
+
+        if (result.answer !== "") {
+            $table = $(result.answer);
+            $table.addClass("table table-hover");
+            $(".modal-body table", $awardPrompt).replaceWith($table);
+            $td = $("td", $table);
+            $td.click(function (event) {
+                $td.closest("tr").removeClass("selectedRow");
+                $(event.target).closest("tr").addClass("selectedRow");
+                awardId = $(event.target).closest("tr").data("award-id");
+            })
+        }
+    }
+
     function toggleInputError($el, show) {
-        var $container = $el.closest(".has-feedback");
+        var $container = $el.parents(".has-feedback");
 
         if (show) {
             $container.removeClass("has-success").addClass("has-error");
@@ -78,6 +230,17 @@
             $(".badIcon", $container).addClass("hide");
             $(".goodIcon", $container).removeClass("hide");
         }
+    }
+
+    function showError(str) {
+        var $modal = $(".errorModal", $content);
+
+        $(".modal-body", $modal).html("<p>" + str + "</p>");
+        $modal.modal();
+    }
+
+    function showDeletePrompt() {
+        $(".deletePrompt", $content).modal();
     }
 
     function isDate(txtDate) {

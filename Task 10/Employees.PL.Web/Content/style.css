@@ -11,10 +11,6 @@
 .navbar .container {
   max-width: none !important;
 }
-
-.navbar > .container > * {
-    /*display: inline-block;*/
-}
 /* -- */
 
 /* Content */
@@ -26,24 +22,22 @@
     padding-left: 0;
 }
 
-.content .row:first-child {
-    width: 240px;
+.content .blocks {
+    padding: 25px;
+    max-width: 300px;
 }
 
-.content .row:nth-child(2) {
-    width: 240px;
+.content .editBlock textarea {
+    background: white;
+    padding: 13px 15px;
 }
 
-.content .row:nth-child(3) .btn {
-    width: 100px;
+.content .editBlock .deleteBtn {
+    margin-top: 55px;
 }
 
 .content .row label {
     margin-bottom: 5px;
-}
-
-.content > table {
-    /*display:inline-block;*/
 }
 
 .content > table > thead th {
@@ -52,5 +46,23 @@
 
 .content > table > tbody td {
     cursor: pointer;
-} 
+}
+
+.content .awardPrompt .modal-body {
+    height: 200px;
+    overflow: auto;
+}
+
+.content .awardPrompt .modal-body table tr {
+    cursor: pointer;
+}
+
+.content .awardPrompt .modal-body table tr:first-child > td {
+    border-top: none;
+}
+
+.content .selectedRow, .content .selectedRow:hover {
+    background: grey;
+    color: white;
+}
 /* -- */

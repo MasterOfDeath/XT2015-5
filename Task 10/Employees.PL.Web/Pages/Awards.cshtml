@@ -1,0 +1,36 @@
+﻿@using Employees.PL.Web;
+
+@{ 
+    Layout = "~/_Layout.cshtml";
+    PageData["Title"] = "Awards";
+
+    var logicProvider = LogicProvider.Instance;
+    var awardLogic = logicProvider.AwardLogic;
+}
+
+    <div class="content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var award in awardLogic.GetAllAwards())
+                {
+                    <tr data-award-id="@award.Id">
+                        <td>@award.Id</td>
+                        <td>@award.Title</td>
+                    </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+
+@section scripts {
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/awardsNavbar.js"></script>
+    <script src="~/Scripts/awards.js"></script>
+}

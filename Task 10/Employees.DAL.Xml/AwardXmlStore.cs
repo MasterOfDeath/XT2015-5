@@ -1,5 +1,6 @@
 ﻿namespace Employees.DAL.Xml
 {
+    using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
@@ -35,14 +36,32 @@
                 .Root
                 .Elements(TableName);
 
-            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
-
             XElement awardElement = new XElement(
-                TableName,
-                new XAttribute(FId, ++maxId),
-                new XElement(FTitle, award.Title));
+                    TableName,
+                    new XAttribute(FId, award.Id),
+                    new XElement(FTitle, award.Title));
 
-            this.document.Root.Add(awardElement);
+            int maxId = award.Id;
+
+            if (award.Id == 0)
+            {
+                maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
+                awardElement.SetAttributeValue(FId, ++maxId);
+
+                this.document.Root.Add(awardElement);
+            }
+            else
+            {
+                elements = elements.Where(el => (int)el.Attribute(FId) == award.Id);
+
+                if (!elements.Any())
+                {
+                    return 0;
+                }
+
+                elements.First().ReplaceWith(awardElement);
+            }
+            
             this.document.Save(this.pathAwardXml);
 
             return maxId;
@@ -152,6 +171,24 @@
             string title = (string)element.Element(FTitle);
 
             return new Award(id, title);
+        }
+
+        public bool DeleteAward(int awardId)
+        {
+            IEnumerable<XElement> elements = this.document
+                .Root
+                .Elements(TableName)
+                .Where(el => (int)el.Attribute(FId) == awardId);
+
+            if (!elements.Any())
+            {
+                return false;
+            }
+
+            elements.First().Remove();
+            this.document.Save(this.pathAwardXml);
+
+            return true;
         }
     }
 }

@@ -110,6 +110,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Pages\NewEmployee.cshtml" />
+    <Content Include="Scripts\awardsNavbar.js" />
+    <Content Include="Scripts\awards.js" />
+    <Content Include="Scripts\employees.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.js" />
@@ -117,11 +120,17 @@
     <Content Include="Scripts\jquery.inputmask\inputmask.phone.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.regex.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\jquery.inputmask.js" />
+    <Content Include="Scripts\newAward.js" />
     <Content Include="Scripts\newEmployee.js" />
     <Content Include="_Layout.cshtml" />
     <Content Include="Pages\_NavbarPartial.cshtml" />
     <Content Include="Pages\Employees.cshtml" />
     <Content Include="Pages\AjaxQueries.cshtml" />
+    <Content Include="Pages\Awards.cshtml" />
+    <Content Include="Pages\NewAward.cshtml" />
+    <Content Include="Pages\_ErrorAlertPartial.cshtml" />
+    <Content Include="Pages\_DeletePromptPartial.cshtml" />
+    <Content Include="Pages\_AwardPromptPartial.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -134,7 +143,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\employees.js" />
+    <Content Include="Scripts\employeesNavbar.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

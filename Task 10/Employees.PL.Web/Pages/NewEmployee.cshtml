@@ -5,34 +5,89 @@
     PageData["Title"] = "New Employee";
 
     var userLogic = LogicProvider.Instance.UserLogic;
+    var awardLogic = LogicProvider.Instance.AwardLogic;
 
     Validation.RequireField("name", "Product name is required.");
 
-    var name = Request.Form["name"];
+    var userIdStr = string.Empty;
+    var name = string.Empty;
+    var bDay = string.Empty;
+    var awards = string.Empty;
+    var editMode = "0";
+
+    if (!IsPost)
+    {
+        userIdStr = Request["userid"];
+        if (userIdStr != null)
+        {
+            int userId = Convert.ToInt32(userIdStr);
+            var user = userLogic.GetAllUsers().First(u => u.Id == userId);
+            var strBuild = new System.Text.StringBuilder();
+            foreach (var award in awardLogic.GetAwardsByUserId(userId))
+            {
+                strBuild.Append(award.Title + ",");
+            }
+
+            name = user.Name;
+            bDay = user.BirthDay.ToShortDateString();
+            awards = strBuild.ToString().TrimEnd(',');
+
+            editMode = "1";
+        }
+        else
+        {
+            userIdStr = "0";
+        }
+    }
 }
 
-<div class="content">
-        <div class="row">
-            <div class="form-group has-feedback">
-                <label for="name">Name:</label>
-                <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
-                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+<div class="content" data-edit-mode="@editMode" data-user-id="@userIdStr">
+    <div class="row">
+        <div class="col-xs-6 blocks">
+            <div class="row">
+                <div class="form-group has-feedback">
+                    <label for="name">Name:</label>
+                    <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+                    <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group has-feedback">
+                    <label for="bDay">Birth Day:</label>
+                    <input class="form-control dateInput" id="bDay" name="bDay" type="text" value="@bDay" />
+                    <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-default saveBtn">Save</button>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group has-feedback">
-                <label for="bDay">Birth Day:</label>
-                <input class="form-control dateInput" id="bDay" name="bDay" type="text" />
-                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+        <div class="col-xs-6 blocks editBlock hide">
+            <div class="row">
+                <div class="form-group">
+                    <label for="awards">Awards:</label>
+                    <textarea class="form-control awardsArea" rows="4" id="awards" readonly="readonly">@awards</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-default giveAwardBtn">Give Award</button>
+                <button class="btn btn-default revokeAwardBtn">Revoke Award</button>
+            </div>
+            <div class="row">
+                <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt">
+                    Delete Employee
+                </button>
             </div>
         </div>
-        <div class="row">
-            <button class="btn btn-default saveBtn">
-                Save <span class="glyphicon glyphicon-floppy-save"></span>
-            </button>
-        </div>
+    </div>
+
+    @RenderPage("_ErrorAlertPartial.cshtml")
+
+    @RenderPage("_DeletePromptPartial.cshtml")
+
+    @RenderPage("_AwardPromptPartial.cshtml")
 </div>
 
 @section scripts {
@@ -41,5 +96,6 @@
     <script src="~/Scripts/jquery.inputmask/inputmask.js"></script>
     <script src="~/Scripts/jquery.inputmask/inputmask.date.extensions.js"></script>
     <script src="~/Scripts/jquery.inputmask/jquery.inputmask.js"></script>
+    <script src="~/Scripts/employeesNavbar.js"></script>
     <script src="~/Scripts/newEmployee.js"></script>
 }

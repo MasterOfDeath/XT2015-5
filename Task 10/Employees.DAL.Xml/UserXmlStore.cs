@@ -35,19 +35,40 @@
 
         public bool AddUser(User user)
         {
+            if (user.Id < 0)
+            {
+                return false;
+            }
+
             var elements = this.document
                 .Root
                 .Elements(TableName);
 
-            int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
-
             XElement userElement = new XElement(
-                TableName,
-                new XAttribute(FId, ++maxId),
-                new XElement(FName, user.Name),
-                new XElement(FBirthDay, user.BirthDay));
+                    TableName,
+                    new XAttribute(FId, user.Id),
+                    new XElement(FName, user.Name),
+                    new XElement(FBirthDay, user.BirthDay));
 
-            this.document.Root.Add(userElement);
+            if (user.Id == 0)
+            {
+                int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
+                userElement.SetAttributeValue(FId, ++maxId);
+                
+                this.document.Root.Add(userElement);
+            }
+            else
+            {
+                elements = elements.Where(el => (int)el.Attribute(FId) == user.Id);
+
+                if (!elements.Any())
+                {
+                    return false;
+                }
+
+                elements.First().ReplaceWith(userElement);
+            }
+
             this.document.Save(this.pathUserXml);
             
             return true;
@@ -93,6 +114,19 @@
             }
 
             return elements.First();
+        }
+
+        public IEnumerable<User> ListUsersByAwardId(int awardId)
+        {
+            var awardDoc = XDocument.Load(this.pathAwardXml);
+            var element = awardDoc
+                .Root
+                .Elements(AwardTableName)
+                .First(el => (int)el.Attribute(FId) == awardId);
+
+            var users = element.Elements(FOwner).Select(el => this.GetUserById((int)el));
+
+            return users.ToList();
         }
 
         private User ElementToUser(XElement element)

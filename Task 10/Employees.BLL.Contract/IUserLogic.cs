@@ -13,5 +13,7 @@
         IEnumerable<User> GetAllUsers();
 
         int GetAge(DateTime birthDay);
+
+        IEnumerable<User> ListUsersByAwardId(int awardId);
     }
 }

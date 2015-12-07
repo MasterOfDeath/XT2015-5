@@ -23,7 +23,7 @@
                 throw new InvalidOperationException($"Award '{award.Title}' allready exests.");
             }
 
-            Stores.AwardStore.AddAward(new Award(award.Title));
+            Stores.AwardStore.AddAward(new Award(award.Id, award.Title));
 
             return true;
         }
@@ -80,6 +80,16 @@
             }
 
             return Stores.AwardStore.PullOffAward(user.Id, award.Id);
+        }
+
+        public bool DeleteAward(int awardId)
+        {
+            if (awardId < 0)
+            {
+                throw new ArgumentException("The award id mustn't be negative");
+            }
+
+            return Stores.AwardStore.DeleteAward(awardId);
         }
 
         private void CheckAwardsValues(Award award)

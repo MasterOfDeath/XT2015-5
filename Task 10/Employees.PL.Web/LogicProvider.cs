@@ -7,31 +7,214 @@
 
     public sealed class LogicProvider
     {
-        static readonly LogicProvider _instance = new LogicProvider();
+        private static readonly LogicProvider _Instance = new LogicProvider();
+
         public static LogicProvider Instance
         {
-            get { return _instance; }
+            get { return _Instance; }
         }
 
         public IUserLogic UserLogic { get; } = new BLL.Main.UserMainLogic();
+
         public IAwardLogic AwardLogic { get; } = new BLL.Main.AwardMainLogic();
 
-        public string clickSaveBtn(string name, string dateStr)
+        public string ClickSaveEmployee(string userId, string name, string dateStr)
         {
-            var bDay = DateTime.Parse(dateStr);
-            string result = string.Empty;
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(dateStr))
+            {
+                return $"Invalid request: null values of {nameof(userId)}, {nameof(name)}, {nameof(dateStr)}";
+            }
+
+            var birthDay = DateTime.Parse(dateStr);
+            int id;
 
             try
             {
-                UserLogic.AddUser(new User(name, bDay));
+                id = Convert.ToInt32(userId);
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                return ex.Message;
             }
 
+            try
+            {
+                this.UserLogic.AddUser(new User(id, name, birthDay));
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
 
-            return result;
+            return string.Empty;
+        }
+
+        public string ClickSaveAward(string awardIdStr, string title)
+        {
+            if (string.IsNullOrEmpty(awardIdStr) || string.IsNullOrEmpty(title))
+            {
+                return $"Invalid request: null values of {nameof(awardIdStr)}, {nameof(title)}";
+            }
+
+            int awardId;
+
+            try
+            {
+                awardId = Convert.ToInt32(awardIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.AwardLogic.AddAward(new Award(awardId, title));
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            
+            return string.Empty;
+        }
+
+        public string ClickDeleteEmployee(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return $"Invalid request: null values of {nameof(userId)}";
+            }
+
+            int id;
+
+            try
+            {
+                id = Convert.ToInt32(userId);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.UserLogic.DeleteUser(id);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
+        }
+
+        public string ClickDeleteAward(string awardIdStr)
+        {
+            if (string.IsNullOrEmpty(awardIdStr))
+            {
+                return $"Invalid request: null values of {nameof(awardIdStr)}";
+            }
+
+            int awardId;
+
+            try
+            {
+                awardId = Convert.ToInt32(awardIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.AwardLogic.DeleteAward(awardId);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
+        }
+
+        public string ClickGiveAward(string userIdStr, string awardIdStr)
+        {
+            if (string.IsNullOrEmpty(userIdStr) || string.IsNullOrEmpty(awardIdStr))
+            {
+                return $"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}";
+            }
+
+            int userId, awardId;
+
+            try
+            {
+                userId = Convert.ToInt32(userIdStr);
+                awardId = Convert.ToInt32(awardIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.AwardLogic.PresentAward(userId, awardId);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
+        }
+
+        public string ClickRevokeAward(string userIdStr, string awardIdStr)
+        {
+            if (string.IsNullOrEmpty(userIdStr) || string.IsNullOrEmpty(awardIdStr))
+            {
+                return $"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}";
+            }
+
+            int userId, awardId;
+
+            try
+            {
+                userId = Convert.ToInt32(userIdStr);
+                awardId = Convert.ToInt32(awardIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.AwardLogic.PullOffAward(userId, awardId);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
+        }
+
+        public string makeHtmlTable(IEnumerable<Award> awards)
+        {
+            var strBuild = new System.Text.StringBuilder();
+            strBuild.Append("<table>");
+            foreach (var award in awards)
+            {
+                strBuild.Append("<tr data-award-id=\'" + award.Id.ToString() + "\'>");
+                strBuild.Append("<td>" + award.Id.ToString() + "</td>");
+                strBuild.Append("<td>" + award.Title + "</td>");
+                strBuild.Append("</tr>");
+            }
+            strBuild.Append("</table>");
+
+            return strBuild.ToString();
         }
     }
 }

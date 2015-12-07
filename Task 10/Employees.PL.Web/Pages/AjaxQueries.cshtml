@@ -6,13 +6,55 @@
     if (IsAjax)
     {
         var queryName = Request["queryName"];
+        var userId = string.Empty;
+        var awardId = string.Empty;
 
         switch (queryName)
         {
-            case "clickSaveBtn":
+            case "clickSaveEmployee":
+                userId = Request["userid"];
                 var name = Request["name"];
                 var date = Request["date"];
-                result = logicProvider.clickSaveBtn(name, date);
+                result = logicProvider.ClickSaveEmployee(userId, name, date);
+                break;
+
+            case "clickDeleteEmployee":
+                userId = Request["userid"];
+                result = logicProvider.ClickDeleteEmployee(userId);
+                break;
+
+            case "clickSaveAward":
+                awardId = Request["awardid"];
+                var title = Request["title"];
+                result = logicProvider.ClickSaveAward(awardId, title);
+                break;
+
+            case "clickDeleteAward":
+                awardId = Request["awardid"];
+                result = logicProvider.ClickDeleteAward(awardId);
+                break;
+
+            case "clickGiveAward":
+                userId = Request["userid"];
+                awardId = Request["awardid"];
+                result = logicProvider.ClickGiveAward(userId, awardId);
+                break;
+
+            case "clickRevokeAward":
+                userId = Request["userid"];
+                awardId = Request["awardid"];
+                result = logicProvider.ClickRevokeAward(userId, awardId);
+                break;
+
+            case "giveMeAllAwardsTable":
+                result = logicProvider.makeHtmlTable(
+                    logicProvider.AwardLogic.GetAllAwards());
+                break;
+
+            case "giveMeEmployeesAwardsTable":
+                userId = Request["userid"];
+                result = logicProvider.makeHtmlTable(
+                    logicProvider.AwardLogic.GetAwardsByUserId(Convert.ToInt32(userId)));
                 break;
 
             default:
@@ -20,6 +62,6 @@
                 break;
         }
 
-        Response.Write("{\"result\": \"" + result + "\"}");
+        Response.Write("{\"answer\": \"" + result + "\"}");
     }
 }

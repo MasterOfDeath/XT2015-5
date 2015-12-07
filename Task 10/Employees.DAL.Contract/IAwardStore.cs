@@ -7,6 +7,8 @@
     {
         int AddAward(Award award);
 
+        bool DeleteAward(int awardId);
+
         ICollection<Award> ListAllAwards();
 
         Award GetAwardByTitle(string titleStr);

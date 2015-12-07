@@ -50,6 +50,16 @@
             return (birthDay > nowDate.AddYears(-diff)) ? diff - 1 : diff;
         }
 
+        public IEnumerable<User> ListUsersByAwardId(int awardId)
+        {
+            if (awardId < 0)
+            {
+                throw new ArgumentException("The award id mustn't be negative");
+            }
+
+            return Stores.UserStore.ListUsersByAwardId(awardId);
+        }
+
         private void CheckUsersValues(User user)
         {
             if (user == null)

@@ -7,6 +7,8 @@
     {
         bool AddAward(Award award);
 
+        bool DeleteAward(int awardId);
+
         IEnumerable<Award> GetAllAwards();
 
         IEnumerable<Award> GetAwardsByUserId(int userId);
