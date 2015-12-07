@@ -20,6 +20,7 @@
 
         private XDocument document;
         private string pathUserXml = ConfigurationManager.AppSettings["pathUserXml"];
+        private string dirUserAvatars = ConfigurationManager.AppSettings["dirUserAvatars"];
         private string pathAwardXml = ConfigurationManager.AppSettings["pathAwardXml"];
 
         public UserXmlStore()
@@ -127,6 +128,14 @@
             var users = element.Elements(FOwner).Select(el => this.GetUserById((int)el));
 
             return users.ToList();
+        }
+
+        public bool SaveAvatar(int userId, byte[] imageArray)
+        {
+            File.WriteAllBytes(
+                dirUserAvatars + Path.DirectorySeparatorChar + userId.ToString(), imageArray);
+
+            return true;
         }
 
         private User ElementToUser(XElement element)

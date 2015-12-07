@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using Employees.BLL.Contract;
     using Employees.Entites;
 
@@ -215,6 +217,33 @@
             strBuild.Append("</table>");
 
             return strBuild.ToString();
+        }
+
+        public void Test(Stream stream)
+        {
+            //using (var fileStream = File.Create(@"C:\Users\rinat\Documents\XT2015-5\Task 10\Employees.PL.Web\images\test.jpg"))
+            //{
+            //    stream.Seek(0, SeekOrigin.Begin);
+            //    stream.CopyTo(fileStream);
+            //}
+
+            var fileName = @"C:\Users\rinat\Documents\XT2015-5\Task 10\Employees.PL.Web\images\test.jpg";
+
+            var arr = StreamToArray(stream);
+
+            if (arr.Any())
+            {
+                File.WriteAllBytes(fileName, arr);
+            }
+        }
+
+        private byte[] StreamToArray(Stream stream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
     }
 }

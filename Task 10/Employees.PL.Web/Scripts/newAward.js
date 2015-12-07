@@ -17,6 +17,8 @@
 
     $(".saveBtn", $content).click(clickSaveBtn);
 
+    $(".deleteBtn", $content).click(clickDeleteBtn);
+
     awardId = $content.data("award-id") + "";
 
     if (awardId !== "0") {
@@ -51,6 +53,10 @@
         })
     }
 
+    function clickDeleteBtn() {
+        hasAwardOwners();
+    }
+
     function changeTitleInput(event) {
         var $input = $(event.target),
             str = $input.val() + "";
@@ -64,7 +70,7 @@
             method: 'post',
             data: {
                 queryName: "clickDeleteAward",
-                userid: userId
+                awardid: awardId
             }
         }).success(function (data) {
             var result = JSON.parse(data);
@@ -75,6 +81,25 @@
                 showError(result.answer);
             }
         })
+    }
+
+    function hasAwardOwners() {
+        if (awardId !== "0") {
+            $.ajax({
+                url: 'AjaxQueries',
+                method: 'post',
+                data: {
+                    queryName: "hasAwardOwners",
+                    awardid: awardId
+                }
+            }).success(function (data) {
+                var result = JSON.parse(data);
+
+                if (result.answer.toLowerCase() === "true") {
+                    $(".modal-body", $deletePrompt).html("<p>This award has owners.<br/>Do you really want to continue?</p>");
+                }
+            })
+        }
     }
 
     function toggleInputError($el, show) {

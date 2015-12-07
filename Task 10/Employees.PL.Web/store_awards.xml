@@ -3,6 +3,7 @@
   <award id="1">
     <title>The best</title>
     <owner>2</owner>
+    <owner>5</owner>
   </award>
   <award id="2">
     <title>The worst</title>
@@ -22,12 +23,6 @@
   </award>
   <award id="7">
     <title>Hello 5</title>
-  </award>
-  <award id="8">
-    <title>Test4</title>
-  </award>
-  <award id="9">
-    <title>Test 4</title>
   </award>
   <award id="10">
     <title>Hello 2</title>

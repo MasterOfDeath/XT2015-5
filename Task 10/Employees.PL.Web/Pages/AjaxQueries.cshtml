@@ -57,6 +57,12 @@
                     logicProvider.AwardLogic.GetAwardsByUserId(Convert.ToInt32(userId)));
                 break;
 
+            case "hasAwardOwners":
+                awardId = Request["awardid"];
+                result = logicProvider.UserLogic.ListUsersByAwardId(
+                    Convert.ToInt32(awardId)).Any().ToString();
+                break;
+
             default:
                 result = "null";
                 break;
