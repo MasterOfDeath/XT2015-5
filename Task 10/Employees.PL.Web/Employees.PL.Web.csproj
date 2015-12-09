@@ -131,7 +131,8 @@
     <Content Include="Pages\_ErrorAlertPartial.cshtml" />
     <Content Include="Pages\_DeletePromptPartial.cshtml" />
     <Content Include="Pages\_AwardPromptPartial.cshtml" />
-    <Content Include="Pages\UploadImage.cshtml" />
+    <Content Include="Pages\GetUserAvatar.cshtml" />
+    <Content Include="Pages\GetAwardAvatar.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

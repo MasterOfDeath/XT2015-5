@@ -17,6 +17,7 @@
         private const string FOwner = "owner";
 
         private string pathAwardXml = ConfigurationManager.AppSettings["pathAwardXml"];
+        private string dirAwardAvatars = ConfigurationManager.AppSettings["dirAwardAvatars"];
         private XDocument document;
 
         public AwardXmlStore()
@@ -36,17 +37,16 @@
                 .Root
                 .Elements(TableName);
 
-            XElement awardElement = new XElement(
-                    TableName,
-                    new XAttribute(FId, award.Id),
-                    new XElement(FTitle, award.Title));
-
             int maxId = award.Id;
 
             if (award.Id == 0)
             {
                 maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
-                awardElement.SetAttributeValue(FId, ++maxId);
+
+                XElement awardElement = new XElement(
+                    TableName,
+                    new XAttribute(FId, ++maxId),
+                    new XElement(FTitle, award.Title));
 
                 this.document.Root.Add(awardElement);
             }
@@ -58,8 +58,8 @@
                 {
                     return 0;
                 }
-
-                elements.First().ReplaceWith(awardElement);
+                
+                elements.First().SetElementValue(FTitle, award.Title);
             }
             
             this.document.Save(this.pathAwardXml);
@@ -165,14 +165,6 @@
             return true;
         }
 
-        private Award ElementToAward(XElement element)
-        {
-            int id = (int)element.Attribute(FId);
-            string title = (string)element.Element(FTitle);
-
-            return new Award(id, title);
-        }
-
         public bool DeleteAward(int awardId)
         {
             IEnumerable<XElement> elements = this.document
@@ -188,7 +180,69 @@
             elements.First().Remove();
             this.document.Save(this.pathAwardXml);
 
+            this.RemoveAvatars(awardId);
+
             return true;
+        }
+
+        public bool SaveAvatar(int awardId, byte[] imageArray, string imageType)
+        {
+            var dirSepar = Path.DirectorySeparatorChar;
+
+            File.WriteAllBytes(
+                dirAwardAvatars + dirSepar + awardId.ToString(), imageArray);
+
+            File.WriteAllText(
+                dirAwardAvatars + dirSepar + awardId.ToString() + ".mime", imageType);
+
+            return true;
+        }
+
+        public Tuple<byte[], string> GetAvatar(int awardId)
+        {
+            var dirSepar = Path.DirectorySeparatorChar;
+            var imgFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString());
+            var mimeFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
+
+            if (imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                mimeFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                !imgFile.Exists ||
+                !mimeFile.Exists)
+            {
+                return null;
+            }
+
+            var imageType = File.ReadAllText(mimeFile.FullName);
+            var imageArray = File.ReadAllBytes(imgFile.FullName);
+
+            return new Tuple<byte[], string>(imageArray, imageType);
+        }
+
+        private Award ElementToAward(XElement element)
+        {
+            int id = (int)element.Attribute(FId);
+            string title = (string)element.Element(FTitle);
+
+            return new Award(id, title);
+        }
+
+        private void RemoveAvatars(int awardId)
+        {
+            var dirSepar = Path.DirectorySeparatorChar;
+            var imgFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString());
+            var mimeFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
+
+            if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                imgFile.Exists)
+            {
+                imgFile.Delete();
+            }
+
+            if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                mimeFile.Exists)
+            {
+                mimeFile.Delete();
+            }
         }
     }
 }

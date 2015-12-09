@@ -6,10 +6,12 @@
         $awardPrompt,
         $awardGivePromptBtn,
         $awardRevokePromptBtn,
+        $avatarContainer,
         nameExp = /[^\w\- \.]+|[ ]{2,}|[\-\.]{2,}|^[\-\.]+$|^[ \-\.]| $/,
-        editMode,
         userId,
-        awardId = "";
+        awardId = "",
+        imageMaxSize = 4000000,
+        doINeedToSaveImage = false;
 
     $content = $(".content");
 
@@ -22,12 +24,10 @@
     $dateInput.keyup(changeDateInput);
     $dateInput.inputmask("d.m.9999", { "placeholder": "dd.mm.yyyy" });
 
-    editMode = (($content.data("edit-mode") + "") === "1");
-    if (editMode) {
+    userId = $content.data("user-id") + "";
+    if (userId !== "0") {
         $(".editBlock", $content).removeClass("hide");
     }
-
-    userId = $content.data("user-id") + "";
 
     $(".saveBtn", $content).click(clickSaveBtn);
 
@@ -35,7 +35,6 @@
     $(".revokeAwardBtn", $content).click(clickRevokeAwardBtn);
 
     $awardPrompt = $(".awardPrompt", $content);
-    //$awardPrompt.on("show.bs.modal", giveMeAllAwardsTable);
     $awardGivePromptBtn = $(".awardGivePromptBtn", $awardPrompt);
     $awardGivePromptBtn.click(clickAwardGivePromptBtn);
     $awardRevokePromptBtn = $(".awardRevokePromptBtn", $awardPrompt);
@@ -44,6 +43,33 @@
     $deletePrompt = $(".deletePrompt", $content);
     $(".modal-title", $deletePrompt).text("Delete Employee");
     $(".deletePromptBtn", $deletePrompt).click(clickDeletePrompt);
+
+    $avatarContainer = $(".avatar-container", $content);
+    $("input", $avatarContainer).change(changeInputImage);
+    
+    $("form", $avatarContainer).submit(submitUploadImageForm);
+
+    function changeInputImage(event) {
+        var input = event.target;
+
+        if (input.files && input.files[0]) {
+            if (input.files[0].size > imageMaxSize) {
+                showError("Max size is: " + imageMaxSize + "Kb but your file is:" + input.files[0].size + "Kb");
+                doINeedToSaveImage = false;
+            } else {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("img", $avatarContainer).attr("src", e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+                doINeedToSaveImage = true;
+            }
+        } else {
+            doINeedToSaveImage = false;
+        }
+    }
 
     function clickSaveBtn() {
         var name = $nameInput.val(),
@@ -73,7 +99,12 @@
             var result = JSON.parse(data);
 
             if (result.answer === "") {
-                window.location.replace("Employees");
+                if (doINeedToSaveImage) {
+                    $("form", $avatarContainer).submit();
+                } else {
+                    window.location.replace("Employees");
+                }
+
             } else {
                 showError(result.answer);
             }
@@ -177,6 +208,31 @@
                 }
             })
         }
+    }
+
+    function submitUploadImageForm(event) {
+        var formData = new FormData(event.target);
+        formData.append("queryName", "uploadUserImage");
+        formData.append("userid", userId);
+        event.preventDefault();
+
+        $.ajax({
+            url: "AjaxQueries",
+            type: "post",
+            data: formData,
+            contentType: false,
+            cache: false,             
+            processData: false
+        }).success(function (data) {
+            var refreshUrl,
+                result = JSON.parse(data);
+
+            if (result.answer === "") {
+                window.location.replace("Employees");
+            } else {
+                showError(result.answer);
+            }
+        });
     }
 
     function giveMeAllAwardsTable() {

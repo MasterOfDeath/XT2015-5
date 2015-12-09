@@ -2,8 +2,11 @@
     var $content,
         $titleInput,
         $deletePrompt,
+        $avatarContainer,
         titleExp = /[^\w\- \.]+|[ ]{2,}|[\-\.]{2,}|^[\-\.]+$|^[ \-\.]| $/,
-        awardId;
+        awardId,
+        imageMaxSize = 4000000,
+        doINeedToSaveImage = false;
 
     $content = $(".content");
 
@@ -17,12 +20,39 @@
 
     $(".saveBtn", $content).click(clickSaveBtn);
 
-    $(".deleteBtn", $content).click(clickDeleteBtn);
+    $(".deleteAwardBtn", $content).click(clickDeleteAwardBtn);
 
     awardId = $content.data("award-id") + "";
 
     if (awardId !== "0") {
         $(".editBlock", $content).removeClass("hide");
+    }
+
+    $avatarContainer = $(".avatar-container", $content);
+    $("input", $avatarContainer).change(changeInputImage);
+
+    $("form", $avatarContainer).submit(submitUploadImageForm);
+
+    function changeInputImage(event) {
+        var input = event.target;
+        
+        if (input.files && input.files[0]) {
+            if (input.files[0].size > imageMaxSize) {
+                showError("Max size is: " + imageMaxSize + "Kb but your file is:" + input.files[0].size + "Kb");
+                doINeedToSaveImage = false;
+            } else {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("img", $avatarContainer).attr("src", e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+                doINeedToSaveImage = true;
+            }
+        } else {
+            doINeedToSaveImage = false;
+        }
     }
 
     function clickSaveBtn() {
@@ -46,14 +76,18 @@
             var result = JSON.parse(data);
 
             if (result.answer === "") {
-                window.location.replace("Awards");
+                if (doINeedToSaveImage) {
+                    $("form", $avatarContainer).submit();
+                } else {
+                    window.location.replace("Awards");
+                }
             } else {
                 showError(result.answer);
             }
         })
     }
 
-    function clickDeleteBtn() {
+    function clickDeleteAwardBtn() {
         hasAwardOwners();
     }
 
@@ -81,6 +115,31 @@
                 showError(result.answer);
             }
         })
+    }
+
+    function submitUploadImageForm(event) {
+        var formData = new FormData(event.target);
+        formData.append("queryName", "uploadAwardImage");
+        formData.append("awardid", awardId);
+        event.preventDefault();
+
+        $.ajax({
+            url: "AjaxQueries",
+            type: "post",
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false
+        }).success(function (data) {
+            var refreshUrl,
+                result = JSON.parse(data);
+
+            if (result.answer === "") {
+                window.location.replace("Awards");
+            } else {
+                showError(result.answer);
+            }
+        });
     }
 
     function hasAwardOwners() {

@@ -1,5 +1,6 @@
 ﻿namespace Employees.DAL.Contract
 {
+    using System;
     using System.Collections.Generic;
     using Entites;
 
@@ -15,6 +16,8 @@
 
         IEnumerable<User> ListUsersByAwardId(int awardId);
 
-        bool SaveAvatar(int userId, byte[] imageArray);
+        bool SaveAvatar(int userId, byte[] imageArray, string imageType);
+
+        Tuple<byte[], string> GetAvatar(int userId);
     }
 }

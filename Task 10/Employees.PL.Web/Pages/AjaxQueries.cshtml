@@ -8,6 +8,7 @@
         var queryName = Request["queryName"];
         var userId = string.Empty;
         var awardId = string.Empty;
+        WebImage image;
 
         switch (queryName)
         {
@@ -61,6 +62,22 @@
                 awardId = Request["awardid"];
                 result = logicProvider.UserLogic.ListUsersByAwardId(
                     Convert.ToInt32(awardId)).Any().ToString();
+                break;
+
+            case "uploadUserImage":
+                userId = Request["userid"];
+                image = WebImage.GetImageFromRequest();
+                image.Resize(width: 150, height: 150, preserveAspectRatio: true, preventEnlarge: true);
+                result = logicProvider.UploadUserImage(
+                    userId, image.GetBytes(), "image/" + image.ImageFormat);
+                break;
+
+            case "uploadAwardImage":
+                awardId = Request["awardid"];
+                image = WebImage.GetImageFromRequest();
+                image.Resize(width: 150, height: 150, preserveAspectRatio: true, preventEnlarge: true);
+                result = logicProvider.UploadAwardImage(
+                    awardId, image.GetBytes(), "image/" + image.ImageFormat);
                 break;
 
             default:

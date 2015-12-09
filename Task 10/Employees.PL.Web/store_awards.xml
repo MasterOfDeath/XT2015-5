@@ -2,14 +2,15 @@
 <head>
   <award id="1">
     <title>The best</title>
-    <owner>2</owner>
     <owner>5</owner>
   </award>
   <award id="2">
     <title>The worst</title>
+    <owner>1</owner>
   </award>
   <award id="3">
     <title>The best from the best</title>
+    <owner>3</owner>
   </award>
   <award id="4">
     <title>No matter</title>
@@ -17,20 +18,6 @@
   <award id="5">
     <title>The Number One</title>
     <owner>5</owner>
-  </award>
-  <award id="6">
-    <title>Hello 4</title>
-  </award>
-  <award id="7">
-    <title>Hello 5</title>
-  </award>
-  <award id="10">
-    <title>Hello 2</title>
-  </award>
-  <award id="11">
-    <title>Hello 3</title>
-  </award>
-  <award id="12">
-    <title>Title 6</title>
+    <owner>1</owner>
   </award>
 </head>

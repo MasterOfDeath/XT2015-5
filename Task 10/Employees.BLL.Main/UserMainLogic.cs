@@ -60,6 +60,40 @@
             return Stores.UserStore.ListUsersByAwardId(awardId);
         }
 
+        public bool SaveAvatar(int userId, byte[] imageArray, string imageType)
+        {
+            var user = Stores.UserStore.GetUserById(userId);
+
+            if (user == null)
+            {
+                throw new ArgumentException("The Employee not found.");
+            }
+
+            if (!imageArray.Any())
+            {
+                throw new ArgumentException("The Image hasn't found");
+            }
+
+            return Stores.UserStore.SaveAvatar(userId, imageArray, imageType);
+        }
+
+        public Tuple<byte[], string> GetAvatar(int userId)
+        {
+            if (userId < 0)
+            {
+                throw new ArgumentException("User ID must be positive");
+            }
+
+            Tuple< byte[], string> result = Stores.UserStore.GetAvatar(userId);
+
+            if (result != null && !result.Item2.StartsWith("image"))
+            {
+                throw new ArgumentException("Incorrect type of avatar");
+            }
+
+            return result;
+        }
+
         private void CheckUsersValues(User user)
         {
             if (user == null)

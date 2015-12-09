@@ -4,16 +4,12 @@
     <name>Rinat</name>
     <birth_day>1985-05-01T00:00:00</birth_day>
   </user>
-  <user id="2">
-    <name>Kirill</name>
-    <birth_day>1983-09-26T00:00:00</birth_day>
-  </user>
   <user id="3">
     <name>Anna</name>
     <birth_day>1993-05-22T00:00:00</birth_day>
   </user>
   <user id="5">
-    <name>T2</name>
-    <birth_day>2012-12-12T00:00:00</birth_day>
+    <name>Kirill</name>
+    <birth_day>1983-09-26T00:00:00</birth_day>
   </user>
 </head>

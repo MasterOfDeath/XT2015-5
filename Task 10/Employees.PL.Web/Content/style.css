@@ -6,34 +6,77 @@
 .navbar {
   min-height:38px;
   margin: auto;
-}
-
-.navbar .container {
-  max-width: none !important;
+  max-width:780px;
 }
 /* -- */
 
 /* Content */
 .content {
     padding: 25px;
+    max-width: 780px;
+    margin: auto;
+}
+
+.content .avatar-container {
+    /*width: 150px;*/
+    height: 150px;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.content .avatar-container input {
+    display: none;
+}
+
+.content .awardBtns {
+    display: flex;
+    justify-content:space-around;
+}
+
+.content .form-group span {
+    right: 10px;
+}
+
+.content .avatar-container img {
+    cursor: pointer;
+    height: auto; 
+    width: auto; 
+    max-width: 150px; 
+    max-height: 150px;
 }
 
 .content .form-group {
-    padding-left: 0;
+    /*padding-left: 0;*/
 }
 
-.content .blocks {
-    padding: 25px;
+.content .row {
+    display: flex;
+    align-items: flex-end;
+}
+
+.content .rowDelBtn {
+    max-width: 560px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content .left-col {
+    max-width: 270px;
+}
+
+.content .right-col {
     max-width: 300px;
 }
 
 .content .editBlock textarea {
     background: white;
-    padding: 13px 15px;
+    padding: 14px 15px;
 }
 
 .content .editBlock .deleteBtn {
-    margin-top: 55px;
+    margin-bottom: 15px;
 }
 
 .content .row label {

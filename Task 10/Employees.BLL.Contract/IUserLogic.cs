@@ -15,5 +15,9 @@
         int GetAge(DateTime birthDay);
 
         IEnumerable<User> ListUsersByAwardId(int awardId);
+
+        bool SaveAvatar(int userId, byte[] imageArray, string imageType);
+
+        Tuple<byte[], string> GetAvatar(int userId);
     }
 }

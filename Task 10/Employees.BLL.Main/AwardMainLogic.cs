@@ -6,7 +6,7 @@
     using System.Text.RegularExpressions;
     using Employees.BLL.Contract;
     using Employees.Entites;
-
+    using System.Linq;
     public class AwardMainLogic : IAwardLogic
     {
         private readonly Regex regAwardTitle = new Regex(@"[^\w- \.?!]+");
@@ -15,13 +15,6 @@
         public bool AddAward(Award award)
         {
             this.CheckAwardsValues(award);
-
-            var awardNew = Stores.AwardStore.GetAwardByTitle(award.Title);
-
-            if (awardNew != null)
-            {
-                throw new InvalidOperationException($"Award '{award.Title}' allready exests.");
-            }
 
             Stores.AwardStore.AddAward(new Award(award.Id, award.Title));
 
@@ -90,6 +83,40 @@
             }
 
             return Stores.AwardStore.DeleteAward(awardId);
+        }
+
+        public bool SaveAvatar(int awardId, byte[] imageArray, string imageType)
+        {
+            var award = Stores.AwardStore.GetAwardById(awardId);
+
+            if (award == null)
+            {
+                throw new ArgumentException("The Award not found.");
+            }
+
+            if (!imageArray.Any())
+            {
+                throw new ArgumentException("The Image hasn't found");
+            }
+
+            return Stores.AwardStore.SaveAvatar(awardId, imageArray, imageType);
+        }
+
+        public Tuple<byte[], string> GetAvatar(int awardId)
+        {
+            if (awardId < 0)
+            {
+                throw new ArgumentException("Award ID must be positive");
+            }
+
+            Tuple<byte[], string> result = Stores.AwardStore.GetAvatar(awardId);
+
+            if (result != null && !result.Item2.StartsWith("image"))
+            {
+                throw new ArgumentException("Incorrect type of avatar");
+            }
+
+            return result;
         }
 
         private void CheckAwardsValues(Award award)

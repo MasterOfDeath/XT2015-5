@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Linq;
     using Employees.BLL.Contract;
@@ -9,6 +10,11 @@
 
     public sealed class LogicProvider
     {
+        private readonly string DefaultUserAvatarFile = ConfigurationManager.AppSettings["defaultUserAvatarFile"];
+        private readonly string DefaultUserAvatarType = ConfigurationManager.AppSettings["defaultUserAvatarType"];
+        private readonly string DefaultAwardAvatarFile = ConfigurationManager.AppSettings["defaultAwardAvatarFile"];
+        private readonly string DefaultAwardAvatarType = ConfigurationManager.AppSettings["defaultAwardAvatarType"];
+
         private static readonly LogicProvider _Instance = new LogicProvider();
 
         public static LogicProvider Instance
@@ -81,18 +87,18 @@
             return string.Empty;
         }
 
-        public string ClickDeleteEmployee(string userId)
+        public string ClickDeleteEmployee(string userIdStr)
         {
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userIdStr))
             {
-                return $"Invalid request: null values of {nameof(userId)}";
+                return $"Invalid request: null values of {nameof(userIdStr)}";
             }
 
-            int id;
+            int userId;
 
             try
             {
-                id = Convert.ToInt32(userId);
+                userId = Convert.ToInt32(userIdStr);
             }
             catch (Exception ex)
             {
@@ -101,7 +107,7 @@
 
             try
             {
-                this.UserLogic.DeleteUser(id);
+                this.UserLogic.DeleteUser(userId);
             }
             catch (Exception ex)
             {
@@ -210,7 +216,6 @@
             foreach (var award in awards)
             {
                 strBuild.Append("<tr data-award-id=\'" + award.Id.ToString() + "\'>");
-                strBuild.Append("<td>" + award.Id.ToString() + "</td>");
                 strBuild.Append("<td>" + award.Title + "</td>");
                 strBuild.Append("</tr>");
             }
@@ -219,31 +224,88 @@
             return strBuild.ToString();
         }
 
-        public void Test(Stream stream)
+        public Tuple<byte[], string> GetDefaultUserAvatar()
         {
-            //using (var fileStream = File.Create(@"C:\Users\rinat\Documents\XT2015-5\Task 10\Employees.PL.Web\images\test.jpg"))
-            //{
-            //    stream.Seek(0, SeekOrigin.Begin);
-            //    stream.CopyTo(fileStream);
-            //}
-
-            var fileName = @"C:\Users\rinat\Documents\XT2015-5\Task 10\Employees.PL.Web\images\test.jpg";
-
-            var arr = StreamToArray(stream);
-
-            if (arr.Any())
+            if (!File.Exists(DefaultUserAvatarFile))
             {
-                File.WriteAllBytes(fileName, arr);
+                return null;
             }
+
+            var imageArray = File.ReadAllBytes(DefaultUserAvatarFile);
+
+            return new Tuple<byte[], string>(imageArray, DefaultUserAvatarType);
         }
 
-        private byte[] StreamToArray(Stream stream)
+        public Tuple<byte[], string> GetDefaultAwardAvatar()
         {
-            using (var memoryStream = new MemoryStream())
+            if (!File.Exists(DefaultAwardAvatarFile))
             {
-                stream.CopyTo(memoryStream);
-                return memoryStream.ToArray();
+                return null;
             }
+
+            var imageArray = File.ReadAllBytes(DefaultAwardAvatarFile);
+
+            return new Tuple<byte[], string>(imageArray, DefaultAwardAvatarType);
+        }
+
+        public string UploadUserImage(string userIdStr, byte[] imageArray, string imageType)
+        {
+            if (imageArray == null || !imageArray.Any() || string.IsNullOrEmpty(imageType))
+            {
+                return "Incorrect format of the image";
+            }
+
+            int userId;
+
+            try
+            {
+                userId = Convert.ToInt32(userIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.UserLogic.SaveAvatar(userId, imageArray, imageType);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
+        }
+
+        public string UploadAwardImage(string awardIdStr, byte[] imageArray, string imageType)
+        {
+            if (imageArray == null || !imageArray.Any() || string.IsNullOrEmpty(imageType))
+            {
+                return "Incorrect format of the image";
+            }
+
+            int awardId;
+
+            try
+            {
+                awardId = Convert.ToInt32(awardIdStr);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                this.AwardLogic.SaveAvatar(awardId, imageArray, imageType);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return string.Empty;
         }
     }
 }

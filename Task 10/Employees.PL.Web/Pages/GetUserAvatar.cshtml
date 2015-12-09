@@ -1,0 +1,24 @@
+﻿@using Employees.PL.Web
+@{
+    var logicProvider = LogicProvider.Instance;
+
+    if (!IsPost)
+    {
+        var userIdStr = Request["userid"];
+        if (userIdStr != null)
+        {
+            var userId = Convert.ToInt32(userIdStr);
+            var result = logicProvider.UserLogic.GetAvatar(userId);
+
+            if (result == null)
+            {
+                result = logicProvider.GetDefaultUserAvatar();
+            }
+
+            if (result != null)
+            {
+                Response.WriteBinary(result.Item1, result.Item2);
+            }
+        }
+    }
+}

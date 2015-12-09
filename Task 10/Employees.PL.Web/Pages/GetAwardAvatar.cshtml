@@ -1,0 +1,24 @@
+﻿@using Employees.PL.Web
+@{
+    var logicProvider = LogicProvider.Instance;
+
+    if (!IsPost)
+    {
+        var awardIdStr = Request["awardid"];
+        if (awardIdStr != null)
+        {
+            var awardId = Convert.ToInt32(awardIdStr);
+            var result = logicProvider.AwardLogic.GetAvatar(awardId);
+
+            if (result == null)
+            {
+                result = logicProvider.GetDefaultAwardAvatar();
+            }
+
+            if (result != null)
+            {
+                Response.WriteBinary(result.Item1, result.Item2);
+            }
+        }
+    }
+}

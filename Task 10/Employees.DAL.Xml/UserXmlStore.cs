@@ -45,17 +45,15 @@
                 .Root
                 .Elements(TableName);
 
-            XElement userElement = new XElement(
-                    TableName,
-                    new XAttribute(FId, user.Id),
-                    new XElement(FName, user.Name),
-                    new XElement(FBirthDay, user.BirthDay));
-
             if (user.Id == 0)
             {
                 int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
-                userElement.SetAttributeValue(FId, ++maxId);
-                
+                XElement userElement = new XElement(
+                    TableName,
+                    new XAttribute(FId, ++maxId),
+                    new XElement(FName, user.Name),
+                    new XElement(FBirthDay, user.BirthDay));
+
                 this.document.Root.Add(userElement);
             }
             else
@@ -67,7 +65,8 @@
                     return false;
                 }
 
-                elements.First().ReplaceWith(userElement);
+                elements.First().SetElementValue(FName, user.Name);
+                elements.First().SetElementValue(FBirthDay, user.BirthDay);
             }
 
             this.document.Save(this.pathUserXml);
@@ -92,6 +91,8 @@
 
             // Remove dependences in awards
             this.RemoveUserIdElements(XDocument.Load(this.pathAwardXml), user.Id);
+
+            this.RemoveAvatars(user.Id);
             
             return true;
         }
@@ -130,12 +131,37 @@
             return users.ToList();
         }
 
-        public bool SaveAvatar(int userId, byte[] imageArray)
+        public bool SaveAvatar(int userId, byte[] imageArray, string imageType)
         {
+            var dirSepar = Path.DirectorySeparatorChar;
+
             File.WriteAllBytes(
-                dirUserAvatars + Path.DirectorySeparatorChar + userId.ToString(), imageArray);
+                dirUserAvatars + dirSepar + userId.ToString(), imageArray);
+
+            File.WriteAllText(
+                dirUserAvatars + dirSepar + userId.ToString() + ".mime", imageType);
 
             return true;
+        }
+
+        public Tuple<byte[], string> GetAvatar(int userId)
+        {
+            var dirSepar = Path.DirectorySeparatorChar;
+            var imgFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString());
+            var mimeFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString() + ".mime");
+
+            if (imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                mimeFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                !imgFile.Exists ||
+                !mimeFile.Exists)
+            {
+                return null;
+            }
+
+            var imageType = File.ReadAllText(mimeFile.FullName);
+            var imageArray = File.ReadAllBytes(imgFile.FullName);
+
+            return new Tuple<byte[], string>(imageArray, imageType);
         }
 
         private User ElementToUser(XElement element)
@@ -160,6 +186,25 @@
             {
                 elements.Remove();
                 document.Save(this.pathAwardXml);
+            }
+        }
+
+        private void RemoveAvatars(int userId)
+        {
+            var dirSepar = Path.DirectorySeparatorChar;
+            var imgFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString());
+            var mimeFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString() + ".mime");
+
+            if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                imgFile.Exists)
+            {
+                imgFile.Delete();
+            }
+
+            if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
+                mimeFile.Exists)
+            {
+                mimeFile.Delete();
             }
         }
     }

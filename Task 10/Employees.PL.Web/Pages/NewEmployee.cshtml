@@ -13,7 +13,6 @@
     var name = string.Empty;
     var bDay = string.Empty;
     var awards = string.Empty;
-    var editMode = "0";
 
     if (!IsPost)
     {
@@ -31,8 +30,6 @@
             name = user.Name;
             bDay = user.BirthDay.ToShortDateString();
             awards = strBuild.ToString().TrimEnd(',');
-
-            editMode = "1";
         }
         else
         {
@@ -41,45 +38,51 @@
     }
 }
 
-<div class="content" data-edit-mode="@editMode" data-user-id="@userIdStr">
+<div class="content" data-user-id="@userIdStr">
     <div class="row">
-        <div class="col-xs-6 blocks">
-            <div class="row">
-                <div class="form-group has-feedback">
-                    <label for="name">Name:</label>
-                    <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
-                    <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                    <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group has-feedback">
-                    <label for="bDay">Birth Day:</label>
-                    <input class="form-control dateInput" id="bDay" name="bDay" type="text" value="@bDay" />
-                    <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                    <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                </div>
-            </div>
-            <div class="row">
-                <button class="btn btn-default saveBtn">Save</button>
-            </div>
+        <div class="col-xs-5 left-col avatar-container editBlock hide">
+            <form method="post" enctype="multipart/form-data">
+                <label for="file-input">
+                    <img class="avatarImg" src="/Pages/GetUserAvatar?userid=@userIdStr" />
+                </label>
+                <input id="file-input" name="file" type="file" accept="image/*" />
+            </form>
         </div>
-        <div class="col-xs-6 blocks editBlock hide">
-            <div class="row">
-                <div class="form-group">
-                    <label for="awards">Awards:</label>
-                    <textarea class="form-control awardsArea" rows="4" id="awards" readonly="readonly">@awards</textarea>
-                </div>
-            </div>
-            <div class="row">
-                <button class="btn btn-default giveAwardBtn">Give Award</button>
-                <button class="btn btn-default revokeAwardBtn">Revoke Award</button>
-            </div>
-            <div class="row">
-                <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt">
-                    Delete Employee
-                </button>
-            </div>
+        <div class="col-xs-6 right-col form-group editBlock hide">
+            <label for="awards">Awards:</label>
+            <textarea class="form-control awardsArea" rows="6" id="awards" readonly="readonly">@awards</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5 left-col form-group has-feedback">
+            <label for="name">Name:</label>
+            <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+            <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+        </div>
+        <div class="col-xs-6 right-col form-group editBlock awardBtns hide">
+            <button class="btn btn-default giveAwardBtn">Give Award</button>
+            <button class="btn btn-default revokeAwardBtn">Revoke Award</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5 left-col form-group has-feedback">
+            <label for="bDay">Birth Day:</label>
+            <input class="form-control dateInput" id="bDay" name="bDay" type="text" value="@bDay" />
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+            <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5 left-col">
+            <button class="btn btn-default saveBtn">Save</button>
+        </div>
+    </div>
+    <div class="row rowDelBtn editBlock hide">
+        <div>
+            <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt">
+                Delete Employee
+            </button>
         </div>
     </div>
 
@@ -92,6 +95,7 @@
 
 @section scripts {
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery-2.1.4.intellisense.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.inputmask/inputmask.js"></script>
     <script src="~/Scripts/jquery.inputmask/inputmask.date.extensions.js"></script>

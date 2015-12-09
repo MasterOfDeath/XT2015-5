@@ -12,7 +12,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Title</th>
                 </tr>
             </thead>
@@ -20,7 +19,6 @@
                 @foreach (var award in awardLogic.GetAllAwards())
                 {
                     <tr data-award-id="@award.Id">
-                        <td>@award.Id</td>
                         <td>@award.Title</td>
                     </tr>
                  }
