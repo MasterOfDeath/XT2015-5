@@ -1,0 +1,50 @@
+﻿@using Employees.PL.Web.Models
+@{
+    bool result = false;
+
+    //if (IsPost)
+    //{
+    //    result = LogicProvider.Instance.AuthLogic.CanLogin("masha", "vasia");
+    //}
+
+    string json;
+    dynamic car;
+
+    if (IsAjax)
+    {
+
+        using (var reader = new StreamReader(Request.InputStream))
+        {
+            json = reader.ReadToEnd();
+        }
+        car = Json.Decode(json);
+    }
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        @*@if (result != null)
+        {
+            foreach (var item in result)
+            {
+                @item <br />
+            }
+        }
+        else
+        {
+            <p>NULL</p>
+        }*@
+
+        @((result) ? "true" : "false")
+
+
+        <form method="post">
+            <button>Submit</button>
+        </form>
+
+    </body>
+</html>

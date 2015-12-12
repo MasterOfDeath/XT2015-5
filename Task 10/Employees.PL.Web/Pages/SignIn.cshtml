@@ -1,0 +1,170 @@
+﻿@using Employees.PL.Web.Models
+@{ 
+    string errorMessage = null;
+    string errorRegMessage = null;
+    string successRegMessage = null;
+    string name = null;
+    string regName = null;
+
+    if (IsPost)
+    {
+        name = Request["name"];
+        regName = Request["regName"];
+        var password = Request["password"];
+        var regPassword = Request["regPassword"];
+
+
+        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(password))
+        {
+            if(LogicProvider.Instance.AuthLogic.CanLogin(name, password))
+            {
+                FormsAuthentication.SetAuthCookie(
+                    name, createPersistentCookie: true);
+                Response.Redirect(Request["ReturnUrl"] ?? "/");
+                return;
+            }
+            else
+            {
+                errorMessage = "Wrong name or password";
+            }
+        }
+
+        if (!string.IsNullOrEmpty(regName) && !string.IsNullOrEmpty(regPassword))
+        {
+            var result = false;
+
+            try
+            {
+                result = LogicProvider.Instance.AuthLogic.AddAuth(regName, regPassword);
+            }
+            catch (Exception ex)
+            {
+                errorRegMessage = ex.Message;
+            }
+
+            if (result && errorRegMessage == null)
+            {
+                successRegMessage = $"The User \"{regName}\" successfully added";
+                name = regName;
+                regName = null;
+            }
+            else
+            {
+                if (errorRegMessage == null)
+                {
+                    errorRegMessage = "The user was not added";
+                }
+            }
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/style.css" rel="stylesheet" />
+        <title>Sign In</title>
+    </head>
+    <body>
+        <div class="content">
+            <div class="row rowTopAlign">
+                <div class="col-xs-5 left-col">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Login</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 form-group has-feedback">
+                                <label for="name">Name:</label>
+                                <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 form-group has-feedback">
+                                <label for="password">Password:</label>
+                                <input class="form-control passwordInput" id="password" name="password" type="password" />
+                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 form-group has-feedback">
+                                <button class="btn btn-primary">Sign in</button>
+                            </div>
+                        </div>
+                    </form>
+                    @if (errorMessage != null)
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 alert alert-danger">@errorMessage</div>
+                        </div>
+                    }
+                </div>
+                <div class="col-xs-1 orText">
+                    <p><b>-or-</b></p>
+                </div>
+                <div class="col-xs-5 right-col">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Registration</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 form-group has-feedback">
+                                <label for="regName">Name:</label>
+                                <input class="form-control regNameInput" id="regName" name="regName" type="text" value="@regName"/>
+                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 form-group has-feedback">
+                                <label for="regPassword">Password:</label>
+                                <input class="form-control regPasswordInput" id="regPassword" name="regPassword" type="password"/>
+                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 form-group has-feedback">
+                                <button class="btn btn-primary">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-xs-12 alert alert-danger hide passTipAlert">
+                            <p>Allowed only letters, numbers and "_"</p>
+                            <p>Min length is 6 characters</p>
+                            <p>Forbidden "_" at the begin and at the end</p>
+                            <p>Forbidden double "_"</p>
+                            <p>Forbidden line of the same symbols</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (errorRegMessage != null)
+                        {
+                            <div class="col-xs-12 alert alert-danger">@errorRegMessage</div>
+                        }
+                        @if (successRegMessage != null)
+                        {
+                            <div class="col-xs-12 alert alert-success">@successRegMessage</div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="alert alert-danger @hideAlert">@errorMessage</div>*@
+        </div>
+    </body>
+</html>
+
+
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/signIn.js"></script>

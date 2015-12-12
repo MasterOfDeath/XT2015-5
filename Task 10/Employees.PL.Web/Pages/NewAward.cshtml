@@ -1,8 +1,14 @@
-﻿@using Employees.PL.Web
+﻿@using Employees.PL.Web.Models
 
 @{ 
     Layout = "~/_Layout.cshtml";
     PageData["Title"] = "New Award";
+
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.StatusCode = 401;
+        return;
+    }
 
     var awardLogic = LogicProvider.Instance.AwardLogic;
 
@@ -10,9 +16,17 @@
 
     var awardIdStr = string.Empty;
     var title = string.Empty;
+    var readOnly = string.Empty;
+    var disabledBtn = string.Empty;
 
     if (!IsPost)
     {
+        if (!User.IsInRole("admins"))
+        {
+            readOnly = "readonly=\"readonly\"";
+            disabledBtn = "disabled";
+        }
+
         awardIdStr = Request["awardid"];
         if (awardIdStr != null)
         {
@@ -35,20 +49,20 @@
                     <label for="file-input">
                         <img class="avatarImg" src="/Pages/GetAwardAvatar?awardid=@awardIdStr" />
                     </label>
-                    <input id="file-input" name="file" type="file" accept="image/*" />
+                    <input id="file-input" name="file" type="file" accept="image/*" @disabledBtn/>
                 </form>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-7 form-group has-feedback">
                 <label for="title">Title:</label>
-                <input class="form-control titleInput" id="title" name="title" type="text" value="@title" />
+                <input class="form-control titleInput" id="title" name="title" type="text" value="@title" @readOnly/>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
                 <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
             </div>
             <div class="col-xs-3">
                 <div class="editBlock hide">
-                    <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt">
+                    <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt" @disabledBtn>
                         Delete Award
                     </button>
                 </div>
@@ -56,19 +70,10 @@
         </div>
         <div class="row">
             <div class="col-xs-3">
-                <button class="btn btn-default saveBtn">Save</button>
+                <button class="btn btn-primary saveBtn" @disabledBtn>Save</button>
             </div>
         </div>
     </div>
-    @*<div class="col-xs-6">
-        <div class="row">
-            <div class="editBlock hide">
-                <button class="btn btn-danger deleteAwardBtn" data-toggle="modal" data-target="#deletePrompt">
-                    Delete Award
-                </button>
-            </div>
-        </div>
-    </div>*@
 
     @RenderPage("_ErrorAlertPartial.cshtml")
 
@@ -80,4 +85,8 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/awardsNavbar.js"></script>
     <script src="~/Scripts/newAward.js"></script>
+}
+
+@section header {
+    <link rel="icon" type="image/png" href="~/images/award_icon.png" />
 }

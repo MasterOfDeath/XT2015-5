@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<head>
+  <auth username="admin">
+    <hash>D033E22AE348AEB5660FC2140AEC35850C4DA997</hash>
+    <role>users</role>
+    <role>admins</role>
+  </auth>
+  <auth username="vasia">
+    <hash>6873ED71AFBC9D34F235A1376A902115740CCFEB</hash>
+    <role>users</role>
+  </auth>
+  <auth username="masha">
+    <hash>9A19271F701EEB7A4E6DFFA6A484EC27A6E51A66</hash>
+    <role>users</role>
+  </auth>
+  <auth username="rinat_gumirov">
+    <hash>6079C33F341EC7DABCD3A60C05AE423C1EE2A141</hash>
+    <role>users</role>
+  </auth>
+  <auth username="test23">
+    <hash>DFE71540D0C478F2E15A07B787858A74E7164AEA</hash>
+    <role>users</role>
+  </auth>
+  <auth username="test24">
+    <hash>FC0EE89B1E0D0ED83730414A0F7999B557FA0292</hash>
+    <role>users</role>
+  </auth>
+  <auth username="test25">
+    <hash>100EF754E0696AAAAD9CF2CDC63EC48EEEF54A7F</hash>
+    <role>users</role>
+  </auth>
+  <auth username="test26">
+    <hash>13DBF4ED331314CC7FAFC5A91EE62784473BAF2D</hash>
+    <role>users</role>
+  </auth>
+</head>

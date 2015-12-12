@@ -8,6 +8,24 @@
   margin: auto;
   max-width:780px;
 }
+
+.navbar .container {
+  min-height:38px;
+  margin: auto;
+  max-width:780px;
+}
+
+.navbar .navbar-nav {
+  padding: 15px;
+}
+
+.navbar .container .navbar-nav a{
+  padding: 0;
+}
+
+.navbar .container .navbar-nav li{
+  padding: 0 10px;
+}
 /* -- */
 
 /* Content */
@@ -17,8 +35,8 @@
     margin: auto;
 }
 
+
 .content .avatar-container {
-    /*width: 150px;*/
     height: 150px;
     margin-bottom: 15px;
     align-items: center;
@@ -56,6 +74,11 @@
     align-items: flex-end;
 }
 
+.content .rowTopAlign {
+    display: flex;
+    align-items: flex-start;
+}
+
 .content .rowDelBtn {
     max-width: 560px;
     display: flex;
@@ -91,6 +114,14 @@
     cursor: pointer;
 }
 
+.content > .securityTable > tbody td {
+    cursor: default;
+}
+
+.content > .securityTable > tbody > tr > td:first-child > input {
+    cursor: pointer;
+}
+
 .content .awardPrompt .modal-body {
     height: 200px;
     overflow: auto;
@@ -107,5 +138,9 @@
 .content .selectedRow, .content .selectedRow:hover {
     background: grey;
     color: white;
+}
+
+.content .orText {
+    margin-top: 14%;
 }
 /* -- */

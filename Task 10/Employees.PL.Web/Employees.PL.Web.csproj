@@ -97,8 +97,17 @@
     <Content Include="Content\style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="html5reset-1.6.1.css" />
+    <Content Include="images\award_icon.png" />
+    <Content Include="images\employee_icon.png" />
+    <Content Include="images\security_icon.png" />
     <Content Include="packages.config" />
     <Content Include="Default.cshtml" />
+    <Content Include="Pages\NewEmployee.cshtml" />
+    <Content Include="Scripts\awardsNavbar.js" />
+    <Content Include="Scripts\awards.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\employees.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -107,12 +116,10 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Pages\NewEmployee.cshtml" />
-    <Content Include="Scripts\awardsNavbar.js" />
-    <Content Include="Scripts\awards.js" />
-    <Content Include="Scripts\employees.js" />
+    <Content Include="Pages\Security.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.js" />
@@ -122,6 +129,8 @@
     <Content Include="Scripts\jquery.inputmask\jquery.inputmask.js" />
     <Content Include="Scripts\newAward.js" />
     <Content Include="Scripts\newEmployee.js" />
+    <Content Include="Scripts\security.js" />
+    <Content Include="Scripts\signIn.js" />
     <Content Include="_Layout.cshtml" />
     <Content Include="Pages\_NavbarPartial.cshtml" />
     <Content Include="Pages\Employees.cshtml" />
@@ -133,9 +142,9 @@
     <Content Include="Pages\_AwardPromptPartial.cshtml" />
     <Content Include="Pages\GetUserAvatar.cshtml" />
     <Content Include="Pages\GetAwardAvatar.cshtml" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.4.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Pages\SignIn.cshtml" />
+    <Content Include="Pages\SignOut.cshtml" />
+    <Content Include="Pages\Test.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -151,7 +160,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogicProvider.cs" />
+    <Compile Include="Models\AjaxResponse.cs" />
+    <Compile Include="Models\EmployeesRoleProvider.cs" />
+    <Compile Include="Models\LogicProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +177,10 @@
     <ProjectReference Include="..\Employees.Entites\Employees.Entites.csproj">
       <Project>{55c5792e-f12d-46b6-b002-1b08399cf20e}</Project>
       <Name>Employees.Entites</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Employees.Exceptions\Employees.Exceptions.csproj">
+      <Project>{ac984f44-e812-4443-b7dd-d9e7ad26a29c}</Project>
+      <Name>Employees.Exceptions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

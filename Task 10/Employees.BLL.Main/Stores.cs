@@ -9,10 +9,13 @@
         {
             UserStore = new UserXmlStore();
             AwardStore = new AwardXmlStore();
+            AuthStore = new AuthXmlStore();
         }
         
         public static IUserStore UserStore { get; }
 
         public static IAwardStore AwardStore { get; }
+
+        public static IAuthStore AuthStore { get; }
     }
 }

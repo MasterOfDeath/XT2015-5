@@ -97,16 +97,17 @@
             }
         }).success(function (data) {
             var result = JSON.parse(data);
-
-            if (result.answer === "") {
+            
+            if (result.Answer === null) {
                 if (doINeedToSaveImage) {
+                    userId = result.Data + "";
                     $("form", $avatarContainer).submit();
                 } else {
                     window.location.replace("Employees");
                 }
 
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         })
     }
@@ -136,10 +137,10 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.answer === "") {
+            if (result.Answer === "") {
                 window.location.replace("Employees");
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         })
     }
@@ -179,10 +180,10 @@
             }).success(function (data) {
                 var result = JSON.parse(data);
 
-                if (result.answer === "") {
+                if (result.Answer === "") {
                     window.location.reload();
                 } else {
-                    showError(result.answer);
+                    showError(result.Answer);
                 }
             })
         }
@@ -201,10 +202,10 @@
             }).success(function (data) {
                 var result = JSON.parse(data);
 
-                if (result.answer === "") {
+                if (result.Answer === "") {
                     window.location.reload();
                 } else {
-                    showError(result.answer);
+                    showError(result.Answer);
                 }
             })
         }
@@ -227,10 +228,10 @@
             var refreshUrl,
                 result = JSON.parse(data);
 
-            if (result.answer === "") {
+            if (result.Answer === "") {
                 window.location.replace("Employees");
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         });
     }
@@ -261,8 +262,8 @@
             $table,
             $td;
 
-        if (result.answer !== "") {
-            $table = $(result.answer);
+        if (result.Answer !== "") {
+            $table = $(result.Answer);
             $table.addClass("table table-hover");
             $(".modal-body table", $awardPrompt).replaceWith($table);
             $td = $("td", $table);

@@ -1,10 +1,18 @@
-﻿@using Employees.PL.Web
+﻿@using Employees.PL.Web.Models
 @{ 
     var logicProvider = LogicProvider.Instance;
     string result;
+    AjaxResponse ajaxResponse;
 
     if (IsAjax)
     {
+        if (!User.IsInRole("admins"))
+        {
+            Response.Write(Json.Encode(new AjaxResponse("Access is denied")));
+            Response.StatusCode = 403;
+            return;
+        }
+
         var queryName = Request["queryName"];
         var userId = string.Empty;
         var awardId = string.Empty;
@@ -16,8 +24,9 @@
                 userId = Request["userid"];
                 var name = Request["name"];
                 var date = Request["date"];
-                result = logicProvider.ClickSaveEmployee(userId, name, date);
-                break;
+                ajaxResponse = logicProvider.ClickSaveEmployee(userId, name, date);
+                Response.Write(Json.Encode(ajaxResponse));
+                return;
 
             case "clickDeleteEmployee":
                 userId = Request["userid"];
@@ -48,21 +57,21 @@
                 break;
 
             case "giveMeAllAwardsTable":
-                result = logicProvider.makeHtmlTable(
+                result = logicProvider.MakeHtmlTable(
                     logicProvider.AwardLogic.GetAllAwards());
                 break;
 
             case "giveMeEmployeesAwardsTable":
                 userId = Request["userid"];
-                result = logicProvider.makeHtmlTable(
+                result = logicProvider.MakeHtmlTable(
                     logicProvider.AwardLogic.GetAwardsByUserId(Convert.ToInt32(userId)));
                 break;
 
-            case "hasAwardOwners":
+            case "doesHaveAwardOwners":
                 awardId = Request["awardid"];
-                result = logicProvider.UserLogic.ListUsersByAwardId(
-                    Convert.ToInt32(awardId)).Any().ToString();
-                break;
+                ajaxResponse = logicProvider.DoesHaveAwardOwners(awardId);
+                Response.Write(Json.Encode(ajaxResponse));
+                return;
 
             case "uploadUserImage":
                 userId = Request["userid"];
@@ -80,11 +89,16 @@
                     awardId, image.GetBytes(), "image/" + image.ImageFormat);
                 break;
 
+            case "saveRoles":
+                var json = Request["array"];
+                result = logicProvider.SaveRoles(json);
+                break;
+
             default:
                 result = "null";
                 break;
         }
 
-        Response.Write("{\"answer\": \"" + result + "\"}");
+        Response.Write(Json.Encode(new AjaxResponse(result)));
     }
 }

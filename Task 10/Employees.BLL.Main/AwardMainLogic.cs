@@ -2,11 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using Employees.BLL.Contract;
     using Employees.Entites;
-    using System.Linq;
+
     public class AwardMainLogic : IAwardLogic
     {
         private readonly Regex regAwardTitle = new Regex(@"[^\w- \.?!]+");

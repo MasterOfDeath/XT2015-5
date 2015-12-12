@@ -190,10 +190,10 @@
             var dirSepar = Path.DirectorySeparatorChar;
 
             File.WriteAllBytes(
-                dirAwardAvatars + dirSepar + awardId.ToString(), imageArray);
+                this.dirAwardAvatars + dirSepar + awardId.ToString(), imageArray);
 
             File.WriteAllText(
-                dirAwardAvatars + dirSepar + awardId.ToString() + ".mime", imageType);
+                this.dirAwardAvatars + dirSepar + awardId.ToString() + ".mime", imageType);
 
             return true;
         }
@@ -201,8 +201,8 @@
         public Tuple<byte[], string> GetAvatar(int awardId)
         {
             var dirSepar = Path.DirectorySeparatorChar;
-            var imgFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString());
-            var mimeFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
+            var imgFile = new FileInfo(this.dirAwardAvatars + dirSepar + awardId.ToString());
+            var mimeFile = new FileInfo(this.dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
 
             if (imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
                 mimeFile.Attributes.HasFlag(FileAttributes.Directory) ||
@@ -229,8 +229,8 @@
         private void RemoveAvatars(int awardId)
         {
             var dirSepar = Path.DirectorySeparatorChar;
-            var imgFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString());
-            var mimeFile = new FileInfo(dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
+            var imgFile = new FileInfo(this.dirAwardAvatars + dirSepar + awardId.ToString());
+            var mimeFile = new FileInfo(this.dirAwardAvatars + dirSepar + awardId.ToString() + ".mime");
 
             if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
                 imgFile.Exists)

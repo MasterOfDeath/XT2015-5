@@ -89,7 +89,7 @@
     }
     
     function showDialog() {
-        $(".finishPrompt").modal({backdrop: "static"}, {keyboard: false});
+        $(".finishPrompt").modal({backdrop: "static"}, {keyboard: true});
     }
 	
 	function closeWindow() {

@@ -48,12 +48,13 @@
             if (user.Id == 0)
             {
                 int maxId = (!elements.Any()) ? 0 : elements.Max(t => (int)t.Attribute(FId));
+                user.Id = maxId + 1;
                 XElement userElement = new XElement(
                     TableName,
-                    new XAttribute(FId, ++maxId),
+                    new XAttribute(FId, user.Id),
                     new XElement(FName, user.Name),
                     new XElement(FBirthDay, user.BirthDay));
-
+                
                 this.document.Root.Add(userElement);
             }
             else
@@ -136,10 +137,10 @@
             var dirSepar = Path.DirectorySeparatorChar;
 
             File.WriteAllBytes(
-                dirUserAvatars + dirSepar + userId.ToString(), imageArray);
+                this.dirUserAvatars + dirSepar + userId.ToString(), imageArray);
 
             File.WriteAllText(
-                dirUserAvatars + dirSepar + userId.ToString() + ".mime", imageType);
+                this.dirUserAvatars + dirSepar + userId.ToString() + ".mime", imageType);
 
             return true;
         }
@@ -147,8 +148,8 @@
         public Tuple<byte[], string> GetAvatar(int userId)
         {
             var dirSepar = Path.DirectorySeparatorChar;
-            var imgFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString());
-            var mimeFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString() + ".mime");
+            var imgFile = new FileInfo(this.dirUserAvatars + dirSepar + userId.ToString());
+            var mimeFile = new FileInfo(this.dirUserAvatars + dirSepar + userId.ToString() + ".mime");
 
             if (imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
                 mimeFile.Attributes.HasFlag(FileAttributes.Directory) ||
@@ -192,8 +193,8 @@
         private void RemoveAvatars(int userId)
         {
             var dirSepar = Path.DirectorySeparatorChar;
-            var imgFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString());
-            var mimeFile = new FileInfo(dirUserAvatars + dirSepar + userId.ToString() + ".mime");
+            var imgFile = new FileInfo(this.dirUserAvatars + dirSepar + userId.ToString());
+            var mimeFile = new FileInfo(this.dirUserAvatars + dirSepar + userId.ToString() + ".mime");
 
             if (!imgFile.Attributes.HasFlag(FileAttributes.Directory) ||
                 imgFile.Exists)

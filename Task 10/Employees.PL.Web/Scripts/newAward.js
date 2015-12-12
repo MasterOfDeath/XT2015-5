@@ -20,7 +20,7 @@
 
     $(".saveBtn", $content).click(clickSaveBtn);
 
-    $(".deleteAwardBtn", $content).click(clickDeleteAwardBtn);
+    $(".deleteBtn", $content).click(clickDeleteAwardBtn);
 
     awardId = $content.data("award-id") + "";
 
@@ -75,20 +75,20 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.answer === "") {
+            if (result.Answer === "") {
                 if (doINeedToSaveImage) {
                     $("form", $avatarContainer).submit();
                 } else {
                     window.location.replace("Awards");
                 }
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         })
     }
 
     function clickDeleteAwardBtn() {
-        hasAwardOwners();
+        doesHaveAwardOwners();
     }
 
     function changeTitleInput(event) {
@@ -109,10 +109,10 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.answer === "") {
+            if (result.Answer === "") {
                 window.location.replace("Awards");
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         })
     }
@@ -134,27 +134,28 @@
             var refreshUrl,
                 result = JSON.parse(data);
 
-            if (result.answer === "") {
+            if (result.Answer === "") {
                 window.location.replace("Awards");
             } else {
-                showError(result.answer);
+                showError(result.Answer);
             }
         });
     }
 
-    function hasAwardOwners() {
+    function doesHaveAwardOwners() {
         if (awardId !== "0") {
             $.ajax({
                 url: 'AjaxQueries',
                 method: 'post',
                 data: {
-                    queryName: "hasAwardOwners",
+                    queryName: "doesHaveAwardOwners",
                     awardid: awardId
                 }
             }).success(function (data) {
                 var result = JSON.parse(data);
 
-                if (result.answer.toLowerCase() === "true") {
+                //if (result.Answer.toLowerCase() === "true") {
+                if (result.Data) {
                     $(".modal-body", $deletePrompt).html("<p>This award has owners.<br/>Do you really want to continue?</p>");
                 }
             })

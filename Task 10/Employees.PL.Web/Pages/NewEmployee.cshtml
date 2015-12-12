@@ -1,8 +1,14 @@
-﻿@using Employees.PL.Web
+﻿@using Employees.PL.Web.Models
 
 @{ 
     Layout = "~/_Layout.cshtml";
     PageData["Title"] = "New Employee";
+
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.StatusCode = 401;
+        return;
+    }
 
     var userLogic = LogicProvider.Instance.UserLogic;
     var awardLogic = LogicProvider.Instance.AwardLogic;
@@ -13,9 +19,17 @@
     var name = string.Empty;
     var bDay = string.Empty;
     var awards = string.Empty;
+    var readOnly = string.Empty;
+    var disabledBtn = string.Empty;
 
     if (!IsPost)
     {
+        if (!User.IsInRole("admins"))
+        {
+            readOnly = "readonly='readonly'";
+            disabledBtn = "disabled";
+        }
+
         userIdStr = Request["userid"];
         if (userIdStr != null)
         {
@@ -40,12 +54,13 @@
 
 <div class="content" data-user-id="@userIdStr">
     <div class="row">
-        <div class="col-xs-5 left-col avatar-container editBlock hide">
+        @*<div class="col-xs-5 left-col avatar-container editBlock hide">*@
+        <div class="col-xs-5 left-col avatar-container">
             <form method="post" enctype="multipart/form-data">
                 <label for="file-input">
                     <img class="avatarImg" src="/Pages/GetUserAvatar?userid=@userIdStr" />
                 </label>
-                <input id="file-input" name="file" type="file" accept="image/*" />
+                <input id="file-input" name="file" type="file" accept="image/*" @disabledBtn/>
             </form>
         </div>
         <div class="col-xs-6 right-col form-group editBlock hide">
@@ -56,31 +71,31 @@
     <div class="row">
         <div class="col-xs-5 left-col form-group has-feedback">
             <label for="name">Name:</label>
-            <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+            <input class="form-control nameInput readonly" id="name" name="name" type="text" value="@name" @readOnly/>
             <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
             <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
         </div>
         <div class="col-xs-6 right-col form-group editBlock awardBtns hide">
-            <button class="btn btn-default giveAwardBtn">Give Award</button>
-            <button class="btn btn-default revokeAwardBtn">Revoke Award</button>
+            <button class="btn btn-default giveAwardBtn" @disabledBtn>Give Award</button>
+            <button class="btn btn-default revokeAwardBtn" @disabledBtn>Revoke Award</button>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-5 left-col form-group has-feedback">
             <label for="bDay">Birth Day:</label>
-            <input class="form-control dateInput" id="bDay" name="bDay" type="text" value="@bDay" />
+            <input class="form-control dateInput" id="bDay" name="bDay" type="text" value="@bDay" @readOnly/>
             <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
             <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-5 left-col">
-            <button class="btn btn-default saveBtn">Save</button>
+            <button class="btn btn-primary saveBtn" @disabledBtn>Save</button>
         </div>
     </div>
     <div class="row rowDelBtn editBlock hide">
         <div>
-            <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt">
+            <button class="btn btn-danger deleteBtn" data-toggle="modal" data-target="#deletePrompt" @disabledBtn>
                 Delete Employee
             </button>
         </div>
@@ -102,4 +117,8 @@
     <script src="~/Scripts/jquery.inputmask/jquery.inputmask.js"></script>
     <script src="~/Scripts/employeesNavbar.js"></script>
     <script src="~/Scripts/newEmployee.js"></script>
+}
+
+@section header {
+    <link rel="icon" type="image/png" href="~/images/employee_icon.png" />
 }

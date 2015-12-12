@@ -1,0 +1,63 @@
+﻿@using Employees.PL.Web.Models;
+
+@{
+    Layout = "~/_Layout.cshtml";
+    PageData["Title"] = "Security";
+
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.StatusCode = 401;
+        return;
+    }
+
+    if (!User.IsInRole("admins"))
+    {
+        Response.StatusCode = 403;
+        return;
+    }
+
+    var logicProvider = LogicProvider.Instance;
+    var authLogic = logicProvider.AuthLogic;
+}
+
+<div class="content">
+    <table class="table table-hover securityTable">
+        <thead>
+            <tr>
+                <th class="col-xs-2">Is Admin?</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userName in authLogic.GetAllUserNames())
+            {
+                string check = string.Empty;
+
+                if (authLogic.IsUserInRole(userName, "admins"))
+                {
+                    check = "checked";
+                }
+
+                <tr data-username="@userName">
+                    <td><input type="checkbox" @check /></td>
+                    <td>@userName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary saveBtn">Save</button>
+
+    @RenderPage("_ErrorAlertPartial.cshtml")
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery-2.1.4.intellisense.js">s</script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/security.js"></script>
+}
+
+@section header {
+    <link rel="icon" type="image/png" href="~/images/security_icon.png" />
+}

@@ -84,7 +84,7 @@
                 throw new ArgumentException("User ID must be positive");
             }
 
-            Tuple< byte[], string> result = Stores.UserStore.GetAvatar(userId);
+            Tuple<byte[], string> result = Stores.UserStore.GetAvatar(userId);
 
             if (result != null && !result.Item2.StartsWith("image"))
             {

@@ -12,4 +12,8 @@
     <name>Kirill</name>
     <birth_day>1983-09-26T00:00:00</birth_day>
   </user>
+  <user id="8">
+    <name>test23</name>
+    <birth_day>1212-12-12T00:00:00</birth_day>
+  </user>
 </head>
