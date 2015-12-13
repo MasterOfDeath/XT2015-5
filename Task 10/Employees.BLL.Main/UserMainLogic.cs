@@ -66,12 +66,12 @@
 
             if (user == null)
             {
-                throw new ArgumentException("The Employee not found.");
+                throw new ArgumentException("The Employee hasn't found.");
             }
 
             if (!imageArray.Any())
             {
-                throw new ArgumentException("The Image hasn't found");
+                throw new ArgumentException("The Image hasn't found.");
             }
 
             return Stores.UserStore.SaveAvatar(userId, imageArray, imageType);

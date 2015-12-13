@@ -45,6 +45,10 @@
       <Project>{6CA5AC47-16B7-43E6-9640-7FC292ECADB8}</Project>
       <Name>Employees.BLL.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Employees.DAL.MSSql\Employees.DAL.MSSql.csproj">
+      <Project>{1398878c-6be2-421a-a97b-9f863bd55791}</Project>
+      <Name>Employees.DAL.MSSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Employees.DAL.Xml\Employees.DAL.Xml.csproj">
       <Project>{C5114862-3B1C-4712-B154-17096EB78C30}</Project>
       <Name>Employees.DAL.Xml</Name>

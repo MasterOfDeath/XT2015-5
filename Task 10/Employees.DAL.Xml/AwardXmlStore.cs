@@ -76,22 +76,6 @@
                 .ToList();
         }
 
-        public Award GetAwardByTitle(string titleStr)
-        {
-            var els = this.document
-                .Root
-                .Elements(TableName)
-                .Select(el => this.ElementToAward(el))
-                .Where(award => award.Title.ToLower() == titleStr.ToLower());
-
-            if (els.Count() == 0)
-            {
-                return null;
-            }
-
-            return els.First();
-        }
-
         public Award GetAwardById(int id)
         {
             var els = this.document

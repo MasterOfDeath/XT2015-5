@@ -363,7 +363,6 @@
             return string.Empty;
         }
         
-
         public AjaxResponse DoesHaveAwardOwners(string awardIdStr)
         {
             if (string.IsNullOrEmpty(awardIdStr))

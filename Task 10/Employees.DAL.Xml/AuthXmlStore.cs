@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Xml.Linq;
     using Contract;
-
+    using System;
     public class AuthXmlStore : IAuthStore
     {
         private const string TableName = "auth";
@@ -114,12 +114,12 @@
                 .ToArray();
         }
 
-        public bool AddAuth(string username, string hash)
+        public bool AddAuth(string username, byte[] hash)
         {
             XElement authElement = new XElement(
                     TableName,
                     new XAttribute(FUserName, username),
-                    new XElement(FHash, hash));
+                    new XElement(FHash, Convert.ToBase64String(hash)));
 
             this.document.Root.Add(authElement);
             this.document.Save(this.pathAuthXml);
@@ -127,7 +127,7 @@
             return true;
         }
 
-        public string GetHashByUserName(string username)
+        public byte[] GetHashByUserName(string username)
         {
             var elements = this.document
                 .Root
@@ -139,7 +139,7 @@
                 return null;
             }
 
-            return (string)elements.First().Element(FHash);
+            return Convert.FromBase64String(elements.First().Element(FHash).Value);
         }
 
         public ICollection<string> GetAllUserNames()

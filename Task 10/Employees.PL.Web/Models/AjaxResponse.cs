@@ -3,7 +3,7 @@
     public class AjaxResponse
     {
         public AjaxResponse(string answer)
-            :this(answer, null)
+            : this(answer, null)
         {
             this.Answer = answer;
         }

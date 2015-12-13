@@ -12,8 +12,6 @@
 
         ICollection<Award> ListAllAwards();
 
-        Award GetAwardByTitle(string titleStr);
-
         Award GetAwardById(int id);
 
         IEnumerable<Award> ListAwardsByUserId(int userId);

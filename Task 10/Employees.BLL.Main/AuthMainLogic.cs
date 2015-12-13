@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Cryptography;
+    using System.Text;
     using Employees.BLL.Contract;
     using Employees.Exceptions;
-
+    using System.Linq;
     public class AuthMainLogic : IAuthLogic
     {
         private const string AdmRole = "admins";
@@ -12,7 +14,7 @@
 
         public bool AddAuth(string username, string password)
         {
-            var hash = SHA1Util.GetHashString(password);
+            var hash = this.GetHash(password);
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -56,9 +58,9 @@
 
         public bool CanLogin(string username, string password)
         {
-            var hash = SHA1Util.GetHashString(password);
+            var hash = this.GetHash(password);
 
-            return hash == Stores.AuthStore.GetHashByUserName(username);
+            return hash.SequenceEqual(Stores.AuthStore.GetHashByUserName(username));
         }
 
         public ICollection<string> GetRolesForUser(string username)
@@ -119,6 +121,12 @@
         public ICollection<string> GetAllUserNames()
         {
             return Stores.AuthStore.GetAllUserNames();
+        }
+
+        private byte[] GetHash(string inputString)
+        {
+            HashAlgorithm algorithm = SHA1.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
     }
 }
