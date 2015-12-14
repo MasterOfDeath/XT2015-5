@@ -75,8 +75,9 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.Answer === "") {
+            if (result.Answer === null) {
                 if (doINeedToSaveImage) {
+                    awardId = result.Data + "";
                     $("form", $avatarContainer).submit();
                 } else {
                     window.location.replace("Awards");
@@ -109,7 +110,7 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.Answer === "") {
+            if (result.Answer === null) {
                 window.location.replace("Awards");
             } else {
                 showError(result.Answer);
@@ -134,7 +135,7 @@
             var refreshUrl,
                 result = JSON.parse(data);
 
-            if (result.Answer === "") {
+            if (result.Answer === null) {
                 window.location.replace("Awards");
             } else {
                 showError(result.Answer);

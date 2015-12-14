@@ -126,7 +126,9 @@
         toggleInputError($input, !isDate(str));
     }
 
-    function clickDeletePrompt() {
+    function clickDeletePrompt(event) {
+        $(event.target).prop("disabled", true);
+
         $.ajax({
             url: 'AjaxQueries',
             method: 'post',
@@ -136,13 +138,15 @@
             }
         }).success(function (data) {
             var result = JSON.parse(data);
-
-            if (result.Answer === "") {
+            
+            if (result.Answer === null) {
                 window.location.replace("Employees");
             } else {
                 showError(result.Answer);
             }
-        })
+        }).always(function () {
+            $(event.target).prop("disabled", false);
+        });
     }
 
     function clickGiveAwardBtn() {
@@ -180,7 +184,7 @@
             }).success(function (data) {
                 var result = JSON.parse(data);
 
-                if (result.Answer === "") {
+                if (result.Answer === null) {
                     window.location.reload();
                 } else {
                     showError(result.Answer);
@@ -202,7 +206,7 @@
             }).success(function (data) {
                 var result = JSON.parse(data);
 
-                if (result.Answer === "") {
+                if (result.Answer === null) {
                     window.location.reload();
                 } else {
                     showError(result.Answer);
@@ -228,7 +232,7 @@
             var refreshUrl,
                 result = JSON.parse(data);
 
-            if (result.Answer === "") {
+            if (result.Answer === null) {
                 window.location.replace("Employees");
             } else {
                 showError(result.Answer);
@@ -262,8 +266,8 @@
             $table,
             $td;
 
-        if (result.Answer !== "") {
-            $table = $(result.Answer);
+        if (result.Data !== null) {
+            $table = $(result.Data);
             $table.addClass("table table-hover");
             $(".modal-body table", $awardPrompt).replaceWith($table);
             $td = $("td", $table);

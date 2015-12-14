@@ -34,7 +34,7 @@
         }).success(function (data) {
             var result = JSON.parse(data);
 
-            if (result.Answer === "") {
+            if (result.Answer === null) {
                 window.location.reload();
             } else {
                 showError(result.Answer);

@@ -63,11 +63,11 @@
             return new AjaxResponse(null, user.Id);
         }
 
-        public string ClickSaveAward(string awardIdStr, string title)
+        public AjaxResponse ClickSaveAward(string awardIdStr, string title)
         {
             if (string.IsNullOrEmpty(awardIdStr) || string.IsNullOrEmpty(title))
             {
-                return $"Invalid request: null values of {nameof(awardIdStr)}, {nameof(title)}";
+                return new AjaxResponse($"Invalid request: null values of {nameof(awardIdStr)}, {nameof(title)}");
             }
 
             int awardId;
@@ -78,26 +78,28 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var award = new Award(awardId, title);
 
             try
             {
-                this.AwardLogic.AddAward(new Award(awardId, title));
+                this.AwardLogic.AddAward(award);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
             
-            return string.Empty;
+            return new AjaxResponse(null, award.Id);
         }
 
-        public string ClickDeleteEmployee(string userIdStr)
+        public AjaxResponse ClickDeleteEmployee(string userIdStr)
         {
             if (string.IsNullOrEmpty(userIdStr))
             {
-                return $"Invalid request: null values of {nameof(userIdStr)}";
+                return new AjaxResponse($"Invalid request: null values of {nameof(userIdStr)}");
             }
 
             int userId;
@@ -108,26 +110,28 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
-                this.UserLogic.DeleteUser(userId);
+                result = this.UserLogic.DeleteUser(userId);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string ClickDeleteAward(string awardIdStr)
+        public AjaxResponse ClickDeleteAward(string awardIdStr)
         {
             if (string.IsNullOrEmpty(awardIdStr))
             {
-                return $"Invalid request: null values of {nameof(awardIdStr)}";
+                return new AjaxResponse($"Invalid request: null values of {nameof(awardIdStr)}");
             }
 
             int awardId;
@@ -138,26 +142,28 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
-                this.AwardLogic.DeleteAward(awardId);
+                result = this.AwardLogic.DeleteAward(awardId);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string ClickGiveAward(string userIdStr, string awardIdStr)
+        public AjaxResponse ClickGiveAward(string userIdStr, string awardIdStr)
         {
             if (string.IsNullOrEmpty(userIdStr) || string.IsNullOrEmpty(awardIdStr))
             {
-                return $"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}";
+                return new AjaxResponse($"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}");
             }
 
             int userId, awardId;
@@ -169,8 +175,10 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
@@ -178,17 +186,17 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string ClickRevokeAward(string userIdStr, string awardIdStr)
+        public AjaxResponse ClickRevokeAward(string userIdStr, string awardIdStr)
         {
             if (string.IsNullOrEmpty(userIdStr) || string.IsNullOrEmpty(awardIdStr))
             {
-                return $"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}";
+                return new AjaxResponse($"Invalid request: null values of {nameof(userIdStr)}, {nameof(awardIdStr)}");
             }
 
             int userId, awardId;
@@ -200,22 +208,24 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
-                this.AwardLogic.PullOffAward(userId, awardId);
+                result = this.AwardLogic.PullOffAward(userId, awardId);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string MakeHtmlTable(IEnumerable<Award> awards)
+        public AjaxResponse MakeHtmlTable(IEnumerable<Award> awards)
         {
             var strBuild = new System.Text.StringBuilder();
             strBuild.Append("<table>");
@@ -228,7 +238,7 @@
 
             strBuild.Append("</table>");
 
-            return strBuild.ToString();
+            return new AjaxResponse(null, strBuild.ToString());
         }
 
         public Tuple<byte[], string> GetDefaultUserAvatar()
@@ -255,11 +265,11 @@
             return new Tuple<byte[], string>(imageArray, this.defaultAwardAvatarType);
         }
 
-        public string UploadUserImage(string userIdStr, byte[] imageArray, string imageType)
+        public AjaxResponse UploadUserImage(string userIdStr, byte[] imageArray, string imageType)
         {
             if (imageArray == null || !imageArray.Any() || string.IsNullOrEmpty(imageType))
             {
-                return "Incorrect format of the image";
+                return new AjaxResponse("Incorrect format of the image");
             }
 
             int userId;
@@ -270,8 +280,10 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
@@ -279,17 +291,17 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string UploadAwardImage(string awardIdStr, byte[] imageArray, string imageType)
+        public AjaxResponse UploadAwardImage(string awardIdStr, byte[] imageArray, string imageType)
         {
             if (imageArray == null || !imageArray.Any() || string.IsNullOrEmpty(imageType))
             {
-                return "Incorrect format of the image";
+                return new AjaxResponse("Incorrect format of the image");
             }
 
             int awardId;
@@ -300,32 +312,34 @@
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
+
+            var result = false;
 
             try
             {
-                this.AwardLogic.SaveAvatar(awardId, imageArray, imageType);
+                result = this.AwardLogic.SaveAvatar(awardId, imageArray, imageType);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new AjaxResponse(ex.Message);
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, result);
         }
 
-        public string SaveRoles(string json)
+        public AjaxResponse SaveRoles(string json)
         {
             if (json == null)
             {
-                return "Incorrect format of the request";
+                return new AjaxResponse("Incorrect format of the request");
             }
 
             dynamic jsonArray = Json.Decode(json);
             if (jsonArray.Length < 1)
             {
-                return "Incorrect format of the request";
+                return new AjaxResponse("Incorrect format of the request");
             }
 
             foreach (var item in jsonArray)
@@ -341,7 +355,7 @@
                     }
                     catch (Exception ex)
                     {
-                        return ex.Message;
+                        return new AjaxResponse(ex.Message);
                     }
                 }
                 else
@@ -355,12 +369,12 @@
                     }
                     catch (Exception ex)
                     {
-                        return ex.Message;
+                        return new AjaxResponse(ex.Message);
                     }
                 }
             }
 
-            return string.Empty;
+            return new AjaxResponse(null, null);
         }
         
         public AjaxResponse DoesHaveAwardOwners(string awardIdStr)

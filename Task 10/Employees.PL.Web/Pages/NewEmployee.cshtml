@@ -35,6 +35,7 @@
         {
             int userId = Convert.ToInt32(userIdStr);
             var user = userLogic.GetAllUsers().First(u => u.Id == userId);
+
             var strBuild = new System.Text.StringBuilder();
             foreach (var award in awardLogic.GetAwardsByUserId(userId))
             {
@@ -90,7 +91,7 @@
     </div>
     <div class="row">
         <div class="col-xs-5 left-col">
-            <button class="btn btn-primary saveBtn" @disabledBtn>Save</button>
+            <button type="button" class="btn btn-primary saveBtn" @disabledBtn>Save</button>
         </div>
     </div>
     <div class="row rowDelBtn editBlock hide">

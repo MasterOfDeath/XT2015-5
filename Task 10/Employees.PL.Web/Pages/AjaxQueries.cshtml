@@ -1,8 +1,7 @@
 ﻿@using Employees.PL.Web.Models
 @{ 
     var logicProvider = LogicProvider.Instance;
-    string result;
-    AjaxResponse ajaxResponse;
+    var ajaxQueries = AjaxQueriesProvider.Queries;
 
     if (IsAjax)
     {
@@ -13,92 +12,14 @@
             return;
         }
 
+        AjaxResponse ajaxResponse = new AjaxResponse(null, null);
         var queryName = Request["queryName"];
-        var userId = string.Empty;
-        var awardId = string.Empty;
-        WebImage image;
 
-        switch (queryName)
+        if (queryName != null && ajaxQueries.ContainsKey(queryName))
         {
-            case "clickSaveEmployee":
-                userId = Request["userid"];
-                var name = Request["name"];
-                var date = Request["date"];
-                ajaxResponse = logicProvider.ClickSaveEmployee(userId, name, date);
-                Response.Write(Json.Encode(ajaxResponse));
-                return;
-
-            case "clickDeleteEmployee":
-                userId = Request["userid"];
-                result = logicProvider.ClickDeleteEmployee(userId);
-                break;
-
-            case "clickSaveAward":
-                awardId = Request["awardid"];
-                var title = Request["title"];
-                result = logicProvider.ClickSaveAward(awardId, title);
-                break;
-
-            case "clickDeleteAward":
-                awardId = Request["awardid"];
-                result = logicProvider.ClickDeleteAward(awardId);
-                break;
-
-            case "clickGiveAward":
-                userId = Request["userid"];
-                awardId = Request["awardid"];
-                result = logicProvider.ClickGiveAward(userId, awardId);
-                break;
-
-            case "clickRevokeAward":
-                userId = Request["userid"];
-                awardId = Request["awardid"];
-                result = logicProvider.ClickRevokeAward(userId, awardId);
-                break;
-
-            case "giveMeAllAwardsTable":
-                result = logicProvider.MakeHtmlTable(
-                    logicProvider.AwardLogic.GetAllAwards());
-                break;
-
-            case "giveMeEmployeesAwardsTable":
-                userId = Request["userid"];
-                result = logicProvider.MakeHtmlTable(
-                    logicProvider.AwardLogic.GetAwardsByUserId(Convert.ToInt32(userId)));
-                break;
-
-            case "doesHaveAwardOwners":
-                awardId = Request["awardid"];
-                ajaxResponse = logicProvider.DoesHaveAwardOwners(awardId);
-                Response.Write(Json.Encode(ajaxResponse));
-                return;
-
-            case "uploadUserImage":
-                userId = Request["userid"];
-                image = WebImage.GetImageFromRequest();
-                image.Resize(width: 150, height: 150, preserveAspectRatio: true, preventEnlarge: true);
-                result = logicProvider.UploadUserImage(
-                    userId, image.GetBytes(), "image/" + image.ImageFormat);
-                break;
-
-            case "uploadAwardImage":
-                awardId = Request["awardid"];
-                image = WebImage.GetImageFromRequest();
-                image.Resize(width: 150, height: 150, preserveAspectRatio: true, preventEnlarge: true);
-                result = logicProvider.UploadAwardImage(
-                    awardId, image.GetBytes(), "image/" + image.ImageFormat);
-                break;
-
-            case "saveRoles":
-                var json = Request["array"];
-                result = logicProvider.SaveRoles(json);
-                break;
-
-            default:
-                result = "null";
-                break;
+            ajaxResponse = ajaxQueries[queryName].Invoke(Request, logicProvider);
         }
 
-        Response.Write(Json.Encode(new AjaxResponse(result)));
+        Response.Write(Json.Encode(ajaxResponse));
     }
 }
