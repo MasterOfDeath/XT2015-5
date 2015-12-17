@@ -68,98 +68,99 @@
     </head>
     <body>
         <div class="content">
-            <div class="row rowTopAlign">
-                <div class="col-xs-5 left-col">
-                    <form method="post">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Login</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 form-group has-feedback">
-                                <label for="name">Name:</label>
-                                <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
-                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 form-group has-feedback">
-                                <label for="password">Password:</label>
-                                <input class="form-control passwordInput" id="password" name="password" type="password" />
-                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-4 form-group has-feedback">
-                                <button class="btn btn-primary">Sign in</button>
-                            </div>
-                        </div>
-                    </form>
-                    @if (errorMessage != null)
-                    {
-                        <div class="row">
-                            <div class="col-xs-12 alert alert-danger">@errorMessage</div>
-                        </div>
-                    }
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Login</h4>
                 </div>
-                <div class="col-xs-1 orText">
-                    <p><b>-or-</b></p>
-                </div>
-                <div class="col-xs-5 right-col">
-                    <form method="post">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Registration</h4>
+                <div class="panel-body">
+                    <div class="row rowTopAlign">
+                        <div class="col-xs-5 left-col login-col">
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col-xs-12 form-group has-feedback">
+                                        <label for="name">Name:</label>
+                                        <input class="form-control nameInput" id="name" name="name" type="text" value="@name" />
+                                        <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                        <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 form-group has-feedback">
+                                        <label for="password">Password:</label>
+                                        <input class="form-control passwordInput" id="password" name="password" type="password" />
+                                        <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                        <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <button class="btn btn-primary login-btn">Sign in</button>
+                                    </div>
+                                </div>
+                            </form>
+                            @if (errorMessage != null)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12 alert alert-danger login-alert">@errorMessage</div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-xs-1">
+                            <div class="orText"></div>
+                            <p><b>-or-</b></p>
+                        </div>
+                        <div class="col-xs-5 right-col">
+                            <form method="post">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Registration</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <label for="regName">Name:</label>
+                                                <input class="form-control regNameInput" id="regName" name="regName" type="text" value="@regName" />
+                                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <label for="regPassword">Password:</label>
+                                                <input class="form-control regPasswordInput" id="regPassword" name="regPassword" type="password" />
+                                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
+                                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <button class="btn btn-success">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-xs-12 alert alert-danger hide passTipAlert">
+                                    <p>Allowed only letters, numbers and "_"</p>
+                                    <p>Min length is 6 characters</p>
+                                    <p>Forbidden "_" at the begin and at the end</p>
+                                    <p>Forbidden double "_"</p>
+                                    <p>Forbidden line of the same symbols</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @if (errorRegMessage != null)
+                                {
+                                    <div class="col-xs-12 alert alert-danger">@errorRegMessage</div>
+                                }
+                                @if (successRegMessage != null)
+                                {
+                                    <div class="col-xs-12 alert alert-success">@successRegMessage</div>
+                                }
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-12 form-group has-feedback">
-                                <label for="regName">Name:</label>
-                                <input class="form-control regNameInput" id="regName" name="regName" type="text" value="@regName"/>
-                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 form-group has-feedback">
-                                <label for="regPassword">Password:</label>
-                                <input class="form-control regPasswordInput" id="regPassword" name="regPassword" type="password"/>
-                                <span class="glyphicon glyphicon-warning-sign form-control-feedback hide badIcon"></span>
-                                <span class="glyphicon glyphicon-ok form-control-feedback hide goodIcon"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-4 form-group has-feedback">
-                                <button class="btn btn-primary">Register</button>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="col-xs-12 alert alert-danger hide passTipAlert">
-                            <p>Allowed only letters, numbers and "_"</p>
-                            <p>Min length is 6 characters</p>
-                            <p>Forbidden "_" at the begin and at the end</p>
-                            <p>Forbidden double "_"</p>
-                            <p>Forbidden line of the same symbols</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        @if (errorRegMessage != null)
-                        {
-                            <div class="col-xs-12 alert alert-danger">@errorRegMessage</div>
-                        }
-                        @if (successRegMessage != null)
-                        {
-                            <div class="col-xs-12 alert alert-success">@successRegMessage</div>
-                        }
                     </div>
                 </div>
             </div>
-
-            @*<div class="alert alert-danger @hideAlert">@errorMessage</div>*@
         </div>
     </body>
 </html>

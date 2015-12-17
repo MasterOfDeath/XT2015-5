@@ -4,27 +4,41 @@
 
 /* Navbar */
 .navbar {
-  min-height:38px;
-  margin: auto;
-  max-width:780px;
+    background: #337AB7;
+    min-height:38px;
+    margin: auto;
+    max-width:780px;
 }
 
 .navbar .container {
-  min-height:38px;
-  margin: auto;
-  max-width:780px;
+    min-height:38px;
+    margin: auto;
+    max-width:780px;
 }
 
 .navbar .navbar-nav {
-  padding: 15px;
+    padding: 15px;
+}
+
+.navbar ul.navbar-nav > li,
+.navbar ul.navbar-nav > li > a,
+.navbar .navbar-header > a {
+    color: white;
+}
+
+.navbar ul.navbar-nav > li > a:hover,
+.navbar .navbar-header > a:hover,
+.navbar .navbar-header > a:focus {
+    color: #d5d5d5;
 }
 
 .navbar .container .navbar-nav a{
-  padding: 0;
+    
+    padding: 0;
 }
 
 .navbar .container .navbar-nav li{
-  padding: 0 10px;
+    padding: 0 10px;
 }
 /* -- */
 
@@ -33,6 +47,7 @@
     padding: 25px;
     max-width: 780px;
     margin: auto;
+    background: #f7f7f7;
 }
 
 
@@ -63,10 +78,6 @@
     width: auto; 
     max-width: 150px; 
     max-height: 150px;
-}
-
-.content .form-group {
-    /*padding-left: 0;*/
 }
 
 .content .row {
@@ -114,6 +125,15 @@
     cursor: pointer;
 }
 
+.content table > thead {
+    background: #e3e3e3;
+    border-radius: 3px;
+}
+
+.content table {
+    border-radius: 3px 3px 3px 3px;
+}
+
 .content > .securityTable > tbody td {
     cursor: default;
 }
@@ -141,6 +161,18 @@
 }
 
 .content .orText {
-    margin-top: 14%;
+    height: 120px;
+}
+
+.content .login-col {
+    margin-top: 55px;
+}
+
+.content .login-btn {
+    margin-top: 25px;
+}
+
+.content .login-alert {
+    margin: 15px;
 }
 /* -- */

@@ -2,11 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using Employees.BLL.Contract;
     using Employees.Exceptions;
-    using System.Linq;
+
     public class AuthMainLogic : IAuthLogic
     {
         private const string AdmRole = "admins";
@@ -58,9 +59,15 @@
 
         public bool CanLogin(string username, string password)
         {
-            var hash = this.GetHash(password);
+            if (password == null)
+            {
+                return false;
+            }
 
-            return hash.SequenceEqual(Stores.AuthStore.GetHashByUserName(username));
+            var hashFromPL = this.GetHash(password);
+            var hashFromDAL = Stores.AuthStore.GetHashByUserName(username);
+
+            return (hashFromDAL != null) ? hashFromPL.SequenceEqual(hashFromDAL) : false;
         }
 
         public ICollection<string> GetRolesForUser(string username)

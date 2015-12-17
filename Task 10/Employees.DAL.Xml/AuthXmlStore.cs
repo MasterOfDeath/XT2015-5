@@ -1,12 +1,13 @@
 ﻿namespace Employees.DAL.Xml
 {
+    using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
     using Contract;
-    using System;
+
     public class AuthXmlStore : IAuthStore
     {
         private const string TableName = "auth";

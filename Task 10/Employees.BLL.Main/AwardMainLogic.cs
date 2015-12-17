@@ -16,8 +16,7 @@
         public bool AddAward(Award award)
         {
             this.CheckAwardsValues(award);
-
-            //Stores.AwardStore.AddAward(new Award(award.Id, award.Title));
+            
             Stores.AwardStore.AddAward(award);
 
             return true;

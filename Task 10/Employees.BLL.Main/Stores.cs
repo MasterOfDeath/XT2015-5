@@ -1,5 +1,6 @@
 ﻿namespace Employees.BLL.Main
 {
+    using System;
     using System.Configuration;
     using Employees.DAL.Contract;
     using Employees.DAL.MSSql;
@@ -7,23 +8,27 @@
 
     internal class Stores
     {
-        private static readonly string StoreAssambly =
-            ConfigurationManager.AppSettings["StoreAssamblyName"];
+        private static readonly string DALImplementation =
+            ConfigurationManager.AppSettings["DALImplementation"];
 
         static Stores()
         {
-            if (StoreAssambly == "Employees.DAL.MSSql")
+            switch (DALImplementation)
             {
-                UserStore = new UserSqlStore();
-                AwardStore = new AwardSqlStore();
-                AuthStore = new AuthSqlStore();
-            }
+                case "MSSql":
+                    UserStore = new UserSqlStore();
+                    AwardStore = new AwardSqlStore();
+                    AuthStore = new AuthSqlStore();
+                    break;
 
-            if (StoreAssambly == "Employees.DAL.Xml")
-            {
-                UserStore = new UserXmlStore();
-                AwardStore = new AwardXmlStore();
-                AuthStore = new AuthXmlStore();
+                case "Xml":
+                    UserStore = new UserXmlStore();
+                    AwardStore = new AwardXmlStore();
+                    AuthStore = new AuthXmlStore();
+                    break;
+
+                default:
+                    throw new ArgumentException("Incorrect file configuration");
             }
         }
         
@@ -34,4 +39,3 @@
         public static IAuthStore AuthStore { get; }
     }
 }
-
