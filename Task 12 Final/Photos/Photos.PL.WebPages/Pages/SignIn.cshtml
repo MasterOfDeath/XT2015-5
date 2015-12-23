@@ -23,10 +23,14 @@
 
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
         {
-            if (LogicProvider.UserLogic.CanLogin(username, password))
+            var user = new Photos.Entites.User(null, null, username, null, 0);
+
+            if (LogicProvider.UserLogic.CanLogin(user, password))
             {
                 FormsAuthentication.SetAuthCookie(
                     username, createPersistentCookie: (remember == "1"));
+                Response.Cookies["userid"].Value = user.Id.ToString();
+                Response.Cookies["userid"].Expires = DateTime.Now.AddDays(1);
                 Response.Redirect(Request["ReturnUrl"] ?? "/");
                 return;
             }

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAlbumLogic.cs" />
+    <Compile Include="ILikeLogic.cs" />
     <Compile Include="IPhotoLogic.cs" />
     <Compile Include="IRoleLogic.cs" />
     <Compile Include="IUserLogic.cs" />

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlbumMainLogic.cs" />
+    <Compile Include="LikeMainLogic.cs" />
     <Compile Include="PhotoMainLogic.cs" />
     <Compile Include="RoleMainLogic.cs" />
     <Compile Include="Stores.cs" />

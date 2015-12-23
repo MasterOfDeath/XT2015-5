@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAlbumStore.cs" />
+    <Compile Include="ILikeStore.cs" />
     <Compile Include="IPhotoStore.cs" />
     <Compile Include="IRoleStore.cs" />
     <Compile Include="IUserStore.cs" />

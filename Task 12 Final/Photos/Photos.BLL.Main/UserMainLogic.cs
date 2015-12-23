@@ -53,30 +53,33 @@
             return result;
         }
 
-        public bool CanLogin(string userName, string password)
+        public bool CanLogin(User user, string password)
         {
-            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+            if (user == null || string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException($"{nameof(userName)} and {nameof(password)} mustn't be null or contain only spaces");
+                throw new ArgumentException($"{nameof(user)} and {nameof(password)} mustn't be null or contain only spaces");
             }
 
-            User user = null;
+            var userName = user.UserName;
+            User returnUser = null;
 
             try
             {
-                user = Stores.UserStore.GetUserByUserName(userName);
+                returnUser = Stores.UserStore.GetUserByUserName(userName);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            if (user == null)
+            if (returnUser == null)
             {
                 throw new InvalidOperationException($"The user \"{userName}\" not found");
             }
 
-            return user.Hash.SequenceEqual(this.GetHash(password));
+            user.Id = returnUser.Id;
+
+            return returnUser.Hash.SequenceEqual(this.GetHash(password));
         }
 
         public User GetUserById(int userId)

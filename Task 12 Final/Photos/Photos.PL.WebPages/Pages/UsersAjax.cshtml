@@ -7,13 +7,14 @@
     }
 
     var ajaxQueries = UsersAjaxPage.Queries;
+    var queryName = Request["queryName"];
 
-    if (IsAjax && IsPost)
+    if (IsAjax && IsPost && queryName != null)
     {
         AjaxResponse result = new AjaxResponse(null, null);
-        var queryName = Request["queryName"];
 
-        if (queryName != null && ajaxQueries.ContainsKey(queryName))
+
+        if (ajaxQueries.ContainsKey(queryName))
         {
             result = ajaxQueries[queryName].Invoke(Request);
         }

@@ -4,7 +4,7 @@
     
     public class Photo
     {
-        public Photo(int id, string name, int albumId, int size, string mime, DateTime date)
+        public Photo(int id, string name, int albumId, int size, string mime, DateTime date, int userId)
         {
             this.Id = id;
             this.Name = name;
@@ -12,10 +12,11 @@
             this.Size = size;
             this.Mime = mime;
             this.Date = date;
+            this.UserId = userId;
         }
 
-        public Photo(string name, int albumId, int size, string mime, DateTime date)
-            : this(0, name, albumId, size, mime, date)
+        public Photo(string name, int albumId, int size, string mime, DateTime date, int userId)
+            : this(0, name, albumId, size, mime, date, userId)
         {
         }
 
@@ -30,5 +31,7 @@
         public string Mime { get; set; }
 
         public DateTime Date { get; set; }
+
+        public int UserId { get; set; }
     }
 }

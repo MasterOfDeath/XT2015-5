@@ -7,7 +7,7 @@
         $removePrompt = $(".remove-prompt", $content),
         $editPromptInput = $("input[type='text']", $editPrompt),
         userId = $content.data("user-id") + "",
-        albumId;
+        albumId,
         nameExp = /[^\w\- \.]+|[ ]{2,}|[\-\.]{2,}|^[\-\.]+$|^[ \-\.]| $/;
 
     $nameInput.change(changeNameInput);

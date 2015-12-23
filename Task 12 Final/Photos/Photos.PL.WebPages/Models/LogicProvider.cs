@@ -17,6 +17,8 @@
 
         public static IAlbumLogic AlbumLogic { get; } = new BLL.Main.AlbumMainLogic();
 
+        public static ILikeLogic LikeLogic { get; } = new BLL.Main.LikeMainLogic();
+
         public static Tuple<int, string> GetUserId(string userName)
         {
             User user = null;

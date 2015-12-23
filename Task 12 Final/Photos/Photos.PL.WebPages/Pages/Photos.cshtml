@@ -3,7 +3,14 @@
     Layout = "~/_Layout.cshtml";
     PageData["Title"] = "Photos";
 
+    //if (!User.Identity.IsAuthenticated)
+    //{
+    //    Response.StatusCode = 401;
+    //    return;
+    //}
+
     string errorMessage = null;
+    bool isOwner = false;
     ICollection<Photos.Entites.Photo> photos = null;
     Tuple<ICollection<Photos.Entites.Photo>, string> photosQuery = null;
 
@@ -11,6 +18,20 @@
     {
         var albumId = Request["albumid"];
         photosQuery = LogicProvider.GetPhotos(Convert.ToInt32(albumId));
+
+        Photos.Entites.Album album = null;
+
+        try
+        {
+            album = LogicProvider.AlbumLogic.GetAlbumById(Convert.ToInt32(albumId));
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            goto End;
+        }
+
+        isOwner = album.UserId.ToString() == Request.Cookies["userid"].Value;
 
         if (photosQuery.Item2 != null)
         {
@@ -38,11 +59,25 @@ End:
                 foreach (var photo in photos)
                 {
                 <div class='col-xs-6 col-sm-4 col-md-3 col-lg-3 image-container'>
-                    <a class="thumbnail fancybox" rel="ligthbox" href="~/Pages/GetImage?type=photo&photoid=@photo.Id">
+                    <a class="thumbnail fancybox" rel="ligthbox" data-photo-id="@photo.Id" href="~/Pages/GetImage?type=photo&photoid=@photo.Id">
                         <img class="img-responsive" alt="@photo.Name" src="~/Pages/GetImage?type=photothumb&photoid=@photo.Id" />
-                        <div class='text-right'>
+                        <div class='text-right photo-name'>
                             <small class='text-muted'>@photo.Name</small>
                         </div>
+                        @if (isOwner)
+                        {
+                            <span class="badge glyphicon glyphicon-heart photo-like-owner"> @PhotosPage.GetLikesCount(photo.Id)</span>
+                            <div class="btn btn-default remove-btn">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </div>
+                            <div class="btn btn-default edit-btn">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="badge glyphicon glyphicon-heart photo-like-notowner"> @PhotosPage.GetLikesCount(photo.Id)</span>
+                        }
                     </a>
                 </div>
                 }
@@ -54,6 +89,14 @@ End:
     <!-- ErrorModal -->
     @RenderPage("~/Pages/_ErrorModalPartial.cshtml")
     <!--  -->
+
+    <!-- EditPrompt -->
+    @RenderPage("~/Pages/_EditPromptPartial.cshtml")
+    <!--  -->
+    <!-- RemovePrompt -->
+    @RenderPage("~/Pages/_RemovePromptPartial.cshtml")
+    <!--  -->
+
 </div> <!-- container / end -->
 
 @section header {

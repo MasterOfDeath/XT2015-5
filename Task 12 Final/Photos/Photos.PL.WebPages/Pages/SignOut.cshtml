@@ -1,4 +1,5 @@
 ﻿@{
+    Response.Cookies["userid"].Expires = DateTime.Now.AddYears(-1);
     FormsAuthentication.SignOut();
     Response.Redirect("/");
 }

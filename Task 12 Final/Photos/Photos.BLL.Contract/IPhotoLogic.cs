@@ -7,7 +7,7 @@
     {
         bool AddPhoto(Photo photo, byte[] data);
 
-        bool InsertPhoto(Photo photo, byte[] data);
+        bool InsertPhoto(Photo photo);
 
         bool RemovePhoto(int photoId);
 

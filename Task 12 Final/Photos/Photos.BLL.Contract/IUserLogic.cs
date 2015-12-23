@@ -17,6 +17,6 @@
 
         User GetUserByUserName(string userName);
 
-        bool CanLogin(string userName, string password);
+        bool CanLogin(User user, string password);
     }
 }

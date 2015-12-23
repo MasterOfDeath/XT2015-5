@@ -30,6 +30,7 @@
                 command.Parameters.AddWithValue("@size", photo.Size);
                 command.Parameters.AddWithValue("@mime", photo.Mime);
                 command.Parameters.AddWithValue("@date", photo.Date);
+                command.Parameters.AddWithValue("@userId", photo.UserId);
 
                 connection.Open();
                 var reader = command.ExecuteReader();
@@ -114,9 +115,30 @@
             }
         }
 
-        public bool InsertPhoto(Photo photo, byte[] data)
+        public bool InsertPhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "Photo_InsertPhoto";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@id", photo.Id);
+                command.Parameters.AddWithValue("@name", photo.Name);
+                command.Parameters.AddWithValue("@albumId", photo.AlbumId);
+                command.Parameters.AddWithValue("@size", photo.Size);
+                command.Parameters.AddWithValue("@mime", photo.Mime);
+                command.Parameters.AddWithValue("@date", photo.Date);
+                command.Parameters.AddWithValue("@userId", photo.UserId);
+
+                connection.Open();
+                var reader = command.ExecuteNonQuery();
+
+                return reader > 0;
+            }
         }
 
         public ICollection<Photo> ListPhotosInAlbum(int albumId)
@@ -153,7 +175,22 @@
 
         public bool RemovePhoto(int photoId)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "Photo_RemovePhoto";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@id", photoId);
+
+                connection.Open();
+                var reader = command.ExecuteNonQuery();
+
+                return reader > 0;
+            }
         }
 
         private Photo RowToPhoto(SqlDataReader reader)
@@ -164,8 +201,9 @@
             var size = (int)reader["size"];
             var mime = (string)reader["mime"];
             var date = (DateTime)reader["date"];
+            var userId = (int)reader["user_id"];
 
-            return new Photo(id, name, albumId, size, mime, date);
+            return new Photo(id, name, albumId, size, mime, date, userId);
         }
     }
 }

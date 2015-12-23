@@ -93,9 +93,21 @@
             return result;
         }
 
-        public bool InsertPhoto(Photo photo, byte[] data)
+        public bool InsertPhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            var result = false;
+
+            try
+            {
+                this.IsValidPhoto(photo);
+                result = Stores.PhotoStore.InsertPhoto(photo);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
 
         public ICollection<Photo> ListPhotosInAlbum(int albumId)
@@ -121,7 +133,23 @@
 
         public bool RemovePhoto(int photoId)
         {
-            throw new NotImplementedException();
+            var result = false;
+
+            if (photoId <= 0)
+            {
+                throw new ArgumentException($"{nameof(photoId)} mustn't be negative");
+            }
+
+            try
+            {
+                result = Stores.PhotoStore.RemovePhoto(photoId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
 
         private bool IsValidPhoto(Photo photo)

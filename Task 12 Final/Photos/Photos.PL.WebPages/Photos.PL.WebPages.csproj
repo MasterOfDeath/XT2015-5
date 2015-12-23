@@ -170,7 +170,7 @@
     <Compile Include="Models\GetImagePage.cs" />
     <Compile Include="Models\LogicProvider.cs" />
     <Compile Include="Models\PhotosRoleProvider.cs" />
-    <Compile Include="Models\UploadPage.cs" />
+    <Compile Include="Models\PhotosPage.cs" />
     <Compile Include="Models\UsersAjaxPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
