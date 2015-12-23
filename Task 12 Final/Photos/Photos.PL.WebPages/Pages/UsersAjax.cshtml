@@ -1,0 +1,23 @@
+﻿@using Photos.PL.WebPages.Models
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.StatusCode = 401;
+        return;
+    }
+
+    var ajaxQueries = UsersAjaxPage.Queries;
+
+    if (IsAjax && IsPost)
+    {
+        AjaxResponse result = new AjaxResponse(null, null);
+        var queryName = Request["queryName"];
+
+        if (queryName != null && ajaxQueries.ContainsKey(queryName))
+        {
+            result = ajaxQueries[queryName].Invoke(Request);
+        }
+
+        Response.Write(Json.Encode(result));
+    }
+}

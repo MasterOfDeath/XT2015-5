@@ -1,0 +1,73 @@
+﻿@using Photos.PL.WebPages.Models
+@{
+    Layout = "~/_Layout.cshtml";
+    PageData["Title"] = "Photos";
+
+    string errorMessage = null;
+    ICollection<Photos.Entites.Photo> photos = null;
+    Tuple<ICollection<Photos.Entites.Photo>, string> photosQuery = null;
+
+    if (!IsPost)
+    {
+        var albumId = Request["albumid"];
+        photosQuery = LogicProvider.GetPhotos(Convert.ToInt32(albumId));
+
+        if (photosQuery.Item2 != null)
+        {
+            errorMessage = photosQuery.Item2;
+            goto End;
+        }
+
+        photos = photosQuery.Item1;
+    }
+
+End:
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<div class="content content-photos container-fluid">
+    <div class="row">
+        <div class='list-group gallery'>
+
+            @if (photos != null)
+            {
+                foreach (var photo in photos)
+                {
+                <div class='col-xs-6 col-sm-4 col-md-3 col-lg-3 image-container'>
+                    <a class="thumbnail fancybox" rel="ligthbox" href="~/Pages/GetImage?type=photo&photoid=@photo.Id">
+                        <img class="img-responsive" alt="@photo.Name" src="~/Pages/GetImage?type=photothumb&photoid=@photo.Id" />
+                        <div class='text-right'>
+                            <small class='text-muted'>@photo.Name</small>
+                        </div>
+                    </a>
+                </div>
+                }
+            }
+
+        </div> <!-- list-group / end -->
+    </div> <!-- row / end -->
+
+    <!-- ErrorModal -->
+    @RenderPage("~/Pages/_ErrorModalPartial.cshtml")
+    <!--  -->
+</div> <!-- container / end -->
+
+@section header {
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="~/images/employee_icon.png" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" media="screen" />
+    <link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    <script src="~/Scripts/photos.js"></script>
+}
