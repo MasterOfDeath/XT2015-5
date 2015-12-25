@@ -21,7 +21,6 @@
             _Queries.Add("clickPromptEditPhotoBtn", ClickPromptEditPhotoBtn);
             _Queries.Add("clickPromptRemovePhotoBtn", ClickPromptRemovePhotoBtn);
             _Queries.Add("clickLikeBtn", ClickLikeBtn);
-            //_Queries.Add("getLikes", GetLikes);
         }
 
         public static IDictionary<string, Func<HttpRequestBase, AjaxResponse>> Queries
@@ -306,11 +305,19 @@
             var name = request["name"];
             var albumIdStr = request["albumid"];
             var sizeStr = request["size"];
-            var image = WebImage.GetImageFromRequest();
+            WebImage image = null;
+            try
+            {
+                image = WebImage.GetImageFromRequest();
+            }
+            catch (Exception ex)
+            {
+                return new AjaxResponse(ex.Message);
+            }
 
             if (image == null)
             {
-                return new AjaxResponse("Incorrect format of the image");
+                return new AjaxResponse("Incorrect format of an image");
             }
 
             var imageArray = image.GetBytes();
@@ -366,11 +373,36 @@
                 return new AjaxResponse(ex.Message);
             }
 
-            var result = false;
+            Like like = null;
 
             try
             {
-                result = LogicProvider.LikeLogic.AddLike(new Like(photoId, userId, DateTime.Now));
+                like = LogicProvider.LikeLogic.GetLikeByUserIdAndPhotoId(userId, photoId);
+            }
+            catch (Exception ex)
+            {
+                return new AjaxResponse(ex.Message);
+            }
+
+            if (like != null)
+            {
+                return new AjaxResponse("You allready liked this photo");
+            }
+
+            try
+            {
+                LogicProvider.LikeLogic.AddLike(new Like(photoId, userId, DateTime.Now));
+            }
+            catch (Exception ex)
+            {
+                return new AjaxResponse(ex.Message);
+            }
+
+            var result = -1;
+
+            try
+            {
+                result = LogicProvider.LikeLogic.GetLikesCount(photoId);
             }
             catch (Exception ex)
             {
@@ -379,34 +411,5 @@
 
             return new AjaxResponse(null, result);
         }
-
-        //private static AjaxResponse GetLikes(HttpRequestBase request)
-        //{
-        //    var photoIdStr = request["photoid"];
-
-        //    int photoId = 0;
-
-        //    try
-        //    {
-        //        photoId = Convert.ToInt32(photoIdStr);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new AjaxResponse(ex.Message);
-        //    }
-
-        //    int result = -1;
-
-        //    try
-        //    {
-        //        result = LogicProvider.LikeLogic.GetLikesCount(photoId);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new AjaxResponse(ex.Message);
-        //    }
-
-        //    return new AjaxResponse(null, result);
-        //}
     }
 }

@@ -126,6 +126,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -140,10 +141,19 @@
     <Content Include="Pages\Photos.cshtml" />
     <Content Include="Pages\_RemovePromptPartial.cshtml" />
     <Content Include="Pages\_EditPromptPartial.cshtml" />
+    <Content Include="Pages\_FooterPartial.cshtml" />
+    <Content Include="Pages\Photos2.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Web.hosting.config" />
+    <Content Include="Web.hosting.Debug.config">
+      <DependentUpon>Web.hosting.config</DependentUpon>
+    </Content>
+    <Content Include="Web.hosting.Release.config">
+      <DependentUpon>Web.hosting.config</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

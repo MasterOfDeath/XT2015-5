@@ -1,28 +1,83 @@
-﻿@{
+﻿@using Photos.PL.WebPages.Models
+@{
     Layout = "~/_Layout.cshtml";
     PageData["Title"] = "Photos";
+
+    string errorMessage = null;
+    ICollection<Photos.Entites.Photo> topPhotos = null;
+    var isIE = Request.Browser.Browser == "InternetExplorer";
+
+    if (!IsPost)
+    {
+        try
+        {
+            topPhotos = LogicProvider.PhotoLogic.GetTop10ByLike();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
 }
 
-<!DOCTYPE html>
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-        <p>Hello</p>
-    </div>
-</body>
-</html>
+<div class="content content-index container-fluid">
+    @if (topPhotos != null)
+    {
+        <div class="top10-header">
+            <span>Top 10 liked photos</span>
+        </div>
+        <div id="carousel-top10" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < topPhotos.Count; i++)
+                {
+                    <li data-target="#carousel-top10" data-slide-to="@i"></li>
+                }
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                @foreach (var photo in topPhotos)
+                {
+                    <div class="item">
+                        @if (!isIE)
+                        {
+                            <img class="background" src="~/Pages/GetImage?type=photo&photoid=@photo.Id" alt="@photo.Name">
+                        }
+                        <img class="front" src="~/Pages/GetImage?type=photo&photoid=@photo.Id" alt="@photo.Name">
+                        <div class="carousel-caption">
+                            <span>@photo.Name</span>
+                            <span class="badge glyphicon glyphicon-heart">@PhotosPage.GetLikesCount(photo.Id)</span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-top10" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-top10" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    }
+
+</div>
 
 @section scripts {
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/index.js"></script>
 }
 
 @section header {
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="~/images/employee_icon.png" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/style.css" rel="stylesheet" />

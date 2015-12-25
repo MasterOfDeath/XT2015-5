@@ -5,7 +5,6 @@
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
-    using System.Linq;
     using Contract;
     using Entites;
 
@@ -115,6 +114,36 @@
             }
         }
 
+        public ICollection<Photo> GetTop10ByLike()
+        {
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "Photo_GetTop10ByLike";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                List<Photo> result = null;
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    result = new List<Photo>();
+                }
+
+                while (reader.Read())
+                {
+                    result.Add(this.RowToPhoto(reader));
+                }
+
+                return result;
+            }
+        }
+
         public bool InsertPhoto(Photo photo)
         {
             using (var connection = new SqlConnection(this.connectionString))
@@ -190,6 +219,38 @@
                 var reader = command.ExecuteNonQuery();
 
                 return reader > 0;
+            }
+        }
+
+        public ICollection<Photo> SearchPhotoByName(string searchStr)
+        {
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "Photo_SearchPhotoByName";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@searchSr", searchStr);
+
+                List<Photo> photo = null;
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    photo = new List<Photo>();
+                }
+
+                while (reader.Read())
+                {
+                    photo.Add(this.RowToPhoto(reader));
+                }
+
+                return photo;
             }
         }
 

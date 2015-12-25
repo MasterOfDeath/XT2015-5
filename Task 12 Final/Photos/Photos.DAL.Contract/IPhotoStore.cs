@@ -16,5 +16,9 @@
         Photo GetPhotoById(int photoId);
 
         byte[] GetDataById(int photoId);
+
+        ICollection<Photo> SearchPhotoByName(string searchStr);
+
+        ICollection<Photo> GetTop10ByLike();
     }
 }

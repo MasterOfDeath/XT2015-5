@@ -93,5 +93,27 @@
 
             return new Tuple<ICollection<Photo>, string>(photos, error);
         }
+
+        public static Tuple<ICollection<Photo>, string> SearchSearchPhotoByName(string searchStr)
+        {
+            string error = null;
+            ICollection<Photo> photos = null;
+
+            if (string.IsNullOrWhiteSpace(searchStr))
+            {
+                searchStr = null;
+            }
+
+            try
+            {
+                photos = PhotoLogic.SearchPhotoByName(searchStr);
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+            }
+
+            return new Tuple<ICollection<Photo>, string>(photos, error);
+        }
     }
 }

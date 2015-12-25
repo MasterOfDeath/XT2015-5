@@ -15,12 +15,10 @@
         @RenderBody()
     </div>
 
-    @RenderSection("scripts", required: false)
+    <!-- Footer -->
+    @RenderPage("~/Pages/_FooterPartial.cshtml")
+    <!--  -->
 
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    @RenderSection("scripts", required: false)
 </body>
 </html>

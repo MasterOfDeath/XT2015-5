@@ -9,6 +9,7 @@
     $thumbnails.on("click", ".remove-btn", clickRemoveBtn);
     $thumbnails.on("click", ".edit-btn", clickEditBtn);
     $thumbnails.on("click", ".photo-like-notowner", clickLikeBtn);
+    $thumbnails.on("click", ".photo-like-owner", clickLikeOwnerBtn);
 
     $(".fancybox").fancybox({
         openEffect: "none",
@@ -61,11 +62,18 @@
             var result = JSON.parse(data);
 
             if (result.Error === null) {
-                window.location.reload();
+                $(".badge", $thisThumb).text(" " + result.Data);
             } else {
                 showError(result.Error);
             }
         })
+    }
+
+    function clickLikeOwnerBtn(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        showError("You cann't like your own photo");
     }
 
     $(".edit-prompt-btn", $editPrompt).click(function () {

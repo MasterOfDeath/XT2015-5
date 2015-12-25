@@ -42,6 +42,33 @@
             }
         }
 
+        public Like GetLikeByUserIdAndPhotoId(int userId, int phoroId)
+        {
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "Like_GetLikeByUserIdAndPhotoId";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@photoId", phoroId);
+
+                Like like = null;
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    like = this.RowToLike(reader);
+                }
+
+                return like;
+            }
+        }
+
         public int GetLikesCount(int photoId)
         {
             using (var connection = new SqlConnection(this.connectionString))
@@ -66,6 +93,16 @@
                     return -1;
                 }
             }
+        }
+
+        private Like RowToLike(SqlDataReader reader)
+        {
+            var id = (int)reader["id"];
+            var photoId = (int)reader["photo_id"];
+            var userId = (int)reader["user_id"];
+            var date = (DateTime)reader["date"];
+
+            return new Like(id, photoId, userId, date);
         }
     }
 }

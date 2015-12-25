@@ -93,6 +93,22 @@
             return result;
         }
 
+        public ICollection<Photo> GetTop10ByLike()
+        {
+            ICollection<Photo> result = null;
+
+            try
+            {
+                result = Stores.PhotoStore.GetTop10ByLike();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
+
         public bool InsertPhoto(Photo photo)
         {
             var result = false;
@@ -171,6 +187,27 @@
             }
 
             return true;
+        }
+
+        public ICollection<Photo> SearchPhotoByName(string searchStr)
+        {
+            if (string.IsNullOrWhiteSpace(searchStr))
+            {
+                throw new ArgumentException($"Value {nameof(searchStr)} mustn't be empty");
+            }
+
+            ICollection<Photo> result = null;
+
+            try
+            {
+                result = Stores.PhotoStore.SearchPhotoByName(searchStr);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
     }
 }

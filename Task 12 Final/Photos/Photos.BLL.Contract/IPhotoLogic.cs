@@ -18,5 +18,9 @@
         byte[] GetDataById(int photoId);
 
         Photo GetPhotoForAlbumCover(int albumId);
+
+        ICollection<Photo> SearchPhotoByName(string searchStr);
+
+        ICollection<Photo> GetTop10ByLike();
     }
 }
