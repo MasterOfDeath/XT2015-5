@@ -100,12 +100,58 @@
 
         public bool InsertUser(User user)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "User_InsertUser";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@id", user.Id);
+                command.Parameters.AddWithValue("@first_name", user.FirstName);
+                command.Parameters.AddWithValue("@last_name", user.LastName);
+                command.Parameters.AddWithValue("@user_name", user.UserName);
+                command.Parameters.AddWithValue("@hash", user.Hash);
+                command.Parameters.AddWithValue("@enabled", user.Enabled);
+                command.Parameters.AddWithValue("@tariff_id", user.Tariff_Id);
+
+                connection.Open();
+                var reader = command.ExecuteNonQuery();
+
+                return reader > 0;
+            }
         }
 
-        public ICollection<User> ListUsers()
+        public ICollection<User> ListAllUsers()
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "User_ListAllUsers";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                List<User> result = null;
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    result = new List<User>();
+                }
+
+                while (reader.Read())
+                {
+                    result.Add(this.RowToUser(reader));
+                }
+
+                return result;
+            }
         }
 
         public bool RemoveUser(int userId)

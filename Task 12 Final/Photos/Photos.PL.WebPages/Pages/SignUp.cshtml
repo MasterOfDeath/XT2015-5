@@ -23,6 +23,7 @@
     string passwd = Request["passwd"];
 
     string errorMessage = null;
+    var log = Photos.Logger.Logger.Log;
 
     if (IsPost)
     {
@@ -31,10 +32,12 @@
             if(userLogic.GetUserByUserName(username) != null)
             {
                 errorMessage = $"The user \"{username}\" allready exists";
+                log.Info($"An attempt to register allready registered user: {username}");
             }
             else
             if(SignUpPage.AddUser(firstname, lastname, username, passwd))
             {
+                log.Info($"User {username} has been registered");
                 Response.Redirect("/Pages/SignIn.cshtml?signup=1&username=" + username);
                 return;
             }
@@ -48,7 +51,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/Content/style.css" />
+    <link rel="stylesheet" href="~/Content/ProjectStyles/style.css" />
     <title>Sign Up</title>
 </head>
 <body>
@@ -124,6 +127,6 @@
 
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/signin.js"></script>
+    <script src="~/Scripts/ProjectScripts/signin.js"></script>
 </body>
 </html>

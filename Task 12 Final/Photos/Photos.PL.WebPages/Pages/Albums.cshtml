@@ -12,19 +12,44 @@
     string errorMessage = null;
     string infoMessage = null;
     int userId = -1;
+    bool isOwner = false;
     ICollection<Photos.Entites.Album> albums = null;
 
-    Tuple<int, string> userIdQuery = null;
-    Tuple<ICollection<Photos.Entites.Album>, string> albumsQuery = null;
-    userIdQuery = LogicProvider.GetUserId(User.Identity.Name);
+    var log = Photos.Logger.Logger.Log;
 
-    if (userIdQuery.Item2 != null)
+    if (Request["userid"] != null)
     {
-        errorMessage = userIdQuery.Item2;
-        goto End;
+        try
+        {
+            userId = Convert.ToInt32(Request["userid"]);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            log.Error("Convert userid parametr to int", ex);
+            goto End;
+        }
+
+        isOwner = Request["userid"] == Request["useridcookie"];
+    }
+    else
+    {
+        Tuple<int, string> userIdQuery = null;
+
+        userIdQuery = LogicProvider.GetUserId(User.Identity.Name);
+
+        if (userIdQuery.Item2 != null)
+        {
+            errorMessage = userIdQuery.Item2;
+            log.Error(errorMessage);
+            goto End;
+        }
+
+        userId = userIdQuery.Item1;
+        isOwner = true;
     }
 
-    userId = userIdQuery.Item1;
+    Tuple<ICollection<Photos.Entites.Album>, string> albumsQuery = null;
     albumsQuery = LogicProvider.GetAlbums(userId);
 
     if (albumsQuery.Item2 != null)
@@ -36,7 +61,15 @@
     // If User doesn't have any albums
     if (albumsQuery.Item1 == null)
     {
-        infoMessage = "You don't have any albums. Please create new album before upload photos.";
+        if (isOwner)
+        {
+            infoMessage = "You don't have any albums. Please create new album before upload photos.";
+        }
+        else
+        {
+            infoMessage = "No albums";
+        }
+
         goto End;
     }
 
@@ -61,16 +94,19 @@ End:
         </div>
     }
 
-    <div class="row first-row">
-        <div class="col-md-4">
-            <span>All albums of <b>@User.Identity.Name</b></span>
+    @if (isOwner)
+    {
+        <div class="row first-row">
+            <div class="col-md-4">
+                <h2>Albums</h2>
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-default" data-toggle="collapse" data-target="#collapseNewAlbum" aria-expanded="false" aria-controls="collapseNewAlbum">
+                    New Album
+                </button>
+            </div>
         </div>
-        <div class="col-xs-3">
-            <button class="btn btn-default" data-toggle="collapse" data-target="#collapseNewAlbum" aria-expanded="false" aria-controls="collapseNewAlbum">
-                New Album
-            </button>
-        </div>
-    </div>
+    }
 
     <div class="collapse" id="collapseNewAlbum">
         <div class="row well">
@@ -97,12 +133,15 @@ End:
                             <div class="album-name">
                                 <b>@album.Name</b>
                             </div>
-                            <div class="btn btn-default remove-btn">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </div>
-                            <div class="btn btn-default edit-btn">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </div>
+                            @if (isOwner)
+                            {
+                                <div class="btn btn-default remove-btn">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </div>
+                                <div class="btn btn-default edit-btn">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </div>
+                            }
                         </a>
                     </div>
                 }
@@ -130,11 +169,11 @@ End:
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="~/images/employee_icon.png" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/ProjectStyles/style.css" rel="stylesheet" />
 }
 
 @section scripts {
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/albums.js"></script>
+    <script src="~/Scripts/ProjectScripts/albums.js"></script>
 }

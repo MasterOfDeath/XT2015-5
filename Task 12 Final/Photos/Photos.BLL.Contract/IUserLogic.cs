@@ -11,7 +11,7 @@
 
         bool RemoveUser(int userId);
 
-        ICollection<User> ListUsers();
+        ICollection<User> ListAllUsers();
 
         User GetUserById(int userId);
 

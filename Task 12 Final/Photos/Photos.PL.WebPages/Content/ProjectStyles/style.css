@@ -176,6 +176,16 @@ body {
     -ms-filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=25, enabled='true');
     filter: blur(25px);
 }
+
+.content-index .well {
+    margin: 20px 0;
+}
+
+.content-index .well p.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /*-  -*/
 
 /*- Albums -*/
@@ -277,6 +287,26 @@ body {
 .content-upload .image-container > img {
     max-height: 100%;
     max-width: 100%;
+}
+
+.content-upload .progress {
+    border: 1px solid #ddd; 
+    padding: 1px; 
+    border-radius: 3px;
+}
+
+.content-upload .bar { 
+    background-color: #B4F5B4; 
+    width: 0%; 
+    height: 20px; 
+    border-radius: 3px; 
+}
+
+.content-upload .percent { 
+    position: absolute; 
+    display: inline-block; 
+    top: 0px; 
+    left: 48%; 
 }
 /* -- */
 

@@ -6,13 +6,16 @@
     using System.IO;
     using System.Linq;
     using System.Web;
-    using Entites;
     using System.Web.Helpers;
+    using Entites;
+    using Logger;
+
     public static class GetImagePage
     {
-        private static readonly string defaultAlbumCoverFile = 
+        private static readonly string DefaultAlbumCoverFile = 
             ConfigurationManager.AppSettings["defaultAlbumCoverFile"];
-        private static readonly string defaultAlbumCoverType = 
+
+        private static readonly string DefaultAlbumCoverType = 
             ConfigurationManager.AppSettings["defaultAlbumCoverType"];
 
         private static readonly IDictionary<string, Func<HttpRequestBase, Tuple<byte[], string>>> _Queries
@@ -38,7 +41,9 @@
 
             if (string.IsNullOrEmpty(albumIdStr))
             {
-                // TODO to log $"Invalid request: null values of {nameof(albumIdStr)}");
+                Logger.Log.Error(
+                    nameof(GetAlbumCover), 
+                    new Exception($"Invalid request: null values of {nameof(albumIdStr)}"));
             }
 
             int albumId = 0;
@@ -47,18 +52,18 @@
             {
                 albumId = Convert.ToInt32(albumIdStr);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetAlbumCover), ex);
             }
 
             try
             {
                 photo = LogicProvider.PhotoLogic.GetPhotoForAlbumCover(albumId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetAlbumCover), ex);
             }
 
             if (photo == null)
@@ -72,9 +77,9 @@
                 image.Resize(width: 170, height: 170, preserveAspectRatio: true, preventEnlarge: true);
                 result = image.GetBytes();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetAlbumCover), ex);
             }
 
             return new Tuple<byte[], string>(result, photo.Mime);
@@ -82,14 +87,15 @@
 
         private static Tuple<byte[], string> GetDefaultAlbumCover()
         {
-            if (!File.Exists(defaultAlbumCoverFile))
+            if (!File.Exists(DefaultAlbumCoverFile))
             {
+                Logger.Log.Error(nameof(GetDefaultAlbumCover), new Exception("Default album cover not found"));
                 return null;
             }
 
-            var imageArray = File.ReadAllBytes(defaultAlbumCoverFile);
+            var imageArray = File.ReadAllBytes(DefaultAlbumCoverFile);
 
-            return new Tuple<byte[], string>(imageArray, defaultAlbumCoverType);
+            return new Tuple<byte[], string>(imageArray, DefaultAlbumCoverType);
         }
 
         private static Tuple<byte[], string> GetPhoto(HttpRequestBase request)
@@ -100,7 +106,9 @@
 
             if (string.IsNullOrEmpty(photoIdStr))
             {
-                // TODO to log $"Invalid request: null values of {nameof(albumIdStr)}");
+                Logger.Log.Error(
+                    nameof(GetPhoto),
+                    new Exception($"Invalid request: null values of {nameof(photoIdStr)}"));
                 return null;
             }
 
@@ -110,9 +118,9 @@
             {
                 photoId = Convert.ToInt32(photoIdStr);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetPhoto), ex);
                 return null;
             }
 
@@ -120,9 +128,9 @@
             {
                 photo = LogicProvider.PhotoLogic.GetPhotoById(photoId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetPhoto), ex);
                 return null;
             }
 
@@ -130,9 +138,9 @@
             {
                 photoData = LogicProvider.PhotoLogic.GetDataById(photoId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(GetPhoto), ex);
                 return null;
             }
 

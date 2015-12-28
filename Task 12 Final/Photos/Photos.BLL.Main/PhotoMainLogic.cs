@@ -168,27 +168,6 @@
             return result;
         }
 
-        private bool IsValidPhoto(Photo photo)
-        {
-            if (string.IsNullOrWhiteSpace(photo.Name) ||
-                string.IsNullOrWhiteSpace(photo.Mime))
-            {
-                throw new ArgumentException("Arguments mustn't be null or contain only spaces");
-            }
-
-            if (photo.AlbumId <= 0 || photo.Size <= 0)
-            {
-                throw new ArgumentException($"{nameof(photo.AlbumId)} or {nameof(photo.Size)} mustn't be negative");
-            }
-
-            if (photo.Date > DateTime.Now)
-            {
-                throw new ArgumentException("Date mustn't be in the future");
-            }
-
-            return true;
-        }
-
         public ICollection<Photo> SearchPhotoByName(string searchStr)
         {
             if (string.IsNullOrWhiteSpace(searchStr))
@@ -208,6 +187,27 @@
             }
 
             return result;
+        }
+
+        private bool IsValidPhoto(Photo photo)
+        {
+            if (string.IsNullOrWhiteSpace(photo.Name) ||
+                string.IsNullOrWhiteSpace(photo.Mime))
+            {
+                throw new ArgumentException("Arguments mustn't be null or contain only spaces");
+            }
+
+            if (photo.AlbumId <= 0 || photo.Size <= 0)
+            {
+                throw new ArgumentException($"{nameof(photo.AlbumId)} or {nameof(photo.Size)} mustn't be negative");
+            }
+
+            if (photo.Date > DateTime.Now)
+            {
+                throw new ArgumentException("Date mustn't be in the future");
+            }
+
+            return true;
         }
     }
 }

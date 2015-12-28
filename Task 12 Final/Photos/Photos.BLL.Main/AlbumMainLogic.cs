@@ -84,7 +84,6 @@
             }
 
             return result;
-
         }
 
         public bool RemoveAlbum(int albumId)

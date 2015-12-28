@@ -5,15 +5,6 @@
 
     internal static class Stores
     {
-        //static Stores()
-        //{
-        //    UserStore = new UserSqlStore();
-        //    RoleStore = new RoleSqlStore();
-        //    PhotoStore = new PhotoSqlStore();
-        //    AlbumStore = new AlbumSqlStore();
-        //    LikeStore = new LikeSqlStore();
-        //}
-
         public static IUserStore UserStore { get; } = new UserSqlStore();
 
         public static IRoleStore RoleStore { get; } = new RoleSqlStore();

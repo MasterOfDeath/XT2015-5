@@ -8,6 +8,8 @@
     string successMessage = null;
     string errorMessage = null;
 
+    var log = Photos.Logger.Logger.Log;
+
     // it is a redirect from signUp page 
     if (!IsPost && Request["signup"] == "1" && Request["username"] != null)
     {
@@ -27,16 +29,18 @@
 
             if (LogicProvider.UserLogic.CanLogin(user, password))
             {
+                log.Info(username + " has been loged");
                 FormsAuthentication.SetAuthCookie(
                     username, createPersistentCookie: (remember == "1"));
-                Response.Cookies["userid"].Value = user.Id.ToString();
-                Response.Cookies["userid"].Expires = DateTime.Now.AddDays(1);
+                Response.Cookies["useridcookie"].Value = user.Id.ToString();
+                Response.Cookies["useridcookie"].Expires = DateTime.Now.AddDays(1);
                 Response.Redirect(Request["ReturnUrl"] ?? "/");
                 return;
             }
             else
             {
                 errorMessage = "Wrong name or password";
+                log.Info("An unsuccessful attempt to login with username: " + username);
             }
         }
     }
@@ -48,7 +52,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/Content/style.css" />
+    <link rel="stylesheet" href="~/Content/ProjectStyles/style.css" />
     <title>Sign In</title>
 </head>
 <body>
@@ -115,6 +119,6 @@
 
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/signin.js"></script>
+    <script src="~/Scripts/ProjectScripts/signin.js"></script>
 </body>
 </html>

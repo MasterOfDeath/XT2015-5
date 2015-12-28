@@ -10,18 +10,20 @@
     }
 
     string errorMessage = null;
-    //bool isOwner = false;
     int userId = 0;
     ICollection<Photos.Entites.Photo> photos = null;
     Tuple<ICollection<Photos.Entites.Photo>, string> photosQuery = null;
 
+    var log = Photos.Logger.Logger.Log;
+
     try
     {
-        userId = Convert.ToInt32(Request.Cookies["userid"].Value);
+        userId = Convert.ToInt32(Request.Cookies["useridcookie"].Value);
     }
     catch (Exception ex)
     {
         errorMessage = ex.Message;
+        log.Error("Convert useridcookie to int", ex);
     }
 
     if (!IsPost)
@@ -38,10 +40,9 @@
         catch (Exception ex)
         {
             errorMessage = ex.Message;
+            log.Error("GetAlbumById", ex);
             goto End;
         }
-
-        //isOwner = album.UserId.ToString() == Request.Cookies["userid"].Value;
     }
 
     if (IsPost)
@@ -53,6 +54,7 @@
     if (photosQuery == null || photosQuery.Item2 != null)
     {
         errorMessage = photosQuery?.Item2;
+        log.Error(errorMessage);
         goto End;
     }
 
@@ -121,12 +123,12 @@ End:
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/jquery.fancybox.css" rel="stylesheet" media="screen" />
     <link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" />
-    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/ProjectStyles/style.css" rel="stylesheet" />
 }
 
 @section scripts {
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.fancybox.js"></script>
-    <script src="~/Scripts/photos.js"></script>
+    <script src="~/Scripts/ProjectScripts/photos.js"></script>
 }

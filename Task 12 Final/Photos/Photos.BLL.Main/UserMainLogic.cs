@@ -74,7 +74,7 @@
 
             if (returnUser == null)
             {
-                throw new InvalidOperationException($"The user \"{userName}\" not found");
+                throw new InvalidOperationException($"The user {userName} not found");
             }
 
             user.Id = returnUser.Id;
@@ -126,12 +126,35 @@
 
         public bool InsertUser(User user)
         {
-            throw new NotImplementedException();
+            var result = false;
+
+            try
+            {
+                this.IsValidUser(user);
+                result = Stores.UserStore.InsertUser(user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
 
-        public ICollection<User> ListUsers()
+        public ICollection<User> ListAllUsers()
         {
-            throw new NotImplementedException();
+            ICollection<User> result = null;
+
+            try
+            {
+                result = Stores.UserStore.ListAllUsers();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
 
         public bool RemoveUser(int userId)

@@ -6,6 +6,7 @@
     using System.Web;
     using BLL.Contract;
     using Entites;
+    using Logger;
 
     public static class LogicProvider
     {
@@ -26,7 +27,9 @@
 
             if (string.IsNullOrWhiteSpace(userName))
             {
-                return new Tuple<int, string>(-1, $"The variable \"{nameof(userName)}\" mustn't be null");
+                error = $"The variable {nameof(userName)} mustn't be null or empty";
+                Logger.Log.Error(error);
+                return new Tuple<int, string>(-1, error);
             }
 
             try
@@ -36,11 +39,14 @@
             catch (Exception ex)
             {
                 error = ex.Message;
+                Logger.Log.Error(nameof(LogicProvider.UserLogic.GetUserByUserName), ex);
             }
 
             if (user == null)
             {
-                return new Tuple<int, string>(-1, $"The User \"{userName}\" hasn't fount in Data Store");
+                error = $"The User {userName} hasn't fount in Data Store";
+                Logger.Log.Error(error);
+                return new Tuple<int, string>(-1, error);
             }
 
             return new Tuple<int, string>(user.Id, error);
@@ -53,9 +59,9 @@
 
             if (userId < 0)
             {
-                return new Tuple<ICollection<Album>, string>(
-                    null,
-                    $"The variable \"{nameof(userId)}\" mustn't be negative");
+                error = $"The variable {nameof(userId)} mustn't be negative";
+                Logger.Log.Error(error);
+                return new Tuple<ICollection<Album>, string>(null, error);
             }
 
             try
@@ -65,6 +71,7 @@
             catch (Exception ex)
             {
                 error = ex.Message;
+                Logger.Log.Error(nameof(LogicProvider.AlbumLogic.ListAlbumsByUserId), ex);
             }
 
             return new Tuple<ICollection<Album>, string>(albums, error);
@@ -77,9 +84,9 @@
 
             if (albumId < 0)
             {
-                return new Tuple<ICollection<Photo>, string>(
-                    null,
-                    $"The variable \"{nameof(albumId)}\" mustn't be negative");
+                error = $"The variable {nameof(albumId)} mustn't be negative";
+                Logger.Log.Error(error);
+                return new Tuple<ICollection<Photo>, string>(null, error);
             }
 
             try
@@ -89,9 +96,36 @@
             catch (Exception ex)
             {
                 error = ex.Message;
+                Logger.Log.Error(nameof(PhotoLogic.ListPhotosInAlbum), ex);
             }
 
             return new Tuple<ICollection<Photo>, string>(photos, error);
+        }
+
+        public static Tuple<User, string> GetUser(string userName)
+        {
+            string error = null;
+
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                error = $"The variable {nameof(userName)} mustn't be empty";
+                Logger.Log.Error(error);
+                return new Tuple<User, string>(null, error);
+            }
+
+            User user = null;
+
+            try
+            {
+                user = UserLogic.GetUserByUserName(userName);
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                Logger.Log.Error(nameof(GetUser), ex);
+            }
+
+            return new Tuple<User, string>(user, error);
         }
 
         public static Tuple<ICollection<Photo>, string> SearchSearchPhotoByName(string searchStr)
@@ -111,6 +145,7 @@
             catch (Exception ex)
             {
                 error = ex.Message;
+                Logger.Log.Error(nameof(PhotoLogic.SearchPhotoByName), ex);
             }
 
             return new Tuple<ICollection<Photo>, string>(photos, error);

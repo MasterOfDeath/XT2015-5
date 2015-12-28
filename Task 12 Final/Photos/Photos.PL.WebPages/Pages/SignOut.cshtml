@@ -1,5 +1,6 @@
 ﻿@{
-    Response.Cookies["userid"].Expires = DateTime.Now.AddYears(-1);
+    Response.Cookies["useridcookie"].Expires = DateTime.Now.AddYears(-1);
+    Photos.Logger.Logger.Log.Info($"The user {User.Identity.Name} logged out");
     FormsAuthentication.SignOut();
     Response.Redirect("/");
 }

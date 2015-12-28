@@ -1,6 +1,7 @@
 ﻿namespace Photos.PL.WebPages.Models
 {
     using System;
+    using Logger;
 
     public static class PhotosPage
     {
@@ -11,14 +12,12 @@
             {
                 result = LogicProvider.LikeLogic.GetLikesCount(photoId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO to log
+                Logger.Log.Error(nameof(LogicProvider.LikeLogic.GetLikesCount), ex);
             }
 
             return result;
         }
-
-        
     }
 }

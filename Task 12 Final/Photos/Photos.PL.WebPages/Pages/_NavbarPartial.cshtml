@@ -47,11 +47,8 @@
                         <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><b> @User.Identity.Name</b><b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            @if (User.IsInRole(AdminsRole))
-                            {
-                                <li><a href="/user/preferences"><i class="glyphicon glyphicon-cog"></i> Preferences</a></li>
-                                <li class="divider"></li>
-                            }
+                            <li><a href="~/Pages/Profile"><i class="glyphicon glyphicon-cog"></i> Preferences</a></li>
+                            <li class="divider"></li>
                             <li><a href="~/Pages/SignOut"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
                         </ul>
                     </li>

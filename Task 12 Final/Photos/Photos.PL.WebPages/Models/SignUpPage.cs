@@ -1,10 +1,8 @@
 ﻿namespace Photos.PL.WebPages.Models
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Entites;
+    using Logger;
 
     public static class SignUpPage
     {
@@ -14,6 +12,7 @@
 
             if (firstname == null || lastname == null || username == null || password == null)
             {
+                Logger.Log.Error(nameof(AddUser), new Exception("Arguments mustn't be null"));
                 throw new ArgumentException("Arguments mustn't be null");
             }
 
@@ -25,7 +24,8 @@
             }
             catch (Exception ex)
             {
-                // TODO Fix this catch.
+                // TODO Fix this catch. Maybe FATAL?
+                Logger.Log.Error("AddUser", ex);
                 throw ex;
             }
 

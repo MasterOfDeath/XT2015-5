@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Web.Security;
+    using Logger;
 
     public class PhotosRoleProvider : RoleProvider
     {
@@ -21,12 +22,33 @@
 
         public override string[] GetRolesForUser(string username)
         {
-            return LogicProvider.RoleLogic.ListRolesForUser(username).ToArray();
+            string[] result = null;
+
+            try
+            {
+                result = LogicProvider.RoleLogic.ListRolesForUser(username).ToArray();
+            }
+            catch (Exception ex)
+            {   // TODO Maybe FATAL?
+                Logger.Log.Error(nameof(LogicProvider.RoleLogic.ListRolesForUser), ex);
+            }
+
+            return result;
         }
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            return this.GetRolesForUser(username).Contains(roleName);
+            var result = false;
+
+            try
+            {
+                result = this.GetRolesForUser(username).Contains(roleName);
+            }
+            catch (Exception ex)
+            {   // TODO Maybe FATAL?
+                Logger.Log.Error(nameof(this.IsUserInRole), ex);
+            }
+            return result;
         }
 
         #region NotImplemented

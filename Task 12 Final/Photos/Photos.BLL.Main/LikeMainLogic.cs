@@ -67,7 +67,6 @@
 
         private bool IsValidLike(Like like)
         {
-
             if (like.PhotoId <= 0 || like.UserId <= 0)
             {
                 throw new ArgumentException($"{nameof(like.PhotoId)} or {nameof(like.UserId)} mustn't be negative");
