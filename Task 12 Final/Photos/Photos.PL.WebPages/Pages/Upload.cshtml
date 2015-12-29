@@ -15,10 +15,10 @@
 
     Tuple<int, string> userIdQuery = null;
     Tuple<ICollection<Photos.Entites.Album>, string> albumsQuery = null;
-    userIdQuery = LogicProvider.GetUserId(User.Identity.Name);
 
     var log = Photos.Logger.Logger.Log;
 
+    userIdQuery = LogicProvider.GetUserId(User.Identity.Name);
     if (userIdQuery.Item2 != null)
     {
         errorMessage = userIdQuery.Item2;
@@ -131,6 +131,7 @@ End:
     <link rel="icon" type="image/png" href="~/images/employee_icon.png" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/ProjectStyles/style.css" rel="stylesheet" />
+    <link href="~/Content/ProjectStyles/upload.css" rel="stylesheet" />
 }
 
 @section scripts {

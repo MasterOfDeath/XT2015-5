@@ -33,10 +33,21 @@
 
         private static AjaxResponse ClickChangePasswordBtn(HttpRequestBase request)
         {
-            var userIdStr = request["userid"];
-            var oldPassword = request["oldpassword"];
-            var newPassword = request["newpassword"];
+            string userIdStr = null;
+            string oldPassword = null;
+            string newPassword = null;
             var methodName = nameof(ClickChangePasswordBtn);
+
+            try
+            {
+                userIdStr = request["userid"];
+                oldPassword = request["oldpassword"];
+                newPassword = request["newpassword"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             if (string.IsNullOrWhiteSpace(oldPassword) && string.IsNullOrWhiteSpace(newPassword))
             {
@@ -90,9 +101,19 @@
 
         private static AjaxResponse ClickLikeBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var photoIdStr = request["photoid"];
+            string userIdStr = null;
+            string photoIdStr = null;
             var methodName = nameof(ClickLikeBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                photoIdStr = request["photoid"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             int photoId = 0, userId = 0;
 
@@ -149,10 +170,21 @@
 
         private static AjaxResponse ClickNewAlbumSaveBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var userIdFromRequestStr = request["userid"];
-            var name = request["name"];
+            string userIdStr = null;
+            string userIdFromRequestStr = null;
+            string name = null;
             var methodName = nameof(ClickNewAlbumSaveBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                userIdFromRequestStr = request["userid"];
+                name = request["name"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             if (string.IsNullOrEmpty(name))
             {
@@ -200,10 +232,21 @@
 
         private static AjaxResponse ClickPromptEditAlbumBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var albumIdStr = request["albumid"];
-            var name = request["name"];
+            string userIdStr = null;
+            string albumIdStr = null;
+            string name = null;
             var methodName = nameof(ClickPromptEditAlbumBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                albumIdStr = request["albumid"];
+                name = request["name"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -275,10 +318,21 @@
 
         private static AjaxResponse ClickPromptEditPhotoBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var photoIdStr = request["photoid"];
-            var name = request["name"];
+            string userIdStr = null;
+            string photoIdStr = null;
+            string name = null;
             var methodName = nameof(ClickPromptEditAlbumBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                photoIdStr = request["photoid"];
+                name = request["name"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -346,9 +400,19 @@
 
         private static AjaxResponse ClickPromptRemoveAlbumBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var albumIdStr = request["albumid"];
+            string userIdStr = request.Cookies["useridcookie"].Value;
+            string albumIdStr = request["albumid"];
             var methodName = nameof(ClickPromptRemoveAlbumBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                albumIdStr = request["albumid"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             int albumId = 0, userId = 0;
 
@@ -405,9 +469,19 @@
 
         private static AjaxResponse ClickPromptRemovePhotoBtn(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var photoIdStr = request["photoid"];
+            string userIdStr = request.Cookies["useridcookie"].Value;
+            string photoIdStr = request["photoid"];
             var methodName = nameof(ClickPromptRemovePhotoBtn);
+
+            try
+            {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                photoIdStr = request["photoid"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             int photoId = 0, userId = 0;
 
@@ -464,10 +538,21 @@
 
         private static AjaxResponse ClickSaveProfileBtn(HttpRequestBase request)
         {
-            var userIdStr = request["userid"];
-            var firstName = request["firstname"];
-            var lastName = request["lastname"];
+            string userIdStr = null;
+            string firstName = null;
+            string lastName = null;
             var methodName = nameof(ClickSaveProfileBtn);
+
+            try
+            {
+                userIdStr = request["userid"];
+                firstName = request["firstname"];
+                lastName = request["lastname"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName))
             {
@@ -540,15 +625,19 @@
 
         private static AjaxResponse UploadPhoto(HttpRequestBase request)
         {
-            var userIdStr = request.Cookies["useridcookie"].Value;
-            var name = request["name"];
-            var albumIdStr = request["albumid"];
-            var sizeStr = request["size"];
+            string userIdStr = null;
+            string name = null;
+            string albumIdStr = null;
+            string sizeStr = null;
             WebImage image = null;
             var methodName = nameof(UploadPhoto);
 
             try
             {
+                userIdStr = request.Cookies["useridcookie"].Value;
+                name = request["name"];
+                albumIdStr = request["albumid"];
+                sizeStr = request["size"];
                 image = WebImage.GetImageFromRequest();
             }
             catch (Exception ex)

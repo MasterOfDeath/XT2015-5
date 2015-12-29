@@ -30,6 +30,7 @@
 
         if (!isValidName(name)) {
             toggleInputError($nameInput, true);
+            showError("Invalid input");
             return;
         }
 
@@ -144,7 +145,7 @@
     function showError(str) {
         var $modal = $(".errorModal", $content);
 
-        $(".modal-body", $modal).html("<p>" + str + "</p>");
+        $(".modal-body", $modal).text(str);
         $modal.modal();
     }
 

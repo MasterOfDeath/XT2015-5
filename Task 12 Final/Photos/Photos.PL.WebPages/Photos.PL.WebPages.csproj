@@ -112,9 +112,14 @@
     <Content Include="Content\jquery.fancybox-buttons.css" />
     <Content Include="Content\jquery.fancybox-thumbs.css" />
     <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\ProjectStyles\albums.css" />
     <Content Include="Content\ProjectStyles\error.css" />
+    <Content Include="Content\ProjectStyles\index.css" />
+    <Content Include="Content\ProjectStyles\login.css" />
+    <Content Include="Content\ProjectStyles\photos.css" />
     <Content Include="Content\ProjectStyles\profile.css" />
     <Content Include="Content\ProjectStyles\style.css" />
+    <Content Include="Content\ProjectStyles\upload.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="images\DefaultAlbumCover.png">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

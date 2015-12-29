@@ -26,10 +26,21 @@
 
         private static AjaxResponse ClickSecurityPromptBtn(HttpRequestBase request)
         {
-            var userIdStr = request["userid"];
-            dynamic roleChanges = Json.Decode(request["rolechanges"]);
-            dynamic enableChange = Json.Decode(request["enablechange"]);
+            string userIdStr = null;
+            dynamic roleChanges = null;
+            dynamic enableChange = null;
             var methodName = nameof(ClickSecurityPromptBtn);
+
+            try
+            {
+                userIdStr = request["userid"];
+                roleChanges = Json.Decode(request["rolechanges"]);
+                enableChange = Json.Decode(request["enablechange"]);
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             int userId = 0;
 
@@ -91,8 +102,17 @@
 
         private static AjaxResponse GetHtmlForUsersSecurityTable(HttpRequestBase request)
         {
-            var userIdStr = request["userid"];
+            string userIdStr = null;
             var methodName = nameof(GetHtmlForUsersSecurityTable);
+
+            try
+            {
+                userIdStr = request["userid"];
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
 
             int userId = 0;
 

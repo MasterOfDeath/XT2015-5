@@ -28,7 +28,18 @@
 
     if (!IsPost)
     {
-        var albumId = Request["albumid"];
+        string albumId = null;
+
+        try
+        {
+            albumId = Request["albumid"];
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            goto End;
+        }
+
         photosQuery = LogicProvider.GetPhotos(Convert.ToInt32(albumId));
 
         Photos.Entites.Album album = null;
@@ -47,7 +58,19 @@
 
     if (IsPost)
     {
-        var searchStr = Request["searchInput"];
+        string searchStr = null;
+
+        try
+        {
+            searchStr = Request["searchInput"];
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            goto End;
+        }
+
+
         photosQuery = LogicProvider.SearchSearchPhotoByName(searchStr);
     }
 
@@ -124,6 +147,7 @@ End:
     <link href="~/Content/jquery.fancybox.css" rel="stylesheet" media="screen" />
     <link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" />
     <link href="~/Content/ProjectStyles/style.css" rel="stylesheet" />
+    <link href="~/Content/ProjectStyles/photos.css" rel="stylesheet" />
 }
 
 @section scripts {
