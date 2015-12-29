@@ -80,6 +80,7 @@
                 }
             }).always(function () {
                 $thisBtn.button("reset");
+                $editPrompt.modal("hide");
             });
         }
     });
@@ -106,6 +107,7 @@
             }
         }).always(function () {
             $thisBtn.button("reset");
+            $removePrompt.modal("hide");
         });
     });
 

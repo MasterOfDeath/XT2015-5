@@ -1,13 +1,20 @@
 ﻿.content-photos .thumbnail {
-    height: 170px;
+    height: 180px;
     width: 170px;
     position: relative;
     cursor: pointer;
 }
 
 .content-photos .image-container > a > img {
-    max-height: 90%;
+    max-height: 100%;
     max-width: 100%;
+}
+
+.content-photos .image-container {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .content-photos .thumbnail .btn {
@@ -26,10 +33,17 @@
     left: 20px;
 }
 
-.content-photos .photo-name {
-    position: absolute;
+/*.content-photos .photo-name-container {
     right: 10px;
     bottom:10px;
+}*/
+
+.content-photos .photo-name-container .photo-name {
+    font-size: 84%;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .content-photos .thumbnail:hover .btn,

@@ -25,7 +25,7 @@
         e.preventDefault();
         var $thisThumb = $(e.target).closest(".thumbnail");
 
-        $editPromptInput.val($(".text-right > small", $thisThumb).text());
+        $editPromptInput.val($(".photo-name-container > .photo-name", $thisThumb).text());
         $(".modal-title", $editPrompt).text("Edit Photo");
         photoId = $thisThumb.data("photo-id") + "";
         $editPrompt.modal();
@@ -37,7 +37,7 @@
         var $thisThumb = $(e.target).closest(".thumbnail");
 
         $(".modal-body", $removePrompt).html("Do you really want to delete photo "
-            + "<b>" + $(".text-right > small", $thisThumb).text() + "</b>?");
+            + "<b>" + $(".photo-name-container > .photo-name", $thisThumb).text() + "</b>?");
 
         $(".modal-title", $removePrompt).text("Remove Photo");
         photoId = $thisThumb.data("photo-id") + "";
@@ -102,6 +102,7 @@
                 }
             }).always(function () {
                 $thisBtn.button("reset");
+                $editPrompt.modal("hide");
             });
         }
     });
@@ -128,6 +129,7 @@
             }
         }).always(function () {
             $thisBtn.button("reset");
+            $removePrompt.modal("hide");
         });
     });
 
