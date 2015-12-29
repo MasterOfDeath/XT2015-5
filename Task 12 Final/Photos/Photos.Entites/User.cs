@@ -20,13 +20,13 @@
             this.Enabled = enabled;
         }
 
-        public User(int id, string firstName, string lastName, string userName, byte[] hash, int tariff_id)
-            : this(id, firstName, lastName, userName, hash, tariff_id, enabled: true)
-        {
-        }
+        //public User(int id, string firstName, string lastName, string userName, byte[] hash, int tariff_id)
+        //    : this(id, firstName, lastName, userName, hash, tariff_id, enabled: true)
+        //{
+        //}
 
-        public User(string firstName, string lastName, string userName, byte[] hash, int tariff_id)
-            : this(0, firstName, lastName, userName, hash, tariff_id, enabled: true)
+        public User(string firstName, string lastName, string userName, byte[] hash, int tariff_id, bool enabled)
+            : this(0, firstName, lastName, userName, hash, tariff_id, enabled)
         {
         }
 

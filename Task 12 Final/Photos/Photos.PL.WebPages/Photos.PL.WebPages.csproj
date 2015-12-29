@@ -151,6 +151,8 @@
     <Content Include="Pages\Upload.cshtml" />
     <Content Include="Pages\ErrorPages\FatalError.cshtml" />
     <Content Include="Pages\ErrorPages\404.cshtml" />
+    <Content Include="Pages\_UserSecurityPartial.cshtml" />
+    <Content Include="Pages\AdminsAjax.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -193,6 +195,7 @@
     <Compile Include="Models\LogicProvider.cs" />
     <Compile Include="Models\PhotosRoleProvider.cs" />
     <Compile Include="Models\PhotosPage.cs" />
+    <Compile Include="Models\AdminsAjaxPage.cs" />
     <Compile Include="Models\UsersAjaxPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

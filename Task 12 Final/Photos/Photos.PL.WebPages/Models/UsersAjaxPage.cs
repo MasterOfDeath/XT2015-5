@@ -15,6 +15,7 @@
 
         static UsersAjaxPage()
         {
+            _Queries.Add("clickChangePasswordBtn", ClickChangePasswordBtn);
             _Queries.Add("clickLikeBtn", ClickLikeBtn);
             _Queries.Add("clickNewAlbumSaveBtn", ClickNewAlbumSaveBtn);
             _Queries.Add("clickPromptEditAlbumBtn", ClickPromptEditAlbumBtn);
@@ -28,6 +29,63 @@
         public static IDictionary<string, Func<HttpRequestBase, AjaxResponse>> Queries
         {
             get { return _Queries; }
+        }
+
+        private static AjaxResponse ClickChangePasswordBtn(HttpRequestBase request)
+        {
+            var userIdStr = request["userid"];
+            var oldPassword = request["oldpassword"];
+            var newPassword = request["newpassword"];
+            var methodName = nameof(ClickChangePasswordBtn);
+
+            if (string.IsNullOrWhiteSpace(oldPassword) && string.IsNullOrWhiteSpace(newPassword))
+            {
+                return SendError(
+                    $"Values {nameof(oldPassword)} or {nameof(newPassword)} mustn't be empty",
+                    methodName);
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Cookies["useridcookie"].Value))
+            {
+                return SendError(
+                    $"Please re-login or allow cookies in your browser",
+                    methodName);
+            }
+
+            // Security
+            if (userIdStr != request.Cookies["useridcookie"].Value)
+            {
+                return SendError(
+                    "You don't have permissions for this operation",
+                    $"User {userIdStr} don't have permissions this for operation",
+                    methodName);
+            }
+
+            int userId = 0;
+
+            try
+            {
+                userId = Convert.ToInt32(userIdStr);
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
+
+            var result = false;
+
+            try
+            {
+                result = LogicProvider.UserLogic.ChangePassword(userId, oldPassword, newPassword);
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex, methodName);
+            }
+
+            Logger.Log.Info($"User {userId} has changed his password");
+
+            return new AjaxResponse(null, result);
         }
 
         private static AjaxResponse ClickLikeBtn(HttpRequestBase request)

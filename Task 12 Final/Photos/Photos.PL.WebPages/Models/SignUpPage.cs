@@ -16,7 +16,7 @@
                 throw new ArgumentException("Arguments mustn't be null");
             }
 
-            var user = new User(firstname, lastname, username, hash: null, tariff_id: 0);
+            var user = new User(firstname, lastname, username, hash: null, tariff_id: 0, enabled: true);
 
             try
             {

@@ -13,6 +13,8 @@
 
         ICollection<User> ListAllUsers();
 
+        ICollection<User> ListUsersByRoleName(string roleName);
+
         User GetUserById(int userId);
 
         User GetUserByUserName(string userName);

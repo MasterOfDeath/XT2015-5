@@ -14,6 +14,7 @@
         private const int PasswordMinLength = 6;
         private const int DefaultTariffId = 1;
         private const string DefaultRole = "users";
+        private const string AdminsRole = "admins";
 
         public bool AddUser(User user, string password)
         {
@@ -75,6 +76,11 @@
             if (returnUser == null)
             {
                 throw new InvalidOperationException($"The user {userName} not found");
+            }
+
+            if (!returnUser.Enabled)
+            {
+                throw new InvalidOperationException($"The user {userName} was disabled by admin");
             }
 
             user.Id = returnUser.Id;
@@ -160,6 +166,84 @@
         public bool RemoveUser(int userId)
         {
             throw new NotImplementedException();
+        }
+
+        public bool ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            if (userId < 0)
+            {
+                throw new ArgumentException($"Value {nameof(userId)} mustn't be negative");
+            }
+
+            if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new ArgumentException($"Values {nameof(oldPassword)} or {nameof(newPassword)} mustn't be empty");
+            }
+
+            User user = this.GetUserById(userId);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User: {userId} hasn't found");
+            }
+
+            var oldHash = this.GetHash(oldPassword);
+
+            if (!oldHash.SequenceEqual(user.Hash))
+            {
+                throw new InvalidOperationException("Old and new passwords do not match");
+            }
+
+            user.Hash = this.GetHash(newPassword);
+
+            return this.InsertUser(user);
+        }
+
+        public bool SetUserState(int userId, bool enabled)
+        {
+            if (userId <= 0)
+            {
+                throw new ArgumentException($"{nameof(userId)} mustn't be negative");
+            }
+
+            if (!enabled)
+            {
+                ICollection<string> usersRoles = null;
+
+                try
+                {
+                    usersRoles = Stores.RoleStore.ListRolesForUserByUserId(userId);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                if (usersRoles.Contains(AdminsRole))
+                {
+                    ICollection<User> admins = null;
+
+                    try
+                    {
+                        admins = Stores.UserStore.ListUsersByRoleName(AdminsRole);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                    if (admins.Where(u => u.Enabled == true).Count() <= 1)
+                    {
+                        throw new InvalidOperationException($"At least one user in role {AdminsRole} has to be active");
+                    }
+                }
+            }
+
+            User user = this.GetUserById(userId);
+
+            user.Enabled = enabled;
+
+            return this.InsertUser(user);
         }
 
         private bool IsValidUser(User user)

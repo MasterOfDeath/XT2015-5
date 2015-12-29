@@ -18,5 +18,9 @@
         User GetUserByUserName(string userName);
 
         bool CanLogin(User user, string password);
+
+        bool ChangePassword(int userId, string oldPassword, string newPassword);
+
+        bool SetUserState(int userId, bool enabled);
     }
 }

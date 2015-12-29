@@ -154,6 +154,38 @@
             }
         }
 
+        public ICollection<User> ListUsersByRoleName(string roleName)
+        {
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                var storeProcedure = "User_ListUserByRoleName";
+
+                var command = new SqlCommand(storeProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@role_name", roleName);
+
+                List<User> result = null;
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    result = new List<User>();
+                }
+
+                while (reader.Read())
+                {
+                    result.Add(this.RowToUser(reader));
+                }
+
+                return result;
+            }
+        }
+
         public bool RemoveUser(int userId)
         {
             throw new NotImplementedException();

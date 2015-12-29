@@ -76,12 +76,14 @@
         showError("You cann't like your own photo");
     }
 
-    $(".edit-prompt-btn", $editPrompt).click(function () {
-        var name = $editPromptInput.val();
+    $(".edit-prompt-btn", $editPrompt).click(function (e) {
+        var $thisBtn = $(e.target),
+            name = $editPromptInput.val();
 
         if (name === null || name === undefined || name.length <= 0) {
             showError("Please enter new name.");
         } else {
+            $thisBtn.button("loading");
             $.ajax({
                 url: 'UsersAjax',
                 method: 'post',
@@ -98,11 +100,17 @@
                 } else {
                     showError(result.Error);
                 }
-            })
+            }).always(function () {
+                $thisBtn.button("reset");
+            });
         }
     });
 
-    $(".remove-prompt-btn", $removePrompt).click(function () {
+    $(".remove-prompt-btn", $removePrompt).click(function (e) {
+        var $thisBtn = $(e.target);
+
+        $thisBtn.button("loading");
+
         $.ajax({
             url: 'UsersAjax',
             method: 'post',
@@ -118,7 +126,9 @@
             } else {
                 showError(result.Error);
             }
-        })
+        }).always(function () {
+            $thisBtn.button("reset");
+        });
     });
 
     function showError(str) {

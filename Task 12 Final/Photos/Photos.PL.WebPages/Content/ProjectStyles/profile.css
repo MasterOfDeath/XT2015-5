@@ -5,3 +5,18 @@
 .content-profile .tab-pane {
     margin: 20px 0;
 }
+
+.content-profile .table tbody > tr {
+    cursor: pointer;
+}
+
+.content-profile .user-sec-prompt-cols {
+    /*border: solid #DDDDDD 1px;
+    border-radius: 3px;*/
+    margin: 10px;
+}
+
+.content-profile .security-prompt .modal-body {
+    max-height: 300px;
+    overflow: auto;
+}

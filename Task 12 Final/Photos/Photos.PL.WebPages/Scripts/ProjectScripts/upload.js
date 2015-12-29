@@ -90,6 +90,7 @@
             var percentVal = "0%";
             $bar.width(percentVal);
             $percent.html(percentVal);
+            $uploadBtn.button("loading");
         },
         uploadProgress: function (event, position, total, percentComplete) {
             var percentVal = percentComplete + "%";
@@ -103,6 +104,8 @@
         },
         complete: function (data) {
             var result = JSON.parse(data.responseText);
+
+            $uploadBtn.button("reset");
 
             if (result.Error === null) {
                 onUploadSuccess();

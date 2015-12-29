@@ -25,9 +25,21 @@
 
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
         {
-            var user = new Photos.Entites.User(null, null, username, null, 0);
+            var user = new Photos.Entites.User(null, null, username, null, 0, true);
 
-            if (LogicProvider.UserLogic.CanLogin(user, password))
+            var canLogin = false;
+
+            try
+            {
+                canLogin = LogicProvider.UserLogic.CanLogin(user, password);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                goto End;
+            }
+
+            if (canLogin)
             {
                 log.Info(username + " has been loged");
                 FormsAuthentication.SetAuthCookie(
@@ -44,6 +56,8 @@
             }
         }
     }
+
+End:
 }
 
 <!DOCTYPE html>
