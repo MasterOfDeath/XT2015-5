@@ -119,36 +119,38 @@ End:
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 well">
-            @if (albums != null)
-            {
-                foreach (var album in albums)
+    @*<div class="col-xs-12">*@
+        
+        @if (albums != null)
+        {
+            <div class="well col-xs-12">
+                @foreach (var album in albums)
                 {
-                    <div class="col-xs-6 col-sm-4 col-md-3">
-                        <a href="~/Pages/Photos?albumid=@album.Id" class="thumbnail" data-album-id="@album.Id">
-                            <div class="image-container">
-                                <img class="album-cover" src="~/Pages/GetImage?type=album&albumid=@album.Id" alt="@album.Name">
+                <div class="col-xs-6 col-sm-4 col-md-3 thumbnail-container">
+                    <a href="~/Pages/Photos?albumid=@album.Id" class="thumbnail" data-album-id="@album.Id">
+                        <div class="image-container">
+                            <img class="album-cover" src="~/Pages/GetImage?type=album&albumid=@album.Id" alt="@album.Name">
+                        </div>
+                        <div class="album-name">
+                            <b>@album.Name</b>
+                        </div>
+                        @if (isOwner)
+                        {
+                            <div class="btn btn-default remove-btn">
+                                <span class="glyphicon glyphicon-remove"></span>
                             </div>
-                            <div class="album-name">
-                                <b>@album.Name</b>
+                            <div class="btn btn-default edit-btn">
+                                <span class="glyphicon glyphicon-pencil"></span>
                             </div>
-                            @if (isOwner)
-                            {
-                                <div class="btn btn-default remove-btn">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </div>
-                                <div class="btn btn-default edit-btn">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </div>
-                            }
-                        </a>
-                    </div>
+                        }
+                    </a>
+                </div>
                 }
-            }
-            
-        </div>
-    </div>
+            </div>
+        }
+
+
+    @*</div>*@
 
     <!-- ErrorModal -->
     @RenderPage("~/Pages/_ErrorModalPartial.cshtml")

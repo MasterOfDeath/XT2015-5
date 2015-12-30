@@ -11,16 +11,12 @@
 }
 
 .content-albums .thumbnail {
-    height: 170px;
-    width: 170px;
     overflow: hidden;
     padding: 0 0;
     position: relative;
 }
 
 .content-albums .image-container {
-    height: 170px;
-    width: 170px;
     overflow: hidden;
     padding: 0 0;
     position: absolute;
@@ -28,6 +24,77 @@
     -moz-filter: blur(5px);
     -ms-filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=5, enabled='true');
     filter: blur(5px);
+}
+
+@media (max-width:320px) { 
+    .content-albums .thumbnail {
+        height: 120px;
+        width: 120px;
+    }
+
+    .content-albums .image-container {
+        height: 120px;
+        width: 120px;
+    }
+
+    .content-albums .thumbnail .album-cover {
+        height: 120px;
+        width: 120px;
+    }
+
+    .content-albums .well {
+        padding-left: 3px;
+        padding-right: 2px;
+    }
+
+    .content-albums .thumbnail-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media (min-width:321px) and (max-width:480px) { 
+    .content-albums .thumbnail {
+        height: 150px;
+        width: 150px;
+    }
+
+    .content-albums .image-container {
+        height: 150px;
+        width: 150px;
+    }
+
+    .content-albums .thumbnail .album-cover {
+        height: 150px;
+        width: 150px;
+    }
+
+    .content-albums .well {
+        padding-left: 3px;
+        padding-right: 2px;
+    }
+
+    .content-albums .thumbnail-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media (min-width:481px) {
+    .content-albums .thumbnail {
+        height: 170px;
+        width: 170px;
+    }
+
+    .content-albums .image-container {
+        height: 170px;
+        width: 170px;
+    }
+
+    .content-albums .thumbnail .album-cover {
+        height: 170px;
+        width: 170px;
+    }
 }
 
 .content-albums .album-name {
@@ -46,8 +113,6 @@
     max-height: 80%;*/
     /*position: absolute;*/
     border-radius: 2px;
-    height: 170px;
-    width: 170px;
     -ms-filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=5, enabled='true');
 }
 

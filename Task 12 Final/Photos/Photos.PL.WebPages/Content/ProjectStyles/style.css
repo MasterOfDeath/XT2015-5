@@ -16,9 +16,21 @@ body {
 /*-  -*/
 
 /*- Navbar -*/
+.navbar {
+    /*background-color: #537599;*/
+}
+
+.navbar a {
+    /*color: #E8EFF4 !important;*/
+}
+
 .navbar > .container-fluid {
     max-width: 840px;
     margin: auto;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
 }
 /*-  -*/
 
